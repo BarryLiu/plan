@@ -8,11 +8,31 @@
 </head>
 <body>
 
-<div>
-
-
+<div style="width: 100%; align: center;">
+    <h4>模块列表</h4>
+    <table>
+        <tr>
+            <td>模块名称</td>
+            <td>开始时间</td>
+        </tr>
+        <tr>
+            <td>模块名称</td>
+            <td>开始时间</td>
+        </tr>
+        <tr>
+            <td>模块名称</td>
+            <td>开始时间</td>
+        </tr>
+        <tr>
+            <td>模块名称</td>
+            <td>开始时间</td>
+        </tr>
+        <tr>
+            <td>模块名称</td>
+            <td>开始时间</td>
+        </tr>
+    </table>
 </div>
 <!-- 你的HTML代码 -->
-index
 </body>
 </html>

@@ -6,6 +6,7 @@ import com.project.plan.controller.BaseController;
 import com.project.plan.service.IUserService;
 import com.project.plan.entity.User;
 
+import com.project.plan.service.plan.PlanServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +18,20 @@ public class IndexController extends BaseController {
 	
 	@Autowired
 	private IUserService userService;
-	
+
+	@Autowired
+	private PlanServiceImpl planService;
+
+
+
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@RequestMapping(value={"/","/index"})
 	public String index(){
 		List<User> users = userService.findAll();
 		logger.debug(users.toString());
+		System.out.println("planService\t"+planService);
+
 		return "index";
 	}
 }

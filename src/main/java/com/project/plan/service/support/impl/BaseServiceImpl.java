@@ -7,6 +7,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import com.project.plan.dao.support.IBaseDao;
+import com.project.plan.entity.plan.Project;
 import com.project.plan.entity.support.BaseEntity;
 import com.project.plan.service.support.IBaseService;
 
@@ -116,5 +117,6 @@ public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializa
         // TODO Auto-generated method stub
         return getBaseDao().findAll(spec, pageable);
     }
+
 
 }

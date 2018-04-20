@@ -1,5 +1,6 @@
 package com.project.plan.entity.support;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -34,12 +35,14 @@ public class AbstractEntity extends BaseEntity{
 	
 	@NotNull(message="创建时间不能为空")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
 	@CreatedDate
 	@JsonIgnore
 	protected Date createTime;
 
-	@NotNull(message="修改时间不能为空")
+//	@NotNull(message="修改时间不能为空")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
 	@LastModifiedDate
 	@JsonIgnore
 	protected Date updateTime;

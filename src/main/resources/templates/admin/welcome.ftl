@@ -5,6 +5,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	welcome to
+	欢迎到项目进度管理系统
 </body>
 </html>
