@@ -38,7 +38,7 @@ public class MyRealm extends AuthorizingRealm {
         setAuthenticationTokenClass(UsernamePasswordToken.class);
 
         //FIXME: 暂时禁用Cache
-        setCachingEnabled(false);
+        super.setCachingEnabled(false);
 	}
 	
 	@Autowired

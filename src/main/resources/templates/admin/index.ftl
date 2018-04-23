@@ -96,7 +96,7 @@
                         </@shiro.hasPermission>
                         <@shiro.hasPermission name="plan:tache:index">
                             <li>
-                                <a class="J_menuItem" href="${ctx!}/plan/resource/index">环节管理</a>
+                                <a class="J_menuItem" href="${ctx!}/plan/tache/index">环节管理</a>
                             </li>
                         </@shiro.hasPermission>
                         </ul>

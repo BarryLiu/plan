@@ -4,11 +4,15 @@ import com.project.plan.dao.plan.IModuleDao;
 import com.project.plan.dao.support.IBaseDao;
 import com.project.plan.entity.plan.Module;
 import com.project.plan.entity.plan.Project;
+import com.project.plan.entity.plan.Tache;
 import com.project.plan.service.support.impl.BaseServiceImpl;
+import org.aspectj.weaver.tools.Trace;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Barry on 2018/4/20.
@@ -17,6 +21,9 @@ import java.util.Date;
 public class ModuleServiceImpl extends BaseServiceImpl<Module,Integer> {
     @Autowired
     private IModuleDao moduleDao;
+
+    @Autowired
+    private  TacheServiceImpl tacheService;
 
     @Override
     public IBaseDao<Module, Integer> getBaseDao() {
@@ -36,7 +43,10 @@ public class ModuleServiceImpl extends BaseServiceImpl<Module,Integer> {
             module.setCreateTime(new Date());
             module.setUpdateTime(new Date());
             save(module);
+
+            tacheService.saveTache(module);
         }
 
     }
+
 }
