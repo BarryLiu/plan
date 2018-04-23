@@ -24,5 +24,6 @@
 /nbdist/
 /.nb-gradle/
 
-
+# code
 src/main/resources/application-prod.properties
+/base/

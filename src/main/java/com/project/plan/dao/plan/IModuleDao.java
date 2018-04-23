@@ -6,7 +6,7 @@ import com.project.plan.entity.plan.Project;
 import org.springframework.stereotype.Repository;
 
 /**
- * Created by yingjing.liu on 2018/4/20.
+ * Created by Barry on 2018/4/20.
  */
 @Repository
 public interface IModuleDao extends IBaseDao<Module, Integer> {

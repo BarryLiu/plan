@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <title>资源列表</title>
+    <title>模块列表</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
 
@@ -28,7 +28,7 @@
             <div class="col-sm-12">
                 <div class="ibox ">
                     <div class="ibox-title">
-                        <h5>资源管理</h5>
+                        <h5>模块管理</h5>
                     </div>
                     <div class="ibox-content">
                         <p>
@@ -74,6 +74,7 @@
 
     <!-- Page-Level Scripts -->
     <script>
+		var rootUrl = "${ctx!}/plan/module";
         $(document).ready(function () {
 			//初始化表格,动态从服务器加载数据  
 			$("#table_list").bootstrapTable({
@@ -82,7 +83,7 @@
 			    //必须设置，不然request.getParameter获取不到请求参数
 			    contentType: "application/x-www-form-urlencoded",
 			    //获取数据的Servlet地址  
-			    url: "${ctx!}/admin/resource/list",
+			    url: rootUrl+"/list",
 			    //表格显示条纹  
 			    striped: true,
 			    //启动分页  
@@ -115,41 +116,24 @@
 			        title: "ID",
 			        field: "id",
 			        sortable: true
-			    },{
-			        title: "资源名称",
+			    },/*{
+                    title: "项目名称",
+                    field: "project.name"
+                },*/{
+			        title: "模块名称",
 			        field: "name"
 			    },{
-			        title: "资源KEY",
-			        field: "sourceKey"
-			    },{
-			        title: "资源类型",
-			        field: "type",
-			        formatter: function(value,row,index){
-			        	if(value == 0)
-                    		return '<span class="label label-info">目录</span>';
-                    	else if(value == 1)
-                    		return '<span class="label label-primary">菜单</span>';
-                    	else if(value == 2)
-                    		return '<span class="label label-warning">按钮</span>';
-			        }
-			    },{
-			        title: "资源URL",
-			        field: "sourceUrl"
-			    },{
-			        title: "层级",
-			        field: "level",
-			        sortable: true
-			    },{
-			        title: "排序",
-			        field: "sort",
-			        sortable: true
-			    },{
-			        title: "图标",
-			        field: "icon"
-			    },{
+                    title: "启动时间",
+                    field: "startTime",
+                    sortable: true
+                },{
+                    title: "期望上线时间",
+                    field: "wishTime",
+                    sortable: true
+                } ,{
 			        title: "状态",
 			        sortable: true,
-			        field: "isHide",
+			        field: "status",
                     formatter: function (value, row, index) {
                     	if(value == 0)
                     		return '<span class="label label-info">显示</span>';
@@ -182,8 +166,8 @@
         	      title: '资源修改',
         	      shadeClose: true,
         	      shade: false,
-        	      area: ['893px', '600px'],
-        	      content: '${ctx!}/admin/resource/edit/' + id,
+        	      area: ['1093px', '800px'],
+        	      content: rootUrl+'/edit/' + id,
         	      end: function(index){
         	    	  $('#table_list').bootstrapTable("refresh");
        	    	  }
@@ -196,7 +180,7 @@
         	      shadeClose: true,
         	      shade: false,
         	      area: ['893px', '600px'],
-        	      content: '${ctx!}/admin/resource/add',
+        	      content: rootUrl+'/add',
         	      end: function(index){
         	    	  $('#table_list').bootstrapTable("refresh");
        	    	  }
@@ -207,7 +191,7 @@
         		$.ajax({
     	    		   type: "POST",
     	    		   dataType: "json",
-    	    		   url: "${ctx!}/admin/resource/delete/" + id,
+    	    		   url: rootUrl+"/delete/" + id,
     	    		   success: function(msg){
 	 	   	    			layer.msg(msg.message, {time: 2000},function(){
 	 	   	    				$('#table_list').bootstrapTable("refresh");

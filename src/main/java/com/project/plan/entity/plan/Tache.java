@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
- * Created by yingjing.liu on 2018/4/20.
+ * Created by Barry on 2018/4/20.
  * 环节
  */
 @Data

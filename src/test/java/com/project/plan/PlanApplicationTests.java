@@ -1,6 +1,10 @@
 package com.project.plan;
 
+import com.project.plan.common.utils.LDAPControl;
+import com.project.plan.common.utils.TUser;
+import com.project.plan.entity.User;
 import com.project.plan.service.impl.UserServiceImpl;
+import org.assertj.core.util.DateUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,10 +13,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PlanApplicationTests {
 
+	@Autowired
     private UserServiceImpl userService;
 
 	@Test
@@ -21,7 +30,35 @@ public class PlanApplicationTests {
 	}
 
 
+	//测试同步公司ldap域下的用户插入到系统  tb_user 表中
+	@Test
+	public void syncLdapUsers(){
+		System.out.println("getAllusers:");
+		List<TUser> users = LDAPControl.getInstance().getAllLadpUser();
 
+		List<User> userList = new ArrayList<>();
+		for(int i=0;i<users.size();i++){
+			TUser ldUser = users.get(i);
+			System.out.println(ldUser);
+			User sysUser = new User();
+			sysUser.setUserName(ldUser.getName());
+			sysUser.setNickName(ldUser.getDisplayName());
+			sysUser.setPassword("3931MUEQD1939MQMLM4AISPVNE");//设置密码是 "111111"
+			sysUser.setSex(1);//不分男女
+//			sysUser.setBirthday();ldUser.getEnterDate()
+			sysUser.setEmail(ldUser.getEmail());
+//			sysUser.setAddress(ldUser.get);
+//			sysUser.setTelephone();
+			sysUser.setDeleteStatus(ldUser.getStat());
+			sysUser.setLocked(0);//未锁定
+			sysUser.setDescription(ldUser.getDepart());
+			sysUser.setCreateTime(new Date());
+			userList.add(sysUser);
+		}
+		System.out.print("----插入用户-----"+userService);
+		userService.save(userList);
+
+	}
 
 //	@Test
 //	public void test(){
