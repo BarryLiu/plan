@@ -42,22 +42,42 @@
                     <div class="ibox-content">
                         <form class="form-horizontal m-t" id="frm" method="post" action="${ctx!}/plan/tache/edit">
                         	<input type="hidden" id="id" name="id" value="${tache.id}">
+                                <div class="form-group" style="font: 15px solid black;">
+                                    <label class="col-sm-3 control-label">项目名：</label>
+                                    <div class="col-sm-2">
+                                        <input id="tacheIndex" name="tacheIndex" readonly="readonly" class="form-control" type="text" value="${tache.module.project.name}">
+                                    </div>
+
+                                    <label class="col-sm-3 control-label">模块名称：</label>
+                                    <div class="col-sm-2">
+                                        <input id="tacheIndex" name="tacheIndex" readonly="readonly" class="form-control" type="text" value="${tache.module.name}">
+                                    </div>
+                                </div>
+                                <div class="form-group" style="font-size: 15px;">
+                                    <label class="col-sm-3 control-label">环节序号：</label>
+                                    <div class="col-sm-2">
+                                        <input id="tacheIndex" name="tacheIndex" readonly="readonly" class="form-control" type="text" value="${tache.tacheIndex}">
+                                    </div>
+                                    <label class="col-sm-3 control-label">环节名称：</label>
+                                    <div class="col-sm-2">
+                                        <input id="name" name="name" class="form-control" readonly="readonly" type="text" value="${tache.name}">
+                                    </div>
+                                </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">环节序号：</label>
+                                <label class="col-sm-3 control-label">负责人：</label>
                                 <div class="col-sm-2">
-                                    <input id="tacheIndex" name="tacheIndex" readonly="readonly" class="form-control" type="text" value="${tache.tacheIndex}">
+                                    <select name="user.id" class="form-control">
+                                    <#list userList as u >
+                                        <option value="${u.id }" <#if u.id == (tache.user.id ) > selected="selected"</#if>>${u.nikeName }</option>
+                                    </#list>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">环节名称：</label>
-                                <div class="col-sm-5">
-                                    <input id="name" name="name" class="form-control" readonly="readonly" type="text" value="${tache.name}">
-                                </div>
-                            </div>
+
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">计划时间：</label>
                                 <div class="col-sm-2">
-                                    <input id="planBeginTime" name="planBeginTime" readonly="readonly" class="laydate-icon form-control layer-date" value="${tache.planBeginTime}">
+                                    <input id="planBeginTime" name="planBeginTime" readonly="readonly"  class="laydate-icon form-control layer-date" value="${tache.planBeginTime}">
                                 </div>
                                 <div class="col-sm-2">
                                     <input id="planEndTime" name="planEndTime" readonly="readonly" class="laydate-icon form-control layer-date" value="${tache.planEndTime}">
@@ -132,7 +152,8 @@
         //外部js调用
         laydate({
             elem: '#planBeginTime', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
-            event: 'focus' //响应事件。如果没有传入event，则按照默认的click
+            event: 'focus', //响应事件。如果没有传入event，则按照默认的click
+            format:"YYYY-MM-DD"
         });
         laydate({
             elem: '#planEndTime', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'

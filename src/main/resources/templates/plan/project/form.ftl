@@ -60,13 +60,13 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">创建描述：</label>
                                 <div class="col-sm-8">
-                                    <input id="createComment" name="createComment" class="form-control" value="${project.createComment}">
+                                    <textarea style="height: 150px;" id="createComment" name="createComment" class="form-control">${project.createComment}</textarea>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">修改描述：</label>
                                 <div class="col-sm-8">
-                                    <input id="updateComment" name="updateComment" class="form-control" value="${project.updateComment}">
+                                    <textarea style="height: 150px;" id="updateComment" name="updateComment" class="form-control">${project.updateComment}</textarea>
                                 </div>
                             </div>
                             <div class="form-group">

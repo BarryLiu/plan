@@ -1,17 +1,22 @@
 package com.project.plan;
 
+import com.project.plan.common.Constats;
 import com.project.plan.common.utils.LDAPControl;
+import com.project.plan.common.utils.MD5Utils;
 import com.project.plan.common.utils.TUser;
 import com.project.plan.entity.User;
+import com.project.plan.entity.plan.Module;
 import com.project.plan.service.impl.UserServiceImpl;
-import org.assertj.core.util.DateUtil;
-import org.junit.Assert;
+import com.project.plan.service.plan.ModuleServiceImpl;
+import com.project.plan.service.specification.SimpleSpecificationBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,6 +29,8 @@ public class PlanApplicationTests {
 	@Autowired
     private UserServiceImpl userService;
 
+	@Autowired
+	private ModuleServiceImpl moduleService;
 	@Test
 	public void contextLoads() {
 		System.out.println("xxxxxxxxxxxxxx load test ........");
@@ -40,19 +47,7 @@ public class PlanApplicationTests {
 		for(int i=0;i<users.size();i++){
 			TUser ldUser = users.get(i);
 			System.out.println(ldUser);
-			User sysUser = new User();
-			sysUser.setUserName(ldUser.getName());
-			sysUser.setNickName(ldUser.getDisplayName());
-			sysUser.setPassword("3931MUEQD1939MQMLM4AISPVNE");//设置密码是 "111111"
-			sysUser.setSex(1);//不分男女
-//			sysUser.setBirthday();ldUser.getEnterDate()
-			sysUser.setEmail(ldUser.getEmail());
-//			sysUser.setAddress(ldUser.get);
-//			sysUser.setTelephone();
-			sysUser.setDeleteStatus(ldUser.getStat());
-			sysUser.setLocked(0);//未锁定
-			sysUser.setDescription(ldUser.getDepart());
-			sysUser.setCreateTime(new Date());
+			User sysUser = TUser.parseLdapUserToUser(ldUser);
 			userList.add(sysUser);
 		}
 		System.out.print("----插入用户-----"+userService);
@@ -60,13 +55,20 @@ public class PlanApplicationTests {
 
 	}
 
-//	@Test
-//	public void test(){
-//
-//		userMapper.insert("barry2", "123456", "12345678910");
-//		User u = userMapper.findUserByPhone("12345678910");
-//		Assert.assertEquals("barry2", u.getName());
-//	}
+	@Test
+	public void testSelect(){
+		PageRequest pageRequest =new PageRequest(0,10);
+		SimpleSpecificationBuilder<Module> builder = new SimpleSpecificationBuilder<Module>();
+
+		Page<Module> page =  moduleService.findAllWithProject(builder.generateSpecification(),pageRequest);
+
+		System.out.println("-------------------------");
+		for (Module m: page.getContent()) {
+			System.out.println(m);
+		}
+
+
+	}
 //
 //
 //	@Test

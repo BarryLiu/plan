@@ -5,6 +5,7 @@ import com.project.plan.entity.support.AbstractEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -40,8 +41,17 @@ public class Module extends AbstractEntity{
     @Column(name="stat",length=2,nullable = false)
     private Integer status ;
 
-    //项目
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    /*@NotNull(message="模块状态不能为空")
+    @Column(name="project_id",length=20,nullable = false)
+    private Integer projectId ;
+    @NonNull
+    @Transient// 不是表字段
+    private Project project;*/
+
+    //项目 //多对多没配好 用两个属性代替 :projectId project
+    @ManyToOne(cascade = { CascadeType.REFRESH },fetch = FetchType.EAGER)
+//  @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},fetch = FetchType.EAGER,optional=false)
     @JoinColumn(name = "project_id")
     private Project project;
 

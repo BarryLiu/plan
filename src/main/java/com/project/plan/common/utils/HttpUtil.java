@@ -1,18 +1,13 @@
 package com.project.plan.common.utils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -20,6 +15,9 @@ import java.util.Map;
 
 
 public class HttpUtil {
+
+
+
 	/**
 	 * 向指定URL发送GET方法的请求
 	 * 
@@ -261,6 +259,56 @@ public class HttpUtil {
 		/*List<HTTPParam> list = new ArrayList<>();
 		list.add(new HTTPParam("id", "1195792578"));
 		System.out.println("sendPost: "+sendPost("http://itunes.apple.com/lookup", list));*/
+	}
+
+
+	public static String getClientIP(HttpServletRequest request) {
+		if (request == null)
+			return null;
+		String s = request.getHeader("X-Forwarded-For");
+		if (s == null || s.length() == 0 || "unknown".equalsIgnoreCase(s))
+			s = request.getHeader("Proxy-Client-IP");
+		if (s == null || s.length() == 0 || "unknown".equalsIgnoreCase(s))
+			s = request.getHeader("WL-Proxy-Client-IP");
+		if (s == null || s.length() == 0 || "unknown".equalsIgnoreCase(s))
+			s = request.getHeader("HTTP_CLIENT_IP");
+		if (s == null || s.length() == 0 || "unknown".equalsIgnoreCase(s))
+			s = request.getHeader("HTTP_X_FORWARDED_FOR");
+		if (s == null || s.length() == 0 || "unknown".equalsIgnoreCase(s))
+			s = request.getHeader("X-Real-IP");
+		if (s == null || s.length() == 0 || "unknown".equalsIgnoreCase(s))
+			s = request.getRemoteAddr();
+
+		if ("127.0.0.1".equals(s) || "0:0:0:0:0:0:0:1".equals(s)) {
+			try {
+				s = InetAddress.getLocalHost().getHostAddress();
+			} catch (UnknownHostException unknownhostexception) {
+			}
+		}
+		return s;
+	}
+
+	public static String getString(HttpServletRequest request, String paraname) {
+		return request.getParameter(paraname) == null ? "" : request.getParameter(paraname);
+	}
+
+	public static String getString(HttpServletRequest request, String paraname, String defaultVal) {
+		return request.getParameter(paraname) == null ? defaultVal : request.getParameter(paraname);
+	}
+
+	public static String getRequestBody(HttpServletRequest request) {
+		StringBuffer sb = new StringBuffer();
+		Enumeration<String> enu = request.getParameterNames();
+		while (enu.hasMoreElements()) {
+			String name = (String) enu.nextElement();
+			String value = request.getParameter(name);
+			if(sb.length()<=0) {
+				sb.append(name + "=" + value);
+			}else {
+				sb.append("&" + name + "=" + value);
+			}
+		}
+		return sb.toString();
 	}
 }
 

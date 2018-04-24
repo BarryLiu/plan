@@ -117,13 +117,13 @@
 			        title: "ID",
 			        field: "id",
 			        sortable: true
-			    },*//*{
+			    },*/{
                     title: "项目名称",
-                    field: "project.name"
+                    field: "module.project.name"
                 },{
 			        title: "模块名称",
 			        field: "module.name"
-			    },*/{
+			    },{
                         title: "环节序号",
                         field: "tacheIndex",
                         sortable: true
@@ -155,7 +155,15 @@
                     }
                 } ,{
                     title: "责任人",
-                    field: "userId"
+                    field: "user_nickName",
+                    formatter: function (value, row, index) {
+                        //alert("index: " + index + " row:" + row.user);
+						var nickName = ' - ';
+						if(row.user!=null && row.user != undefined ){
+							nickName = row.user.nickName;
+						}
+						return nickName;
+                    }
                 },{
 			        title: "状态",
 			        sortable: true,

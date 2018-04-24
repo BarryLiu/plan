@@ -9,6 +9,7 @@ import com.project.plan.entity.User;
 import com.project.plan.entity.plan.Module;
 import com.project.plan.entity.plan.Openate;
 import com.project.plan.entity.plan.Tache;
+import com.project.plan.service.impl.UserServiceImpl;
 import com.project.plan.service.plan.OpenateServiceImpl;
 import com.project.plan.service.plan.PlanServiceImpl;
 import com.project.plan.service.plan.TacheServiceImpl;
@@ -40,6 +41,10 @@ public class TacheController extends BaseController {
     private TacheServiceImpl tacheService;
     @Autowired
     private OpenateServiceImpl openateService;
+    @Autowired
+    private UserServiceImpl userService;
+
+
     @RequestMapping("/index")
     public String index() {
         return "plan/tache/index";
@@ -60,8 +65,8 @@ public class TacheController extends BaseController {
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String add(ModelMap map) {
-        List<Tache> list = tacheService.findAll();
-        map.put("list", list);
+        List<User> userList = userService.findAll();
+        map.put("userList", userList);
         return "plan/tache/form";
     }
 
@@ -70,9 +75,9 @@ public class TacheController extends BaseController {
     public String edit(@PathVariable Integer id, ModelMap map) {
         Tache tache = tacheService.find(id);
         map.put("tache", tache);
+        List<User> userList = userService.getBaseDao().findAll();
+        map.put("userList", userList);
 
-        List<Tache> list = tacheService.findAll();
-        map.put("list", list);
         return "plan/tache/form";
     }
 
@@ -103,6 +108,9 @@ public class TacheController extends BaseController {
                         .getAttribute(Constats.CURRENTUSER);
                 log.setUserId(loginUser.getId());
                 openateService.save(log);
+
+//                tache.getUserId()
+
             }
             tacheService.saveOrUpdate(tache);
         } catch (Exception e) {

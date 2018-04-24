@@ -32,6 +32,10 @@ public class TacheServiceImpl extends BaseServiceImpl<Tache,Integer> {
 
             Tache dbTache = super.find(tache.getId());
 
+//            Module m = new Module();//环节修改模块,不让修改
+//            m.setId(tache.getModule().getId());
+//            dbTache.setModule(m);
+
             dbTache.setPlanBeginTime(tache.getPlanBeginTime());
             dbTache.setPlanEndTime(tache.getPlanEndTime());
             dbTache.setRealBeginTime(tache.getRealBeginTime());

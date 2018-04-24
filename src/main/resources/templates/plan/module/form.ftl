@@ -42,9 +42,21 @@
                     <div class="ibox-content">
                         <form class="form-horizontal m-t" id="frm" method="post" action="${ctx!}/plan/module/edit">
                         	<input type="hidden" id="id" name="id" value="${module.id}">
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">项目名称：</label>
+                                <div class="col-sm-2">
+                                    <select name="project.id" class="form-control">
+                                        <#list projectList as project >
+                                             <option value="${project.id }" <#if project.id == (module.project.id ) > selected="selected"</#if>>${project.name }</option>
+                                         </#list>
+                                    </select>
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">模块名称：</label>
-                                <div class="col-sm-8">
+                                <div class="col-sm-3">
                                     <input id="name" name="name" class="form-control" type="text" value="${module.name}">
                                 </div>
                             </div>
@@ -72,13 +84,13 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">创建描述${module.createComment}：</label>
                                 <div class="col-sm-8">
-                                    <input id="createComment" name="createComment" class="form-control" value="${module.createComment}">
+                                    <textarea style="height: 150px;" id="createComment" name="createComment" class="form-control">${module.createComment}</textarea>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">修改描述：</label>
                                 <div class="col-sm-8">
-                                    <input id="updateComment" name="updateComment" class="form-control" value="${module.updateComment}">
+                                    <textarea style="height: 150px;" id="updateComment" name="updateComment" class="form-control">${module.updateComment}</textarea>
                                 </div>
                             </div>
                             <div class="form-group">

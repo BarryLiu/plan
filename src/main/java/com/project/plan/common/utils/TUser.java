@@ -1,7 +1,42 @@
 package com.project.plan.common.utils;
 
 
+import com.project.plan.common.Constats;
+import com.project.plan.entity.User;
+
+import java.util.Date;
+
 public class TUser  {
+
+	/**
+	 * ldap系统里面查询到的用户取部分属性转系统用户
+	 * @param ldapUser
+	 * @return
+     */
+	public static User parseLdapUserToUser(TUser ldapUser){
+		if(ldapUser==null){
+			return null;
+		}
+		User sysUser = new User();
+		sysUser.setUserName(ldapUser.getLoginCount());
+
+		sysUser.setNickName(ldapUser.getName());
+//			sysUser.setPassword("3931MUEQD1939MQMLM4AISPVNE");//设置密码是 "332211"
+		String pwd = MD5Utils.md5(Constats.DEFAULT_USER_PWD);
+		sysUser.setPassword(pwd);
+
+		sysUser.setSex(1);//不分男女
+//			sysUser.setBirthday();ldUser.getEnterDate()
+		sysUser.setEmail(ldapUser.getEmail());
+		sysUser.setAddress(ldapUser.getDisplayName());
+//			sysUser.setTelephone();
+		sysUser.setDeleteStatus(ldapUser.getStat());
+		sysUser.setLocked(0);//未锁定
+		sysUser.setDescription(ldapUser.getDepart());
+		sysUser.setCreateTime(new Date());
+
+		return sysUser;
+	}
 
 	@Override
 	public String toString() {

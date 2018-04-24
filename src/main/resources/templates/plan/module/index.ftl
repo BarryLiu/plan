@@ -116,10 +116,10 @@
 			        title: "ID",
 			        field: "id",
 			        sortable: true
-			    },/*{
+			    },{
                     title: "项目名称",
                     field: "project.name"
-                },*/{
+                },{
 			        title: "模块名称",
 			        field: "name"
 			    },{
@@ -166,7 +166,7 @@
         	      title: '资源修改',
         	      shadeClose: true,
         	      shade: false,
-        	      area: ['1093px', '800px'],
+        	      area: ['1293px', '900px'],
         	      content: rootUrl+'/edit/' + id,
         	      end: function(index){
         	    	  $('#table_list').bootstrapTable("refresh");

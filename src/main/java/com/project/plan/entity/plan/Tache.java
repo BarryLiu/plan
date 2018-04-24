@@ -1,6 +1,7 @@
 package com.project.plan.entity.plan;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.project.plan.entity.User;
 import com.project.plan.entity.support.AbstractEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -83,8 +84,12 @@ public class Tache  extends AbstractEntity {
     protected String archiveTime;
 
     //@NotNull(message="责任人不能为空")
-    @Column(name="user_id",length=500)
-    private Integer userId;
+//    @Column(name="user_id",length=500)
+//    private Integer userId;
+
+    @ManyToOne(fetch = FetchType.LAZY)//责任人
+    @JoinColumn(name = "user_id")
+    private User user;
 
     //模块
     @NotNull(message="模块不能为空")

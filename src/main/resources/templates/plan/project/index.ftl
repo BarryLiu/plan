@@ -160,7 +160,7 @@
         	      title: '资源修改',
         	      shadeClose: true,
         	      shade: false,
-        	      area: ['893px', '600px'],
+        	      area: ['1293px', '800px'],
         	      content: '${ctx!}/plan/project/edit/' + id,
         	      end: function(index){
         	    	  $('#table_list').bootstrapTable("refresh");
