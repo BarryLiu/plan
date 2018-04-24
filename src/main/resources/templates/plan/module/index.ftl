@@ -204,7 +204,7 @@
         
         function detailFormatter(index, row) {
 	        var html = [];
-	        html.push('<p><b>描述:</b> ' + row.description + '</p>');
+	        html.push('<p><b>描述:</b> ' + '这个模块很简单,怎么实现我不管,赶快上线！！！' + '</p>');
 	        return html.join('');
 	    }
     </script>

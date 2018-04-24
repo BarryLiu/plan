@@ -3,6 +3,7 @@ package com.project.plan.controller.plan;
 import com.project.plan.common.Constats;
 import com.project.plan.common.JsonResult;
 import com.project.plan.common.utils.DateUtil;
+import com.project.plan.common.utils.HttpUtil;
 import com.project.plan.common.utils.TextUtil;
 import com.project.plan.controller.BaseController;
 import com.project.plan.entity.User;
@@ -10,6 +11,7 @@ import com.project.plan.entity.plan.Module;
 import com.project.plan.entity.plan.Openate;
 import com.project.plan.entity.plan.Tache;
 import com.project.plan.service.impl.UserServiceImpl;
+import com.project.plan.service.plan.ModuleServiceImpl;
 import com.project.plan.service.plan.OpenateServiceImpl;
 import com.project.plan.service.plan.PlanServiceImpl;
 import com.project.plan.service.plan.TacheServiceImpl;
@@ -43,6 +45,10 @@ public class TacheController extends BaseController {
     private OpenateServiceImpl openateService;
     @Autowired
     private UserServiceImpl userService;
+    @Autowired
+    private ModuleServiceImpl moduleService;
+
+
 
 
     @RequestMapping("/index")
@@ -100,16 +106,15 @@ public class TacheController extends BaseController {
 
                 String createComment = compateUpdateComment(dbTache,tache);
                 log.setCreateComment(createComment);
-                Module m = new Module();
-                m.setId(moduleId);
-                log.setModule(m);
+//                Module m = new Module();
+//                m.setId(moduleId);
+//                log.setModule(m);
+                log.setModuleId(moduleId);
 
                 User loginUser = (User) SecurityUtils.getSubject().getSession()
                         .getAttribute(Constats.CURRENTUSER);
                 log.setUserId(loginUser.getId());
                 openateService.save(log);
-
-//                tache.getUserId()
 
             }
             tacheService.saveOrUpdate(tache);
@@ -132,6 +137,38 @@ public class TacheController extends BaseController {
         return JsonResult.success();
     }
 
+    /** 某环节环节备注记录列表 */
+    @RequestMapping("/recordlist")
+    public String recordlist(ModelMap map ,Integer tacheId) {
+        Tache tache = tacheService.getBaseDao().findOne(tacheId);
+        List<Openate> openateList = openateService.findByTacheId(tacheId);
+
+        map.put("tache",tache);
+        map.put("openateList",openateList);
+        return "plan/tache/openateRecord";
+    }
+    /** 添加环节备注记录 */
+    @RequestMapping(value= {"/openateEdit"}, method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult openateEdit(Openate openate, ModelMap map,Integer moduleId){
+        try {
+            Date sysDate = new Date();
+            User loginUser = (User) SecurityUtils.getSubject().getSession()
+                    .getAttribute(Constats.CURRENTUSER);
+            openate.setUserId(loginUser.getId());
+            openate.setCreateTime(sysDate);
+            openate.setDuration(0L);
+            openate.setIp(HttpUtil.getClientIP(request));
+            openate.setUrl(request.getRequestURL().toString());
+            openate.setStatus(Openate.STATUS_WARN);
+
+            openateService.save(openate);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return JsonResult.failure(e.getMessage());
+        }
+        return JsonResult.success();
+    }
 
     /**
      * 计算 将 tache修改成 dbTache修改了哪些内容,并将修改内容记录下来

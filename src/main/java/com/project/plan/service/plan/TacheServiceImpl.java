@@ -78,4 +78,6 @@ public class TacheServiceImpl extends BaseServiceImpl<Tache,Integer> {
         }
         tacheDao.save(tacheList);
     }
+
+
 }

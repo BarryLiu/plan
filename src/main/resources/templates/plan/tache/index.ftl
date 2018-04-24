@@ -190,7 +190,7 @@
                     field: "createTime",
                     formatter: function (value, row, index) {
 
-						var operateHtml= '<a   onclick="edit(\''+row.id+'\')">&nbsp;记录（0）条</a>';
+						var operateHtml= '<a   onclick="record(\''+row.id+'\')">&nbsp;记录（0）条</a>';
 						return operateHtml;
                     }
                 },{
@@ -227,6 +227,19 @@
        	    	  }
         	    });
         }
+        function record(id){
+            layer.open({
+                type: 2,
+                title: '环节修改',
+                shadeClose: true,
+                shade: false,
+                area: ['1093px', '800px'],
+                content: rootUrl+'/recordlist?tacheId=' + id,
+                end: function(index){
+                    $('#table_list').bootstrapTable("refresh");
+                }
+            });
+        }
         function add(){
         	layer.open({
         	      type: 2,
@@ -258,7 +271,7 @@
         
         function detailFormatter(index, row) {
 	        var html = [];
-	        html.push('<p><b>描述:</b> ' + row.description + '</p>');
+	        html.push('<p><b>描述:</b> ' + '这个环节很坑的啊,小心点做,不然打你哦!' + '</p>');
 	        return html.join('');
 	    }
     </script>

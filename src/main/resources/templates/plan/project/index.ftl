@@ -198,7 +198,7 @@
         
         function detailFormatter(index, row) {
 	        var html = [];
-	        html.push('<p><b>描述:</b> ' + row.description + '</p>');
+	        html.push('<p><b>描述:</b> ' + '没有什么好描述的,哈哈哈' + '</p>');
 	        return html.join('');
 	    }
     </script>

@@ -60,10 +60,16 @@ public class Openate extends AbstractEntity {
     @Transient
     private User user;
 
-    //模块
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "module_id")
-    private Module module;
+    //创建描述
+    @Column(name="module_id",length=10,nullable=false)
+    @NotNull(message="模块id不能为空")
+    protected Integer moduleId;
+
+
+//    //模块
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "module_id")
+//    private Module module;
 
     public Openate(Openate log,
                    User user) {

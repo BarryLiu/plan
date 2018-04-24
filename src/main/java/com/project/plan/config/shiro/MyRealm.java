@@ -3,12 +3,14 @@ package com.project.plan.config.shiro;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.project.plan.common.Constats;
 import com.project.plan.common.utils.MD5Utils;
 import com.project.plan.entity.Resource;
 import com.project.plan.entity.Role;
 import com.project.plan.entity.User;
 import com.project.plan.service.IUserService;
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -22,6 +24,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -89,7 +92,7 @@ public class MyRealm extends AuthorizingRealm {
 		}
 
 		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, password, getName());
-
+		SecurityUtils.getSubject().getSession().setAttribute(Constats.CURRENTUSER,user);//session保存用户
 		return info;
 	}
 
