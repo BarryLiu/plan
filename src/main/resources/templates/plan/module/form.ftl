@@ -74,7 +74,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">状态：</label>
-                                <div class="col-sm-8">
+                                <div class="col-sm-2">
                                 	<select name="status" class="form-control">
                                 		<option value="0" <#if module.status == 0>selected="selected"</#if>>正常</option>
                                 		<option value="1" <#if module.status == 1>selected="selected"</#if>>异常</option>
@@ -82,7 +82,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">创建描述${module.createComment}：</label>
+                                <label class="col-sm-3 control-label">创建描述：</label>
                                 <div class="col-sm-8">
                                     <textarea style="height: 150px;" id="createComment" name="createComment" class="form-control">${module.createComment}</textarea>
                                 </div>
@@ -93,11 +93,13 @@
                                     <textarea style="height: 150px;" id="updateComment" name="updateComment" class="form-control">${module.updateComment}</textarea>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-sm-8 col-sm-offset-3">
-                                    <button class="btn btn-primary" type="submit">提交</button>
+                            <@shiro.hasPermission name="plan:module:edit">
+                                <div class="form-group">
+                                    <div class="col-sm-8 col-sm-offset-3">
+                                        <button class="btn btn-primary" type="submit">提交</button>
+                                    </div>
                                 </div>
-                            </div>
+                            </@shiro.hasPermission>
                         </form>
                     </div>
                 </div>
@@ -141,10 +143,14 @@
                 status: {
     	        required: true
     	      },
-    	      	description: {
-    	        required: true,
-    	        maxlength: 40
-    	      }
+                createComment: {
+                required: false,
+                maxlength: 2000
+              },
+                updateComment: {
+                required: false,
+                maxlength: 2000
+              }
     	    },
     	    messages: {},
     	    submitHandler:function(form){

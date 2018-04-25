@@ -75,7 +75,7 @@ public class ModuleController extends BaseController {
         return "plan/module/form";
     }
 
-    @RequiresPermissions("plan:module:edit")
+//    @RequiresPermissions("plan:module:edit")
     @RequestMapping(value= {"/edit"}, method = RequestMethod.POST)
     @ResponseBody
     public JsonResult edit(Module module, ModelMap map){
@@ -88,7 +88,7 @@ public class ModuleController extends BaseController {
         return JsonResult.success();
     }
 
-    @RequiresPermissions("plan:module:delete")
+//    @RequiresPermissions("plan:module:delete")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult delete(@PathVariable Integer id,ModelMap map) {

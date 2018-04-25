@@ -69,11 +69,13 @@
                                     <textarea style="height: 150px;" id="updateComment" name="updateComment" class="form-control">${project.updateComment}</textarea>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-sm-8 col-sm-offset-3">
-                                    <button class="btn btn-primary" type="submit">提交</button>
+                            <@shiro.hasPermission name="plan:project:edit">
+                                <div class="form-group">
+                                    <div class="col-sm-8 col-sm-offset-3">
+                                        <button class="btn btn-primary" type="submit">提交</button>
+                                    </div>
                                 </div>
-                            </div>
+                            </@shiro.hasPermission>
                         </form>
                     </div>
                 </div>
@@ -108,10 +110,14 @@
                 status: {
     	        required: true
     	      },
-    	      	description: {
-    	        required: true,
-    	        maxlength: 40
-    	      }
+                createComment: {
+    	        required: false,
+    	        maxlength: 2000
+    	      },
+                updateComment: {
+                    required: false,
+                    maxlength: 2000
+                }
     	    },
     	    messages: {},
     	    submitHandler:function(form){

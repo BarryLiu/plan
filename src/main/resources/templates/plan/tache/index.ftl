@@ -189,8 +189,7 @@
                     title: "备注",
                     field: "createTime",
                     formatter: function (value, row, index) {
-
-						var operateHtml= '<a   onclick="record(\''+row.id+'\')">&nbsp;记录（0）条</a>';
+						var operateHtml= '<a   onclick="record(\''+row.id+'\',1)">&nbsp;记录（'+row.openates.length+'）条</a>';
 						return operateHtml;
                     }
                 },{
@@ -205,9 +204,9 @@
 			        title: "操作",
 			        field: "empty",
                     formatter: function (value, row, index) {
-                    	var operateHtml = '<@shiro.hasPermission name="system:resource:add"><button class="btn btn-primary btn-xs" type="button" onclick="edit(\''+row.id+'\')"><i class="fa fa-edit"></i>&nbsp;修改</button> &nbsp;</@shiro.hasPermission>';
+                    	var operateHtml = '<@shiro.hasPermission name="plan:tache:add"><button class="btn btn-primary btn-xs" type="button" onclick="edit(\''+row.id+'\')"><i class="fa fa-edit"></i>&nbsp;修改</button> &nbsp;</@shiro.hasPermission>';
                     	//operateHtml = operateHtml + '<@shiro.hasPermission name="system:resource:deleteBatch"><button class="btn btn-danger btn-xs" type="button" onclick="del(\''+row.id+'\')"><i class="fa fa-remove"></i>&nbsp;删除</button></@shiro.hasPermission>';
-                        operateHtml = operateHtml + '<@shiro.hasPermission name="system:resource:deleteBatch"><button class="btn btn-info btn-xs" type="button" onclick="record(\''+row.id+'\')">&nbsp;记录</button></@shiro.hasPermission>';
+                        operateHtml = operateHtml + '<button class="btn btn-info btn-xs" type="button" onclick="record(\''+row.id+'\',0)">&nbsp;记录</button>';
                         return operateHtml;
                     }
 			    }]
@@ -227,14 +226,14 @@
        	    	  }
         	    });
         }
-        function record(id){
+        function record(id,type){
             layer.open({
                 type: 2,
                 title: '环节修改',
                 shadeClose: true,
                 shade: false,
-                area: ['1093px', '800px'],
-                content: rootUrl+'/recordlist?tacheId=' + id,
+                area: ['1293px', '800px'],
+                content: rootUrl+'/recordlist?tacheId=' + id+'&type='+type,
                 end: function(index){
                     $('#table_list').bootstrapTable("refresh");
                 }

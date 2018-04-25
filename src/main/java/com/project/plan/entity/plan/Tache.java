@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * Created by Barry on 2018/4/20.
@@ -81,7 +82,7 @@ public class Tache  extends AbstractEntity {
     //归档时间
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     @Column(name="archive_time",length=500)
-    protected String archiveTime;
+    protected Date archiveTime;
 
     //@NotNull(message="责任人不能为空")
 //    @Column(name="user_id",length=500)
@@ -96,5 +97,10 @@ public class Tache  extends AbstractEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "module_id")
     private Module module;
+
+
+    @OneToMany(cascade = { CascadeType.REFRESH, CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REMOVE },mappedBy ="tacheId")
+    //这里配置关系，并且确定关系维护端和被维护端。mappBy表示关系被维护端，只有关系端有权去更新外键。这里还有注意OneToMany默认的加载方式是赖加载。当看到设置关系中最后一个单词是Many，那么该加载默认为懒加载
+    private Set<Openate> openates;
 
 }

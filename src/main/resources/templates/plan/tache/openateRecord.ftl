@@ -40,19 +40,40 @@
                         <h5>环节编辑</h5>
                     </div>
                     <div class="ibox-content">
-                        <form class="form-horizontal m-t" id="frm" method="post" action="${ctx!}/plan/tache/edit">
-                        	<input type="hidden" id="id" name="id" value="${tache.id}">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">备注：</label>
-                                <div class="col-sm-5">
-                                    <textarea style="height: 150px;" id="updateComment" name="updateComment" class="form-control">${tache.updateComment}</textarea>
+
+
+                        <form class="form-horizontal m-t" id="frm" method="post" action="${ctx!}/plan/tache/openateEdit">
+                            <#list openateList as o >
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">${o.user.userName }</label>
+                                    <label class="col-sm-3 control-label">${o.createTime }</label>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-5 col-sm-offset-3">
-                                    <button class="btn btn-primary" type="submit">提交</button>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"></label>
+                                    <p>
+                                        ${o.createComment }
+                                    </p>
                                 </div>
-                            </div>
+                                <hr/><#--hr不知道为什么无效,手动划线【o(*￣︶￣*)o】-->
+                                <label>-----------------------------------------------------------</label>
+                                <label>-----------------------------------------------------------</label>
+                                <label>-----------------------------------------------------------</label>
+                            </#list>
+                            <#if type == 0 >
+                                <input type="hidden" id="tacheId" name="tacheId" value="${tache.id}">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">备注：</label>
+                                    <div class="col-sm-5">
+                                        <textarea style="height: 150px;" id="createComment" name="createComment" class="form-control"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-5 col-sm-offset-3">
+                                        <button class="btn btn-primary" type="submit">提交</button>
+                                    </div>
+                                </div>
+                            </#if>
                         </form>
                     </div>
                 </div>
@@ -78,14 +99,6 @@
     $(document).ready(function () {
 	    $("#frm").validate({
     	    rules: {
-    	    	name: {
-    	        required: true,
-    	        minlength: 4,
-    	    	maxlength: 20
-    	      },
-                status: {
-    	        required: true
-    	      },
     	      	description: {
     	        required: true,
     	        maxlength: 40
@@ -96,7 +109,7 @@
     	    	$.ajax({
    	    		   type: "POST",
    	    		   dataType: "json",
-   	    		   url: "${ctx!}/plan/record/edit",
+   	    		   url: "${ctx!}/plan/tache/openateEdit",
    	    		   data: $(form).serialize(),
    	    		   success: function(msg){
 	   	    			layer.msg(msg.message, {time: 2000},function(){

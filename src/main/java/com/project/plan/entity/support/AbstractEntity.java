@@ -48,10 +48,10 @@ public class AbstractEntity extends BaseEntity{
 	protected Date updateTime;
 	
 	//创建描述
-	@Column(name="create_comment",length=500)
+	@Column(name="create_comment",length=2000)
 	protected String createComment;
 	//修改描述
-	@Column(name="update_comment",length=100)
+	@Column(name="update_comment",length=2000)
 	protected String updateComment;
 	
 	/*

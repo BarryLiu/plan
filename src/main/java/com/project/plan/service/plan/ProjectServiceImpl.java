@@ -31,6 +31,9 @@ public class ProjectServiceImpl extends BaseServiceImpl<Project,Integer> {
             dbProject.setUpdateTime(new Date());
             dbProject.setName(project.getName());
             dbProject.setStatus(project.getStatus());
+//            dbProject.setCreateComment(project.getCreateComment());//创建描述不让修改
+            project.setUpdateComment(project.getUpdateComment());
+
             dbProject.setUpdateTime(new Date());
             super.update(dbProject);
         }else{

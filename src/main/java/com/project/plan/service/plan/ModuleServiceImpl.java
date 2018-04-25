@@ -50,6 +50,10 @@ public class ModuleServiceImpl extends BaseServiceImpl<Module,Integer> {
             dbModule.setStartTime(module.getStartTime());
             dbModule.setWishTime(module.getWishTime());
             dbModule.setStatus(module.getStatus());
+
+//            dbModule.setCreateComment(module.getCreateComment());//创建描述不让修改
+            dbModule.setUpdateComment(module.getUpdateComment());
+
             dbModule.setUpdateTime(new Date());
             super.update(dbModule);
         }else{

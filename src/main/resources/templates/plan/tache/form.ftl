@@ -11,7 +11,7 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
 
-    <link rel="shortcut icon" href="favicon.ico"> 
+    <link rel="shortcut icon" href="favicon.ico">
     <link href="${ctx!}/assets/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="${ctx!}/assets/css/font-awesome.css?v=4.4.0" rel="stylesheet">
     <link href="${ctx!}/assets/css/animate.css" rel="stylesheet">
@@ -45,12 +45,12 @@
                                 <div class="form-group" style="font: 15px solid black;">
                                     <label class="col-sm-3 control-label">项目名：</label>
                                     <div class="col-sm-2">
-                                        <input id="tacheIndex" name="tacheIndex" readonly="readonly" class="form-control" type="text" value="${tache.module.project.name}">
+                                        <input   readonly="readonly" class="form-control" type="text" value="${tache.module.project.name}">
                                     </div>
 
                                     <label class="col-sm-3 control-label">模块名称：</label>
                                     <div class="col-sm-2">
-                                        <input id="tacheIndex" name="tacheIndex" readonly="readonly" class="form-control" type="text" value="${tache.module.name}">
+                                        <input  readonly="readonly" class="form-control" type="text" value="${tache.module.name}">
                                     </div>
                                 </div>
                                 <div class="form-group" style="font-size: 15px;">
@@ -67,8 +67,9 @@
                                 <label class="col-sm-3 control-label">负责人：</label>
                                 <div class="col-sm-2">
                                     <select name="user.id" class="form-control">
+                                        <option value="" >----请选择负责人---</option>
                                     <#list userList as u >
-                                        <option value="${u.id }" <#if u.id == (tache.user.id ) > selected="selected"</#if>>${u.nikeName }</option>
+                                        <option value="${u.id }" <#if u.id == (tache.user.id ) > selected="selected"</#if>>${u.userName }</option>
                                     </#list>
                                     </select>
                                 </div>
@@ -121,11 +122,13 @@
                                     <textarea style="height: 150px;" id="updateComment" name="updateComment" class="form-control">${tache.updateComment}</textarea>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="col-sm-5 col-sm-offset-3">
-                                    <button class="btn btn-primary" type="submit">提交</button>
+                            <@shiro.hasPermission name="plan:tache:edit">
+                                <div class="form-group">
+                                    <div class="col-sm-5 col-sm-offset-3">
+                                        <button class="btn btn-primary" type="submit">提交</button>
+                                    </div>
                                 </div>
-                            </div>
+                            </@shiro.hasPermission>
                         </form>
                     </div>
                 </div>
@@ -177,10 +180,10 @@
                 status: {
     	        required: true
     	      },
-    	      	description: {
-    	        required: true,
-    	        maxlength: 40
-    	      }
+              updateComment: {
+              required: false,
+              maxlength: 2000
+              }
     	    },
     	    messages: {},
     	    submitHandler:function(form){
@@ -192,11 +195,11 @@
    	    		   success: function(msg){
 	   	    			layer.msg(msg.message, {time: 2000},function(){
 	   						var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-	   						parent.layer.close(index); 
+	   						parent.layer.close(index);
 	   					});
    	    		   }
    	    		});
-            } 
+            }
     	});
     });
     </script>

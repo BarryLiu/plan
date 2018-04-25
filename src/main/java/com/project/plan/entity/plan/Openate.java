@@ -60,23 +60,23 @@ public class Openate extends AbstractEntity {
     @Transient
     private User user;
 
-    //创建描述
-    @Column(name="module_id",length=10,nullable=false)
-    @NotNull(message="模块id不能为空")
-    protected Integer moduleId;
+    //创建环节
+    @Column(name="tache_id",length=10,nullable=false)
+    @NotNull(message="环节id不能为空")
+    protected Integer tacheId;
 
 
 //    //模块
 //    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "module_id")
-//    private Module module;
-
+//    @JoinColumn(name = "tache_id")
+//    private Tache tache;
     public Openate(Openate log,
                    User user) {
         this.user = user;
         if(log!=null) {
             this.id = log.getId();
             this.createTime = log.getCreateTime();
+            this.updateTime = log.getUpdateTime();
 
             this.status = log.getStatus();
             this.userId = log.getUserId();
@@ -84,6 +84,7 @@ public class Openate extends AbstractEntity {
             this.url = log.getUrl();
             this.duration = log.getDuration();
             this.createComment = log.getCreateComment();
+            this.tacheId = log.getTacheId();
         }
     }
 

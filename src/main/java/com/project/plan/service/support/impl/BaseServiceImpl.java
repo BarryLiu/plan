@@ -4,11 +4,13 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import com.project.plan.dao.support.IBaseDao;
 import com.project.plan.entity.plan.Module;
 import com.project.plan.entity.plan.Project;
+import com.project.plan.entity.plan.Tache;
 import com.project.plan.entity.support.BaseEntity;
 import com.project.plan.service.support.IBaseService;
 
