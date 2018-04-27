@@ -22,6 +22,11 @@ import java.util.Date;
 @Table(name = "t_module")
 public class Module extends AbstractEntity{
 
+    public static final int STAT_DEFAULT = 0;//正常执行中
+    public static final int STAT_UNUSUAL = 1;//异常停止
+    public static final int STAT_SUCCESS = 2;//已上线
+
+
     @NotNull(message="模块名称不能为空")
     @Column(name="name",length=500)
     private String name;

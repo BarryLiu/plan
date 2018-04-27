@@ -6,11 +6,11 @@ import com.project.plan.entity.support.AbstractEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Barry on 2018/4/20.
@@ -24,9 +24,8 @@ import java.util.Set;
 @Entity
 @Table(name = "t_tache")
 public class Tache  extends AbstractEntity {
-    //各个环节名称
-    public static final String[] TACHE_INDEX_NAMES=new String[]{"线框图评审","原型交互稿评审","原型交互稿归档","UI效果图","软件概要设计归档","软件Case归档"
-            ,"Server借口提供","UI / 产品检查","测试","产品验收","上线评审"};
+
+
 
     public static final int STAT_NEW = 0;//新创建
     public static final int STAT_DEBUG = 1;//执行中
@@ -98,9 +97,17 @@ public class Tache  extends AbstractEntity {
     @JoinColumn(name = "module_id")
     private Module module;
 
+//    @NotNull(message="模块id不能为空")
+//    @Column(name="module_id",nullable = false)
+//    private Integer moduleId ;
+//    @NonNull
+//    @Transient
+//    private Module module;//模块,jpa到数据库没有column
 
     @OneToMany(cascade = { CascadeType.REFRESH, CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REMOVE },mappedBy ="tacheId")
     //这里配置关系，并且确定关系维护端和被维护端。mappBy表示关系被维护端，只有关系端有权去更新外键。这里还有注意OneToMany默认的加载方式是赖加载。当看到设置关系中最后一个单词是Many，那么该加载默认为懒加载
     private Set<Openate> openates;
+
+
 
 }

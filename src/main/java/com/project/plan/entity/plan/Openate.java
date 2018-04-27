@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "t_openate_log")
+@Table(name = "t_openate")
 @EqualsAndHashCode(callSuper = false)
 public class Openate extends AbstractEntity {
     public static final int STATUS_DEBUG = 1;

@@ -11,7 +11,7 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
 
-    <link rel="shortcut icon" href="favicon.ico"> 
+    <link rel="shortcut icon" href="/favicon.ico">
     <link href="${ctx!}/assets/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="${ctx!}/assets/css/font-awesome.css?v=4.4.0" rel="stylesheet">
 
@@ -192,7 +192,7 @@
         	      title: '用户修改',
         	      shadeClose: true,
         	      shade: false,
-        	      area: ['893px', '600px'],
+				  area: ['993px', '800px'],
         	      content: '${ctx!}/admin/user/edit/' + id,
         	      end: function(index){
         	    	  $('#table_list').bootstrapTable("refresh");
@@ -205,7 +205,7 @@
         	      title: '用户添加',
         	      shadeClose: true,
         	      shade: false,
-        	      area: ['893px', '600px'],
+                  area: ['993px', '800px'],
         	      content: '${ctx!}/admin/user/add',
         	      end: function(index){
         	    	  $('#table_list').bootstrapTable("refresh");

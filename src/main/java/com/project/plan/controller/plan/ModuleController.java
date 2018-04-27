@@ -10,7 +10,6 @@ import com.project.plan.service.plan.ProjectServiceImpl;
 import com.project.plan.service.specification.SimpleSpecificationBuilder;
 import com.project.plan.service.specification.SpecificationOperator;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Barry on 2018/4/20.
@@ -93,11 +93,12 @@ public class ModuleController extends BaseController {
     @ResponseBody
     public JsonResult delete(@PathVariable Integer id,ModelMap map) {
         try {
-            moduleService.delete(id);
+            moduleService.deleteModule(id);
         } catch (Exception e) {
             e.printStackTrace();
             return JsonResult.failure(e.getMessage());
         }
         return JsonResult.success();
     }
+
 }

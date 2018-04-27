@@ -11,7 +11,7 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
 
-    <link rel="shortcut icon" href="favicon.ico"> 
+    <link rel="shortcut icon" href="/favicon.ico">
     <link href="${ctx!}/assets/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="${ctx!}/assets/css/font-awesome.css?v=4.4.0" rel="stylesheet">
     <link href="${ctx!}/assets/css/animate.css" rel="stylesheet">
@@ -25,10 +25,11 @@
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>jQuery Validate 简介</h5>
+                        <h5>功能简介</h5>
                     </div>
                     <div class="ibox-content">
-                        <p>jquery.validate.js 是一款优秀的jQuery表单验证插件。它具有如下特点：</p>
+                        <p>系统登录用户是由员工登录系统后自动添加,这里不需要添加,这里添加后默认登录密码是“111111”</p>
+                        <#--因为是用的员工系统ldap登录系统,不需要通过此密码登录-->
                     </div>
                 </div>
             </div>
@@ -69,6 +70,12 @@
                                     <input id="birthday" name="birthday" readonly="readonly" class="laydate-icon form-control layer-date" value="${user.birthday}">
                                 </div>
                             </div>
+                            <#--<div class="form-group">
+                                <label class="col-sm-3 control-label">密码：</label>
+                                <div class="col-sm-8">
+                                    <input id="password" name="password" class="form-control" value="">
+                                </div>
+                            </div>-->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">电话：</label>
                                 <div class="col-sm-8">
@@ -135,17 +142,17 @@
 	        elem: '#birthday', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
 	        event: 'focus' //响应事件。如果没有传入event，则按照默认的click
 	    });
-	  	
+
 	    $("#frm").validate({
     	    rules: {
     	    	userName: {
     	        required: true,
     	        minlength: 4,
-    	    	maxlength: 10
+    	    	maxlength: 20
     	      },
     	      	nickName: {
     	        required: true,
-    	        minlength: 4,
+    	        minlength: 2,
     	    	maxlength: 10
     	      },
     	      	sex: {
@@ -184,11 +191,11 @@
    	    		   success: function(msg){
 	   	    			layer.msg(msg.message, {time: 2000},function(){
 	   						var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-	   						parent.layer.close(index); 
+	   						parent.layer.close(index);
 	   					});
    	    		   }
    	    		});
-            } 
+            }
     	});
     });
     </script>

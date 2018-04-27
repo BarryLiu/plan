@@ -11,7 +11,7 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
 
-    <link rel="shortcut icon" href="favicon.ico"> 
+    <link rel="shortcut icon" href="/favicon.ico">
     <link href="${ctx!}/assets/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="${ctx!}/assets/css/font-awesome.css?v=4.4.0" rel="stylesheet">
 
@@ -121,7 +121,12 @@
                     field: "project.name"
                 },{
 			        title: "模块名称",
-			        field: "name"
+			        field: "name",
+                    formatter: function (value, row, index) {
+
+						var detailUrl = "${ctx!}/plan/tache/oneModuleDetail?moduleId="+row.id;
+						return '<a href="'+detailUrl+'">'+value+'</a>';
+                    }
 			    },{
                     title: "启动时间",
                     field: "startTime",
@@ -136,9 +141,11 @@
 			        field: "status",
                     formatter: function (value, row, index) {
                     	if(value == 0)
-                    		return '<span class="label label-info">显示</span>';
+                    		return '<span class="label label-info">正常</span>';
                     	else if(value == 1)
-                    		return '<span class="label label-danger">隐藏</span>';
+                    		return '<span class="label label-danger">异常</span>';
+                        else if(value == 2)
+                            return '<span class="label label-danger">已上线</span>';
                     }
 			    },{
 			        title: "创建时间",
@@ -166,7 +173,7 @@
         	      title: '资源修改',
         	      shadeClose: true,
         	      shade: false,
-        	      area: ['1293px', '900px'],
+        	      area: ['1293px', '990px'],
         	      content: rootUrl+'/edit/' + id,
         	      end: function(index){
         	    	  $('#table_list').bootstrapTable("refresh");
@@ -179,7 +186,7 @@
         	      title: '资源添加',
         	      shadeClose: true,
         	      shade: false,
-        	      area: ['893px', '600px'],
+				  area: ['1293px', '990px'],
         	      content: rootUrl+'/add',
         	      end: function(index){
         	    	  $('#table_list').bootstrapTable("refresh");

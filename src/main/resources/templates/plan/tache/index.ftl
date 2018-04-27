@@ -7,11 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <title>模块列表</title>
+    <title>环节列表</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
 
-    <link rel="shortcut icon" href="favicon.ico"> 
+    <link rel="shortcut icon" href="/favicon.ico">
     <link href="${ctx!}/assets/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="${ctx!}/assets/css/font-awesome.css?v=4.4.0" rel="stylesheet">
 
@@ -28,7 +28,7 @@
             <div class="col-sm-12">
                 <div class="ibox ">
                     <div class="ibox-title">
-                        <h5>模块管理</h5>
+                        <h5>环节管理</h5>
                     </div>
                     <div class="ibox-content">
                         <p>
@@ -84,7 +84,7 @@
 			    //必须设置，不然request.getParameter获取不到请求参数
 			    contentType: "application/x-www-form-urlencoded",
 			    //获取数据的Servlet地址  
-			    url: rootUrl+"/list",
+			    url: rootUrl+"/list?searchTypeName=${searchTypeName}",
 			    //表格显示条纹  
 			    striped: true,
 			    //启动分页  

@@ -11,7 +11,7 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
 
-    <link rel="shortcut icon" href="favicon.ico"> 
+    <link rel="shortcut icon" href="/favicon.ico">
     <link href="${ctx!}/assets/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="${ctx!}/assets/css/font-awesome.css?v=4.4.0" rel="stylesheet">
 
@@ -182,7 +182,7 @@
         	      title: '资源修改',
         	      shadeClose: true,
         	      shade: false,
-        	      area: ['893px', '600px'],
+                  area: ['1000px', '900px'],
         	      content: '${ctx!}/admin/resource/edit/' + id,
         	      end: function(index){
         	    	  $('#table_list').bootstrapTable("refresh");
@@ -195,7 +195,7 @@
         	      title: '资源添加',
         	      shadeClose: true,
         	      shade: false,
-        	      area: ['893px', '600px'],
+				  area: ['1000px', '900px'],
         	      content: '${ctx!}/admin/resource/add',
         	      end: function(index){
         	    	  $('#table_list').bootstrapTable("refresh");

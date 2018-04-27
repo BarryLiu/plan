@@ -1,9 +1,12 @@
 package com.project.plan.service.plan;
 
 import com.project.plan.dao.plan.IModuleDao;
+import com.project.plan.dao.plan.IOpenateDao;
 import com.project.plan.dao.plan.IProjectDao;
+import com.project.plan.dao.plan.ITacheDao;
 import com.project.plan.dao.support.IBaseDao;
 import com.project.plan.entity.plan.Module;
+import com.project.plan.entity.plan.Openate;
 import com.project.plan.entity.plan.Project;
 import com.project.plan.entity.plan.Tache;
 import com.project.plan.service.support.impl.BaseServiceImpl;
@@ -13,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,9 +29,12 @@ import java.util.List;
 public class ModuleServiceImpl extends BaseServiceImpl<Module,Integer> {
     @Autowired
     private IModuleDao moduleDao;
-
     @Autowired
     private IProjectDao projectDao;
+    @Autowired
+    private IOpenateDao openateDao;
+    @Autowired
+    private ITacheDao tacheDao;
 
     @Autowired
     private  TacheServiceImpl tacheService;
@@ -78,4 +85,28 @@ public class ModuleServiceImpl extends BaseServiceImpl<Module,Integer> {
 //        return moduleDao.selectWithProject();
         //return super.findAll(moduleSpecification,pageRequest);
     }
+
+    /**
+     * 删除模块,
+     * 1.删除模块下面的环节的操作记录 t_openate
+     * 2.删除模块下面的环节 t_tache
+     * 3.先删除模块,t_module
+     * @param id
+     */
+    @Transactional
+    public void deleteModule(Integer id) {
+        Module m = moduleDao.findOne(id);
+        List<Tache> taches = tacheDao.findByModuleId(m.getId());
+        Integer[] tacheIds = new Integer[taches.size()];
+        for(int i=0;i<taches.size();i++){
+            tacheIds[i] = taches.get(i).getId();
+        }
+        if(tacheIds!=null&&tacheIds.length>0){
+            openateDao.deleteByTacheIds(tacheIds);
+        }
+        tacheDao.deleteByModuleId(m.getId());
+        super.delete(m.getId()); //moduleDao.delete(id); //用moduleDao.delete(id) 删除不成功,因为 module 和tache是在同一个事务里面删除,里面出事务时候是一起提交的,用supper.delete就能删除,这相当于调用了service的内部方法,所以不会走事务
+        System.out.println("delete successful !!! ");
+    }
+
 }

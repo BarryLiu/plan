@@ -2,10 +2,7 @@ package com.project.plan.service.specification;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 
 import java.util.List;
 
@@ -66,7 +63,15 @@ public class SimpleSpecification<T> implements Specification<T> {
             return criteriaBuilder.isNotNull(root.get(op.getKey()));
         } else if(SpecificationOperator.Operator.notEqual.name().equalsIgnoreCase(op.getOper())) {
             return criteriaBuilder.notEqual(root.get(op.getKey()),op.getValue());
+        } else if(SpecificationOperator.Join.and.name().equalsIgnoreCase(op.getOper())){
+            System.out.println("-=======join ========---");
+            Join<Object, Object> join = root.join("module", JoinType.LEFT);
+//            return criteriaBuilder.equals(join.get(""),op.getValue());
+            return null;
         }
+//        root.join("module", JoinType.LEFT);
+//        criteriaBuilder.equals()
+//        criteriaBuilder.and
         return null;
     }
 

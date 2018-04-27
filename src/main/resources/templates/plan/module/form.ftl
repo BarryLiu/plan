@@ -11,7 +11,7 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
 
-    <link rel="shortcut icon" href="favicon.ico"> 
+    <link rel="shortcut icon" href="/favicon.ico">
     <link href="${ctx!}/assets/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="${ctx!}/assets/css/font-awesome.css?v=4.4.0" rel="stylesheet">
     <link href="${ctx!}/assets/css/animate.css" rel="stylesheet">
@@ -25,10 +25,30 @@
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>jQuery Validate 简介</h5>
+                        <h5>功能简介</h5>
                     </div>
                     <div class="ibox-content">
-                        <p>jquery.validate.js 是一款优秀的jQuery表单验证插件。它具有如下特点：</p>
+                        <p>环节描述：</p>
+                        开发系统某一功能模块会经历<b>市场需求->产品调研->产品设计->软件开发->软件测试-功能上线推向市场</b>等环节
+                        <b>添加模块会自动为其添加这一模块需要从设计到上线需要经过的环节。</b><br/>
+                        环节:&nbsp;&nbsp;&nbsp;&nbsp;
+                        一:线框图评审
+                        二:原型交互稿评审
+                        三:原型交互稿归档
+                        四:UI效果图
+
+                        五:软件概要设计归档
+                        六:软件Case归档
+                        七:Server借口提供
+                        八:软件首版交付
+                        九:UI / 产品检查
+
+                        十:测试
+                        十一:产品验收
+                        十二:上线评审
+                        <br/>
+                        各个环节分配为具体产品,开发,测试操作,功能环节面板上只统计正常的模块下面的环节数量,已上线或异常不统计
+
                     </div>
                 </div>
             </div>
@@ -78,6 +98,7 @@
                                 	<select name="status" class="form-control">
                                 		<option value="0" <#if module.status == 0>selected="selected"</#if>>正常</option>
                                 		<option value="1" <#if module.status == 1>selected="selected"</#if>>异常</option>
+                                        <option value="2" <#if module.status == 2>selected="selected"</#if>>已上线</option>
                                 	</select>
                                 </div>
                             </div>
@@ -140,6 +161,16 @@
     	        minlength: 4,
     	    	maxlength: 20
     	      },
+                startTime: {
+                required: true,
+                minlength: 4,
+                maxlength: 20
+              },
+                wishTime: {
+                required: true,
+                minlength: 4,
+                maxlength: 20
+              },
                 status: {
     	        required: true
     	      },

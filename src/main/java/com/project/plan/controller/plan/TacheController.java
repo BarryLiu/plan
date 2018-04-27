@@ -21,12 +21,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
+import javax.persistence.criteria.*;
+import java.util.*;
 
 /**
  * Created by Barry on 2018/4/20.
@@ -49,19 +50,89 @@ public class TacheController extends BaseController {
 
 
     @RequestMapping("/index")
-    public String index() {
+    public String index(ModelMap map,String searchTypeName) {
+//        Map<String,Long> typeMap = tacheService.selectTypeMap();
+//        map.put("typeMap",typeMap);
+        map.put("searchTypeName",searchTypeName);//用来做进这个页面后 ajax查询 list 数据的条件
         return "plan/tache/index";
     }
 
     @RequestMapping("/list")
     @ResponseBody
-    public Page<Tache> list() {
-        SimpleSpecificationBuilder<Tache> builder = new SimpleSpecificationBuilder<Tache>();
+    public Page<Tache> list(final Integer moduleId, final String searchTypeName) {
         String searchText = request.getParameter("searchText");
-        if(StringUtils.isNotBlank(searchText)){
-            builder.add("name", SpecificationOperator.Operator.likeAll.name(), searchText);
-        }
-        Page<Tache> page = tacheService.findAll(builder.generateSpecification(),getPageRequest());
+
+//        SimpleSpecificationBuilder<Tache> builder = new SimpleSpecificationBuilder<Tache>();
+//        if(StringUtils.isNotBlank(searchText)){
+//            builder.add("name", SpecificationOperator.Operator.likeAll.name(), searchText);
+////            builder.add("name", SpecificationOperator.Join.values(), searchText);
+//        }
+//        if(moduleId != null&& moduleId > 0){//只查询这个module下的 tache
+//            builder.add("moduleId",SpecificationOperator.Join.and.name(),moduleId);
+//        }
+//        Page<Tache> page = tacheService.findAll(builder.generateSpecification(),getPageRequest());
+
+        final String name = searchText;
+        Page<Tache> page = tacheService.findAll(new Specification<Tache>() {
+            @Override
+            public Predicate toPredicate(Root<Tache> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                List<Predicate> whereList = new ArrayList<>();
+
+                if(moduleId!=null&&moduleId>0){
+                    Join<Module, Tache> join = root.join("module", JoinType.INNER);
+                    Path<Integer> id = join.get("id");
+                    Predicate p = cb.equal(id, moduleId);
+                    whereList.add(p);
+                }
+                if(!TextUtil.isNullOrEmpty(name)){
+                    Predicate p = cb.like(root.get("name").as(String.class), "%"+name+"%");
+                    whereList.add(p);
+                }
+                if(!TextUtil.isNullOrEmpty(searchTypeName)){//只有从模块详情查询有多少个环节才会进来
+//                    Constats.TACHE_TYPE_NAMES.length;
+//                    Integer[] statusDoing = new Integer[]{Tache.STAT_DEBUG,Tache.STAT_TESTING};//正在执行
+//                    Integer[] statusSuccess = new Integer[]{Tache.STAT_SUCCESS};//正在已经归档
+                    if("全部".equalsIgnoreCase(searchTypeName)){
+                        System.out.println("查询全部------");
+                    }else if(Constats.TACHE_TYPE_NAMES[6].equals(searchTypeName)){
+                        Predicate p = cb.equal(root.get("status"), Tache.STAT_SUCCESS);
+                        whereList.add(p);
+
+                        appenWhere(root, cb, whereList);
+                    }else{ //正在执行
+                        List<Predicate> orPredicates = new ArrayList();
+                        Predicate p1 = cb.equal(root.get("status"), Tache.STAT_DEBUG);
+                        orPredicates.add(cb.or(p1));
+                        Predicate p2 = cb.equal((Path)root.get("status"), Tache.STAT_TESTING);
+                        orPredicates.add(cb.or(p2));
+
+                        Predicate orStatus = cb.or(p1,p2);
+                        whereList.add(orStatus);
+
+                        appenWhere(root, cb, whereList);
+                    }
+
+
+
+
+
+                }
+                return query.where(whereList.toArray(new Predicate[whereList.size()])).getRestriction();
+            }
+            /**追加筛选条件*/
+            private void appenWhere(Root<Tache> root, CriteriaBuilder cb, List<Predicate> whereList) {
+                Integer[] indexs = Constats.getTacheIndexByType(searchTypeName);
+                List<Predicate> orPredicates = new ArrayList();
+                for(int i =0;i<indexs.length;i++){
+                    Predicate p1 = cb.equal(root.get("tacheIndex"), indexs[i]+"");
+                    orPredicates.add(cb.or(p1));
+                }
+                if(orPredicates.size()>0){
+                    Predicate orIndex = cb.or(orPredicates.toArray(new Predicate[orPredicates.size()]));
+                    whereList.add(orIndex);
+                }
+            }
+        }, getPageRequest());
 
         return page;
     }
@@ -141,6 +212,12 @@ public class TacheController extends BaseController {
         }
         return JsonResult.success();
     }
-
-
+    @RequestMapping(value= {"/oneModuleDetail"})
+    public String oneModuleDetail(ModelMap map ,Integer moduleId){
+        Module module = moduleService.find(moduleId);
+        Map<String,Long> typeMap = tacheService.selectTypeMap();
+        map.put("typeMap",typeMap);
+        map.put("module",module);
+        return "plan/module/moduleDetail";
+    }
 }

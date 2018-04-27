@@ -15,23 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class IndexController extends BaseController {
-	
-	@Autowired
-	private IUserService userService;
-
-	@Autowired
-	private PlanServiceImpl planService;
-
 
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
+
+	/**前index页面*/
 	@RequestMapping(value={"/","/index"})
 	public String index(){
-		List<User> users = userService.findAll();
-		logger.debug(users.toString());
-		System.out.println("planService\t"+planService);
 
-		return "index";
+		return redirect("/plan/module/index");
+		//return "index";
 	}
 }

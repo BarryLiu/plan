@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.project.plan.common.Constats;
 import com.project.plan.common.utils.MD5Utils;
 import com.project.plan.dao.IUserDao;
 import com.project.plan.dao.support.IBaseDao;
@@ -57,12 +58,15 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements I
 			dbUser.setLocked(user.getLocked());
 			dbUser.setDescription(user.getDescription());
 			dbUser.setUpdateTime(new Date());
+			if(user.getPassword()!=null&&!"".equalsIgnoreCase(user.getPassword())){//输入的新密码有效就让其修改密码
+				dbUser.setPassword(user.getPassword());
+			}
 			update(dbUser);
 		}else{
 			user.setCreateTime(new Date());
 			user.setUpdateTime(new Date());
 			user.setDeleteStatus(0);
-			user.setPassword(MD5Utils.md5("111111"));
+			user.setPassword(MD5Utils.md5(Constats.DEFAULT_USER_ADD_PWD));
 			save(user);
 		}
 	}
