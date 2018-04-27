@@ -2,17 +2,7 @@ package com.project.plan.entity;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
@@ -27,7 +17,7 @@ import com.project.plan.entity.support.BaseEntity;
  * @since 2016-12-28
  */
 @Entity
-@Table(name = "tb_user")
+@Table(name = "tb_user",uniqueConstraints= {@UniqueConstraint(columnNames= {"userName","password"})})//添加账号密码唯一联合约束
 public class User extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;

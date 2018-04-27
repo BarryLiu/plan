@@ -24,6 +24,7 @@ public class CommonIntercepter implements HandlerInterceptor {
 			HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
 			request.setAttribute("ctx", request.getContextPath());
+		
 
 		StringBuffer requestUrl = request.getRequestURL();
 		String remoteAddr = request.getRemoteAddr();
