@@ -108,5 +108,4 @@ public class ModuleServiceImpl extends BaseServiceImpl<Module,Integer> {
         super.delete(m.getId()); //moduleDao.delete(id); //用moduleDao.delete(id) 删除不成功,因为 module 和tache是在同一个事务里面删除,里面出事务时候是一起提交的,用supper.delete就能删除,这相当于调用了service的内部方法,所以不会走事务
         System.out.println("delete successful !!! ");
     }
-
 }

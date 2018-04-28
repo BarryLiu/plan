@@ -72,10 +72,15 @@
                                     <a class="J_menuItem" href="${ctx!}/admin/role/index">角色管理</a>
                                 </li>
                              </@shiro.hasPermission>
-                             <@shiro.hasPermission name="system:resource:index">
+                             <@shiro.hasPermission name="system:druid:index">
                                 <li>
-                                    <a class="J_menuItem" href="${ctx!}/admin/resource/index">资源管理</a>
+                                    <a class="J_menuItem" href="${ctx!}/druid">druid监控</a>
                                 </li>
+                             </@shiro.hasPermission>
+                             <@shiro.hasPermission name="system:swagger:index">
+                                 <li>
+                                     <a class="J_menuItem" href="${ctx!}/swagger">swagger监控</a>
+                                 </li>
                              </@shiro.hasPermission>
                             </ul>
                         </li>

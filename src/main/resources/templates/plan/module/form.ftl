@@ -75,7 +75,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">模块名称：</label>
+                                <label class="col-sm-3 control-label" >模块名称：</label>
                                 <div class="col-sm-3">
                                     <input id="name" name="name" class="form-control" type="text" value="${module.name}">
                                 </div>

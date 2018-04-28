@@ -22,4 +22,7 @@ public interface ITacheDao extends IBaseDao<Tache, Integer> {
 
     @Query("select count(1) from Tache t ,Module m  where t.module.id = m.id and m.status ="+ Module.STAT_DEFAULT+"  and  t.status in (:status) and t.tacheIndex in (:tacheIndexs)")
     long countByIndex(@Param("status") Integer[] status,@Param("tacheIndexs") Integer[] tacheIndexs);
+
+    @Query("select t from Tache t left join t.user  where t.module.id = :moduleId ")
+    List<Tache> findAllByModuleIdWithUser(@Param("moduleId") Integer moduleId);
 }

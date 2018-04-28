@@ -32,7 +32,6 @@ public class Tache  extends AbstractEntity {
     public static final int STAT_TESTING = 2;//测试中
     public static final int STAT_SUCCESS = 3;//归档完成
 
-
     public static final String TACHE_STATUS(int stat){
         String statStr = null;
         switch (stat){
@@ -108,6 +107,27 @@ public class Tache  extends AbstractEntity {
     //这里配置关系，并且确定关系维护端和被维护端。mappBy表示关系被维护端，只有关系端有权去更新外键。这里还有注意OneToMany默认的加载方式是赖加载。当看到设置关系中最后一个单词是Many，那么该加载默认为懒加载
     private Set<Openate> openates;
 
+    public Tache(Tache tache,User user){
+        this(tache,null,user);
+    }
 
+    public Tache(Tache tache,Module module,User user){
+        this.user = user;
+        this.module = module;
+        if(tache!=null) {
+            this.id = tache.getId();
+            this.createTime = tache.getCreateTime();
+            this.updateTime = tache.getUpdateTime();
+
+            this.name = tache.getName();
+            this.status = tache.getStatus();
+            this.tacheIndex = tache.getTacheIndex();
+            this.planBeginTime = tache.getPlanBeginTime();
+            this.planEndTime = tache.getPlanEndTime();
+            this.realBeginTime = tache.getRealBeginTime();
+            this.realEndTime = tache.getRealEndTime();
+            this.archiveTime = tache.getArchiveTime();
+        }
+    }
 
 }

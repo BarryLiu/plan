@@ -69,7 +69,7 @@
                                     <select name="user.id" class="form-control">
                                         <option value="" >----请选择负责人---</option>
                                     <#list userList as u >
-                                        <option value="${u.id }" <#if u.id == (tache.user.id ) > selected="selected"</#if>>${u.userName }</option>
+                                        <option value="${u.id }" <#if u.id == (tache.user.id ) > selected="selected"</#if>>${u.nickName }</option>
                                     </#list>
                                     </select>
                                 </div>

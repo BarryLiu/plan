@@ -128,6 +128,20 @@
 						return '<a href="'+detailUrl+'">'+value+'</a>';
                     }
 			    },{
+                    title: "未归档",
+                    field: "createCommentStr",
+                    sortable: false,
+                    formatter: function (value, row, index) {
+						return row.createComment;
+                    }
+                },{
+                    title: "已归档",
+                    field: "updateCommentStr",
+                    sortable: false,
+                    formatter: function (value, row, index) {
+                        return row.updateComment;
+                    }
+                },{
                     title: "启动时间",
                     field: "startTime",
                     sortable: true
@@ -147,7 +161,8 @@
                         else if(value == 2)
                             return '<span class="label label-danger">已上线</span>';
                     }
-			    },{
+			    }
+					/*,{
 			        title: "创建时间",
 			        field: "createTime",
 			        sortable: true
@@ -155,7 +170,7 @@
 			        title: "更新时间",
 			        field: "updateTime",
 			        sortable: true
-			    },{
+			    }*/,{
 			        title: "操作",
 			        field: "empty",
                     formatter: function (value, row, index) {

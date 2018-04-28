@@ -11,12 +11,17 @@ import com.project.plan.entity.User;
 import com.project.plan.entity.plan.Module;
 import com.project.plan.entity.plan.Openate;
 import com.project.plan.entity.plan.Tache;
+import com.project.plan.service.specification.SimpleSpecification;
 import com.project.plan.service.support.impl.BaseServiceImpl;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -242,5 +247,26 @@ public class TacheServiceImpl extends BaseServiceImpl<Tache,Integer> {
         typeMap.put(Constats.TACHE_TYPE_NAMES[6],count7);
 
         return typeMap;
+    }
+
+    public List<Tache> findAllByModuleIdWithUser(Integer moduleId) {
+
+        return tacheDao.findAllByModuleIdWithUser(moduleId);
+
+//        PageRequest pageRequest = new PageRequest(0, 100);//一个模块下面不会有100个环节的,查询出来的数据大于100算我错
+//        Page<Tache> page = tacheDao.findAll(new Specification<Tache>() {
+//            @Override
+//            public Predicate toPredicate(Root<Tache> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+//                List<Predicate> whereList = new ArrayList<>();
+//                if (moduleId != null && moduleId > 0) {
+//                    Join<Module, Tache> join = root.join("module", JoinType.INNER);
+//                    Path<Integer> id = join.get("id");
+//                    Predicate p = cb.equal(id, moduleId);
+//                    whereList.add(p);
+//                }
+//                return query.where(whereList.toArray(new Predicate[whereList.size()])).getRestriction();
+//            }
+//        },pageRequest);
+//       return page.getContent();
     }
 }

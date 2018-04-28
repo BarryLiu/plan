@@ -60,4 +60,15 @@ public class Module extends AbstractEntity{
     @JoinColumn(name = "project_id")
     private Project project;
 
+
+    //创建描述字符串,由计算出的未归档描述带数据到页面展示
+    @NonNull
+    @Transient
+    protected String createCommentStr;
+    //修改描述字符串,由计算出的已经归档描述带数据到页面展示
+    @NonNull
+    @Transient
+    protected String updateCommentStr;
+
+
 }

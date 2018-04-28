@@ -4,9 +4,11 @@ import com.project.plan.common.JsonResult;
 import com.project.plan.controller.BaseController;
 import com.project.plan.entity.plan.Module;
 import com.project.plan.entity.plan.Project;
+import com.project.plan.entity.plan.Tache;
 import com.project.plan.service.plan.ModuleServiceImpl;
 import com.project.plan.service.plan.PlanServiceImpl;
 import com.project.plan.service.plan.ProjectServiceImpl;
+import com.project.plan.service.plan.TacheServiceImpl;
 import com.project.plan.service.specification.SimpleSpecificationBuilder;
 import com.project.plan.service.specification.SpecificationOperator;
 import org.apache.commons.lang3.StringUtils;
@@ -34,6 +36,8 @@ public class ModuleController extends BaseController {
     private ModuleServiceImpl moduleService;
     @Autowired
     private ProjectServiceImpl projectService;
+    @Autowired
+    private TacheServiceImpl tacheService;
 
     @RequestMapping("/index")
     public String index() {
@@ -52,9 +56,58 @@ public class ModuleController extends BaseController {
 //      builder
 
         Page<Module> page = moduleService.findAllWithProject(builder.generateSpecification(),getPageRequest());
+        for(Module m: page.getContent()){//查询一个模块下面的描述,具体哪些人哪些功能已经上线，哪些功能没有还做,放到createComments 里面,
+            List<Tache> taches = tacheService.findAllByModuleIdWithUser(m.getId());
+
+            String createComments = findModuleComments(taches,Tache.STAT_NEW);       //未归档了环节描述
+            String updateComments = findModuleComments(taches,Tache.STAT_SUCCESS);   //已经归档了环节描述
+
+            m.setCreateCommentStr(createComments);
+            m.setUpdateCommentStr(updateComments);
+        }
         return page;
     }
+    /**
+     * 查询这个项目下面的描述
+     */
+    public String findModuleComments(List<Tache> taches,int status) {
 
+        StringBuffer sb = new StringBuffer();
+        for (int i =0 ; i< taches.size() ; i++) {
+            Tache t = taches.get(i);
+
+            String statusStr = Tache.TACHE_STATUS(t.getStatus());
+            String colorStr = null;
+            switch (t.getStatus()){
+                case Tache.STAT_NEW:colorStr="#23c6c8";break;//蓝色
+                case Tache.STAT_DEBUG:colorStr="#7266ba";break;//橙色
+                case Tache.STAT_TESTING:colorStr="#27c24c";break;//绿色
+                case Tache.STAT_SUCCESS:colorStr="green";break; //
+                default: colorStr="red";break;
+            }
+            //区分是要拿 已经完成了的描述还是没有完成的描述 ,
+            if(Tache.STAT_SUCCESS==status && status != t.getStatus()){//拿已经归档的描述，但是该环节没归档 ,continue
+                continue;
+            }else if(Tache.STAT_SUCCESS != status && Tache.STAT_SUCCESS == t.getStatus()){ //拿没有归档的描述，但是该环节已经归档 ,continue
+                continue;
+            }
+            String comment = "“ <label class='control-label' style='color:green; '>"+t.getName()+"”</label>；" ;
+            if(Tache.STAT_SUCCESS != status){//归档只有一种状态,已经归档了的就不用显示状态了吧
+                comment += " 状态为“<label class='control-label' style='color:"+colorStr+"; '>"+statusStr+" ”</label>,";
+            }
+
+            if(t.getUser()!=null){
+                comment += "由“<label class='control-label' style='color:green; '>"+t.getUser().getNickName()+"</label>”处理。";
+            }
+            if(i%2==0){
+                comment += " </br>'";
+            }else {
+                comment += " &nbsp;&nbsp;&nbsp;'";
+            }
+            sb.append(comment);
+        }
+        return sb.toString();
+    }
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String add(ModelMap map) {
