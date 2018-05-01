@@ -11,18 +11,14 @@ import com.project.plan.entity.User;
 import com.project.plan.entity.plan.Module;
 import com.project.plan.entity.plan.Openate;
 import com.project.plan.entity.plan.Tache;
-import com.project.plan.service.specification.SimpleSpecification;
 import com.project.plan.service.support.impl.BaseServiceImpl;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.crypto.Data;
 import java.util.*;
 
 /**
@@ -268,5 +264,37 @@ public class TacheServiceImpl extends BaseServiceImpl<Tache,Integer> {
 //            }
 //        },pageRequest);
 //       return page.getContent();
+    }
+
+    public void saveOneTest(Integer mid) {
+        Tache dbTache = new Tache();
+
+        Date sysDate = new Date();
+
+
+        dbTache.setArchiveTime(sysDate);
+        dbTache.setPlanBeginTime(sysDate);
+        dbTache.setPlanEndTime(sysDate);
+        dbTache.setRealBeginTime(sysDate);
+        dbTache.setRealEndTime(sysDate);
+        dbTache.setStatus(Tache.STAT_SUCCESS);
+        dbTache.setArchiveTime(sysDate);
+        dbTache.setCreateTime(sysDate);
+
+        dbTache.setUpdateComment("sdfsf");
+        dbTache.setUpdateTime(sysDate);
+
+        Module m = new Module();
+        m.setId(mid+10);
+        dbTache.setModule(m);
+
+        try{
+
+            tacheDao.save(dbTache);
+        }catch (Exception e){
+            System.out.println(" 里面catch ");
+        }
+
+
     }
 }

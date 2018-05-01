@@ -124,6 +124,12 @@
 			<optional>true</optional>
 		</dependency>
 		<!-- lombok end  -->
+		<!-- 好像实现的是热启动不是热部署-->
+		<!-- <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>-->
 	</dependencies>
 
 	<build>
@@ -159,6 +165,20 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- 添加部署 start https://blog.csdn.net/tengxing007/article/details/72675168 -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<dependencies>
+					<dependency>
+						<groupId>org.springframework</groupId>
+						<artifactId>springloaded</artifactId>
+						<!--<version>1.2.6.RELEASE</version>-->
+					</dependency>
+				</dependencies>
+				<configuration><mainClass>cn.springboot.Mainspringboot</mainClass></configuration>
+			</plugin>
+			<!-- 添加部署 end https://blog.csdn.net/tengxing007/article/details/72675168 -->
 		</plugins>
 	</build>
 </project>

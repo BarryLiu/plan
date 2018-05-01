@@ -134,4 +134,12 @@ public class PlanApplicationTests {
 //			System.out.println(i+" --- "+t);
 //		}
 	}
+
+	//测试事务  第一个service 调用第二个service 第二个报错怎么处理
+	@Test
+	public void testTrans(){
+		moduleService.saveOneTest();
+
+
+	}
 }

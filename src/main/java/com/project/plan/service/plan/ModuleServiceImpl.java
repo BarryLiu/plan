@@ -1,5 +1,6 @@
 package com.project.plan.service.plan;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.project.plan.dao.plan.IModuleDao;
 import com.project.plan.dao.plan.IOpenateDao;
 import com.project.plan.dao.plan.IProjectDao;
@@ -107,5 +108,35 @@ public class ModuleServiceImpl extends BaseServiceImpl<Module,Integer> {
         tacheDao.deleteByModuleId(m.getId());
         super.delete(m.getId()); //moduleDao.delete(id); //用moduleDao.delete(id) 删除不成功,因为 module 和tache是在同一个事务里面删除,里面出事务时候是一起提交的,用supper.delete就能删除,这相当于调用了service的内部方法,所以不会走事务
         System.out.println("delete successful !!! ");
+    }
+
+//    @Transactional(readOnly = true)
+    public void saveOneTest() {
+
+        Date d = new Date();
+
+        Module module = new Module();
+        Project p = new Project();
+        p.setId(1);
+        module.setProject(p);
+        module.setStatus(Tache.STAT_DEBUG);
+        module.setCreateTime(d);
+        module.setWishTime(d);
+        module.setStartTime(d);
+        module.setName("hhh");
+
+        try {
+            moduleDao.save(module);
+        }catch (Exception e){
+            System.out.println("--插入t_module失败");
+        }
+
+        try{
+            tacheService.saveOneTest(module.getId());
+        }catch (Exception e){
+            System.out.println("--插入tache失败");
+        }
+
+        System.out.println("--插入成功");
     }
 }
