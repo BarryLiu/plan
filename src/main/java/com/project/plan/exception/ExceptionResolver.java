@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Created by Barry on 2018/4/27.
  */
-@ControllerAdvice(annotations = {RestController.class, ResponseBody.class})
+@ControllerAdvice(annotations = {ResponseBody.class})
 public class ExceptionResolver {
     //    @ResponseBody
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(NumberFormatException.class)
     public JsonResult processException(Exception e) {
         System.out.println("-------exception-请求出错-------");
         JsonResult result = JsonResult.failure(e.getMessage());

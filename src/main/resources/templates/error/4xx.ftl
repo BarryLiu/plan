@@ -11,11 +11,11 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
 
-    <link rel="shortcut icon" href="favicon.ico"> <link href="assets/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
-    <link href="assets/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="${ctx!}/assets/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="${ctx!}/assets/css/font-awesome.css?v=4.4.0" rel="stylesheet">
 
-    <link href="assets/css/animate.css" rel="stylesheet">
-    <link href="assets/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="${ctx!}/assets/css/animate.css" rel="stylesheet">
+    <link href="${ctx!}/assets/css/style.css?v=4.1.0" rel="stylesheet">
 
 </head>
 
@@ -23,7 +23,7 @@
 
 
     <div class="middle-box text-center animated fadeInDown">
-        <h1>4xx(${responseScope.status})!</h1>
+        <h1>4xx${responseScope.status}!</h1>
         <h3 class="font-bold">页面未找到！</h3>
 
         <div class="error-desc">
@@ -38,8 +38,8 @@
     </div>
 
     <!-- 全局js -->
-    <script src="assets/js/jquery.min.js?v=2.1.4"></script>
-    <script src="assets/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="${ctx!}/assets/js/jquery.min.js?v=2.1.4"></script>
+    <script src="${ctx!}/assets/js/bootstrap.min.js?v=3.3.6"></script>
 
     
     

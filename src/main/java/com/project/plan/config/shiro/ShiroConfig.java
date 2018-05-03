@@ -49,6 +49,8 @@ public class ShiroConfig {
 	public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultSecurityManager securityManager, Realm realm) {
 		securityManager.setRealm(realm);
 
+		// ? 代表一个字符, * 下面一个目录eg: api/a,api/b  ,** 下面所有 eg:api/a/ab 。 anon 忽略shiro验证,  authc 需要shiro验证
+
 		ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
 		shiroFilter.setSecurityManager(securityManager);
 		shiroFilter.setLoginUrl("/admin/login");
@@ -79,7 +81,7 @@ public class ShiroConfig {
 		filterChainDefinitionMap.put("/admin/**", "authc");
 //		filterChainDefinitionMap.put("/druid/**", "authc");///druid/weburi.json 需要放行,不知道哪里打开,就只将druid中的所有页面访问拦截,请求不拦截
 		filterChainDefinitionMap.put("/druid/*.html", "authc");
-
+		filterChainDefinitionMap.put("/swagger-ui.html", "authc");
 //		filterChainDefinitionMap.put("/plan/**", "authc");//里面的按钮有加入权限,没登录有重定向到这里取资源,无需添加登录限制
 
 		shiroFilter.setFilterChainDefinitionMap(filterChainDefinitionMap);

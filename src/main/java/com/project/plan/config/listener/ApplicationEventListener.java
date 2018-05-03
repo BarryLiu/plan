@@ -1,7 +1,14 @@
 package com.project.plan.config.listener;
 
+import com.project.plan.entity.Resource;
+import com.project.plan.entity.Role;
+import com.project.plan.service.IResourceService;
+import com.project.plan.service.IRoleService;
+import com.project.plan.service.impl.ResourceServiceImpl;
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
 import org.springframework.boot.context.event.ApplicationPreparedEvent;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -11,6 +18,9 @@ import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.ContextStartedEvent;
 import org.springframework.context.event.ContextStoppedEvent;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 public class ApplicationEventListener implements ApplicationListener<ApplicationEvent> {
 	

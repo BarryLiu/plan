@@ -51,10 +51,21 @@ public class IndexController extends BaseController {
 		return "sfafsf";
 	}
 	/**前index页面*/
-	@RequestMapping(value={"/errorhaha4"},method = RequestMethod.POST)
+	@RequestMapping(value={"/errorhaha4"},method = RequestMethod.GET)
 	@ResponseBody
 	public String errorhaha4(){
 		if(true){
+			throw new NumberFormatException("hahaha222rest");
+		}
+		return "sfafsf";
+	}
+	/**前index页面*/
+	@RequestMapping(value={"/errorhaha5"},method = RequestMethod.GET)
+	@ResponseBody
+	public String errorhaha5(){
+		boolean flag = true;
+		System.out.println(flag);
+		if(flag){
 			throw new NumberFormatException("hahaha222rest");
 		}
 		return "sfafsf";

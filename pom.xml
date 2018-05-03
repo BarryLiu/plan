@@ -2,7 +2,7 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>net.sppan</groupId>
+	<groupId>com.project</groupId>
 	<artifactId>ProjectPlan</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.4.2.RELEASE</version>
+		<version>1.5.9.RELEASE</version>
 		<!--<version>2.0.1.RELEASE</version>-->
 	</parent>
 
@@ -60,6 +60,24 @@
 			<version>1.1.6</version>
 		</dependency>
 		<!-- 使用 druid连接池 end -->
+		<!-- 使用 swagger -->
+		<!--<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.2.2</version>
+		</dependency>-->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.6.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.6.1</version>
+		</dependency>
+		<!-- 使用 swagger end -->
 
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
@@ -149,6 +167,7 @@
 				<configuration>
 					<mainClass>com.project.plan.PlanApplication</mainClass>
 					<fork>true</fork>
+					<addResources>true</addResources>
 				</configuration>
 				<dependencies>
 					<dependency>
@@ -166,18 +185,19 @@
 				</executions>
 			</plugin>
 			<!-- 添加部署 start https://blog.csdn.net/tengxing007/article/details/72675168 -->
-			<plugin>
+			<!--<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>2.0.1.RELEASE</version>
 				<dependencies>
 					<dependency>
 						<groupId>org.springframework</groupId>
 						<artifactId>springloaded</artifactId>
-						<!--<version>1.2.6.RELEASE</version>-->
+						&lt;!&ndash;<version>1.2.6.RELEASE</version>&ndash;&gt;
 					</dependency>
 				</dependencies>
 				<configuration><mainClass>cn.springboot.Mainspringboot</mainClass></configuration>
-			</plugin>
+			</plugin>-->
 			<!-- 添加部署 end https://blog.csdn.net/tengxing007/article/details/72675168 -->
 		</plugins>
 	</build>

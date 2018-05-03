@@ -54,63 +54,32 @@
                         </a>
                     </li>
 
-                   <#-- <@shiro.hasPermission name="system:user:index">-->
-                        <li>
-                            <a href="#">
-                                <i class="fa fa fa-cog"></i>
-                                <span class="nav-label">系统管理</span>
-                                <span class="fa arrow"></span>
-                            </a>
+                    <#--加载一级目录-->
+                <#list APPLICATION_RESOURCES as recourse >
+                    <#if recourse.parent == null >
+                        <@shiro.hasPermission name="${recourse.sourceKey }">
+                            <li >
+                                <a href="#">
+                                    <i class="fa fa fa-cog"></i>
+                                    <span class="nav-label">${recourse.name}</span>
+                                    <span class="fa arrow"></span>
+                                </a>
                             <ul class="nav nav-second-level">
-                             <@shiro.hasPermission name="system:user:index">
-                                <li>
-                                   <a class="J_menuItem" href="${ctx!}/admin/user/index">用户管理</a>
-                                </li>
-                             </@shiro.hasPermission>
-                             <@shiro.hasPermission name="system:role:index">
-                                <li>
-                                    <a class="J_menuItem" href="${ctx!}/admin/role/index">角色管理</a>
-                                </li>
-                             </@shiro.hasPermission>
-                             <@shiro.hasPermission name="system:druid:index">
-                                <li>
-                                    <a class="J_menuItem" href="${ctx!}/druid">druid监控</a>
-                                </li>
-                             </@shiro.hasPermission>
-                             <@shiro.hasPermission name="system:swagger:index">
-                                 <li>
-                                     <a class="J_menuItem" href="${ctx!}/swagger">swagger监控</a>
-                                 </li>
-                             </@shiro.hasPermission>
+                            <#list APPLICATION_RESOURCES as secondRecourse > <#--加载二级目录 -->
+                                <#if secondRecourse.parent != null && secondRecourse.parent.id == recourse.id && secondRecourse.isHide==0 && secondRecourse.type = 1  ><#--有这个权限并且显示并且是菜单-->
+                                    <@shiro.hasPermission name="${secondRecourse.sourceKey }">
+                                        <li>
+                                            <a class="J_menuItem" href="${ctx!}${secondRecourse.sourceUrl }">${secondRecourse.name } </a>
+                                        </li>
+                                    </@shiro.hasPermission>
+                                </#if>
+                            </#list>
                             </ul>
-                        </li>
-                   <#-- </@shiro.hasPermission>-->
-                    <#--<@shiro.hasPermission name="system:user:index">-->
-                        <li>
-                            <a href="#">
-                                <i class="fa fa fa-cog"></i>
-                                <span class="nav-label">项目管理</span>
-                                <span class="fa arrow"></span>
-                            </a>
-                            <ul class="nav nav-second-level">
-                            <@shiro.hasPermission name="plan:project:index">
-                                <li>
-                                    <a class="J_menuItem" href="${ctx!}/plan/project/index">项目管理</a>
-                                </li>
-                            </@shiro.hasPermission>
-                            <@shiro.hasPermission name="plan:module:index">
-                                <li>
-                                    <a class="J_menuItem" href="${ctx!}/plan/module/index">模块管理</a>
-                                </li>
-                            </@shiro.hasPermission>
-                            <@shiro.hasPermission name="plan:tache:index">
-                                <li>
-                                    <a class="J_menuItem" href="${ctx!}/plan/tache/index">环节管理</a>
-                                </li>
-                            </@shiro.hasPermission>
-                            </ul>
-                        </li>
-                    <#--</@shiro.hasPermission>-->
+                            </li>
+                        </@shiro.hasPermission>
+                    </#if>
+                </#list>
+
                     <li class="line dk"></li>
                 </ul>
             </div>

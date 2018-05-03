@@ -18,7 +18,7 @@ public class PlanApplication {
 	 */
 	public static void main(String[] args) {
 		SpringApplication.run(PlanApplication.class, args);
-		logger.debug("启动成功2222");
+		logger.debug("启动成功");
 	}
 	
 }

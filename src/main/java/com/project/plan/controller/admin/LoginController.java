@@ -7,6 +7,9 @@ import com.project.plan.controller.BaseController;
 
 import com.project.plan.entity.User;
 import com.project.plan.service.impl.UserServiceImpl;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.catalina.webresources.TomcatURLStreamHandlerFactory;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -18,6 +21,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import springfox.documentation.annotations.ApiIgnore;
 
 @Controller
 public class LoginController extends BaseController {
@@ -25,11 +29,18 @@ public class LoginController extends BaseController {
 	@Autowired
 	private UserServiceImpl userService;
 
+	@ApiIgnore
 	@RequestMapping(value = { "/admin/login" }, method = RequestMethod.GET)
 	public String login() {
 
 		return "admin/login";
 	}
+
+	@ApiOperation(value="获图书细信息", notes="根据url的id来获取详细信息")
+	@ApiImplicitParams({
+            @ApiImplicitParam(name = "username", value = "用户名", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "password", value = "密码", required = true, dataType = "String")
+    })
 	@RequestMapping(value = { "/admin/login" }, method = RequestMethod.POST)
 	public String login(@RequestParam("username") String username,
 			@RequestParam("password") String password,ModelMap model
@@ -58,7 +69,8 @@ public class LoginController extends BaseController {
 		}
 		return "admin/login";
 	}
-	
+
+	@ApiOperation(value="退出登录", notes="shiro退出登录,shiro session清空数据")
 	@RequestMapping(value = { "/admin/logout" }, method = RequestMethod.GET)
 	public String logout() {
 		Subject subject = SecurityUtils.getSubject();

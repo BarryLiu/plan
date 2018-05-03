@@ -11,6 +11,8 @@ import com.project.plan.service.plan.ProjectServiceImpl;
 import com.project.plan.service.plan.TacheServiceImpl;
 import com.project.plan.service.specification.SimpleSpecificationBuilder;
 import com.project.plan.service.specification.SpecificationOperator;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 import java.util.Map;
@@ -39,12 +42,14 @@ public class ModuleController extends BaseController {
     @Autowired
     private TacheServiceImpl tacheService;
 
-    @RequestMapping("/index")
+    @ApiIgnore
+    @RequestMapping(value = { "","/", "/index" })
     public String index() {
         return "plan/module/index";
     }
 
-    @RequestMapping("/list")
+    @ApiOperation(value="分页获取模块列表", notes="可以更具传入的searchText根据模块名模糊搜索")
+    @RequestMapping(value = "/list",method = RequestMethod.POST)
     @ResponseBody
     public Page<Module> list() {
         SimpleSpecificationBuilder<Module> builder = new SimpleSpecificationBuilder<Module>();
@@ -109,6 +114,7 @@ public class ModuleController extends BaseController {
         return sb.toString();
     }
 
+    @ApiOperation(value="跳到添加模块页面", notes="模块增加和修改需要拿到项目列表")
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String add(ModelMap map) {
         List<Project> projectList = projectService.findAll();
@@ -116,7 +122,8 @@ public class ModuleController extends BaseController {
         return "plan/module/form";
     }
 
-
+    @ApiOperation(value="跳到修改模块页面", notes="模块增加和修改需要拿到项目列表")
+    @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Integer",paramType = "path")
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String edit(@PathVariable Integer id, ModelMap map) {
         Module module = moduleService.find(id);
@@ -129,6 +136,7 @@ public class ModuleController extends BaseController {
     }
 
 //    @RequiresPermissions("plan:module:edit")
+    @ApiOperation(value="修改或添加模块", notes="有id就是修改,没有id添加")
     @RequestMapping(value= {"/edit"}, method = RequestMethod.POST)
     @ResponseBody
     public JsonResult edit(Module module, ModelMap map){
@@ -142,6 +150,8 @@ public class ModuleController extends BaseController {
     }
 
 //    @RequiresPermissions("plan:module:delete")
+    @ApiOperation(value="删除模块", notes="根据id删除模块,同时删除其下面的环节")
+    @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Integer",paramType = "path")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult delete(@PathVariable Integer id,ModelMap map) {

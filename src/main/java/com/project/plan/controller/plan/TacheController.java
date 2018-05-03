@@ -17,6 +17,9 @@ import com.project.plan.service.plan.PlanServiceImpl;
 import com.project.plan.service.plan.TacheServiceImpl;
 import com.project.plan.service.specification.SimpleSpecificationBuilder;
 import com.project.plan.service.specification.SpecificationOperator;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.persistence.criteria.*;
 import java.util.*;
@@ -48,8 +52,8 @@ public class TacheController extends BaseController {
 
 
 
-
-    @RequestMapping("/index")
+    @ApiIgnore
+    @RequestMapping(value = { "","/", "/index" })
     public String index(ModelMap map,String searchTypeName) {
 //        Map<String,Long> typeMap = tacheService.selectTypeMap();
 //        map.put("typeMap",typeMap);
@@ -57,7 +61,8 @@ public class TacheController extends BaseController {
         return "plan/tache/index";
     }
 
-    @RequestMapping("/list")
+    @ApiOperation(value="分页获取环节列表", notes="可以更具传入的searchText到环节表中模糊搜索")
+    @RequestMapping(value = "/list",method = RequestMethod.POST)
     @ResponseBody
     public Page<Tache> list(final Integer moduleId, final String searchTypeName) {
         String searchText = request.getParameter("searchText");
@@ -136,7 +141,7 @@ public class TacheController extends BaseController {
 
         return page;
     }
-
+    @ApiOperation(value="跳到添加环节页面", notes="增加和修改是一个页面")
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String add(ModelMap map) {
         List<User> userList = userService.findAll();
@@ -144,7 +149,8 @@ public class TacheController extends BaseController {
         return "plan/tache/form";
     }
 
-
+    @ApiOperation(value="跳到修改用户页面", notes="增加和修改是一个页面")
+    @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Integer",paramType = "path")
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String edit(@PathVariable Integer id, ModelMap map) {
         Tache tache = tacheService.find(id);
@@ -155,6 +161,7 @@ public class TacheController extends BaseController {
         return "plan/tache/form";
     }
 
+    @ApiOperation(value="修改或添加环节", notes="有id就是修改,没有id添加")
     @RequestMapping(value= {"/edit"}, method = RequestMethod.POST)
     @ResponseBody
     public JsonResult edit(Tache tache, ModelMap map,Integer moduleId){
@@ -167,6 +174,8 @@ public class TacheController extends BaseController {
         return JsonResult.success();
     }
 
+    @ApiOperation(value="删除用户", notes="根据用户id删除用户")
+    @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Integer",paramType = "path")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult delete(@PathVariable Integer id,ModelMap map) {
@@ -180,7 +189,12 @@ public class TacheController extends BaseController {
     }
 
     /** 某环节环节备注记录列表 */
-    @RequestMapping("/recordlist")
+    @ApiOperation(value="环节记录列表", notes="记录此环节中所有做过的操作")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "tacheId", value = "环节ID", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "type", value = "类型", required = false, dataType = "Integer",defaultValue = "0")
+    })
+    @RequestMapping(value = "/recordlist",method = RequestMethod.GET)
     public String recordlist(ModelMap map ,Integer tacheId,@RequestParam(value="type",defaultValue="0")Integer type) {
         Tache tache = tacheService.getBaseDao().findOne(tacheId);
         List<Openate> openateList = openateService.findByTacheId(tacheId);
@@ -190,7 +204,10 @@ public class TacheController extends BaseController {
         map.put("type",type);//客户端请求过来的路径类型, 0默认是点击记录按钮进来的(给他显示添加记录),1是来查看记录的,不给他添加记录
         return "plan/tache/openateRecord";
     }
+
+
     /** 添加环节备注记录 */
+    @ApiOperation(value="添加操作记录", notes="添加环节操作记录")
     @RequestMapping(value= {"/openateEdit"}, method = RequestMethod.POST)
     @ResponseBody
     public JsonResult openateEdit(Openate openate, ModelMap map,Integer moduleId){
@@ -212,7 +229,10 @@ public class TacheController extends BaseController {
         }
         return JsonResult.success();
     }
-    @RequestMapping(value= {"/oneModuleDetail"})
+
+    @ApiOperation(value="获取一个模块的详情", notes="根据模块id获取这个模块和这个模块下的环节")
+    @ApiImplicitParam(name = "moduleId", value = "模块id", required = true, dataType = "Integer")
+    @RequestMapping(value= {"/oneModuleDetail"},method = RequestMethod.GET)
     public String oneModuleDetail(ModelMap map ,Integer moduleId){
         Module module = moduleService.find(moduleId);
         Map<String,Long> typeMap = tacheService.selectTypeMap();

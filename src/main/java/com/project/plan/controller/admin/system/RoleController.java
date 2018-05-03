@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import springfox.documentation.annotations.ApiIgnore;
 
 @Controller
 @RequestMapping("/admin/role")
@@ -29,12 +30,13 @@ public class RoleController extends BaseController {
 	@Autowired
 	private IResourceService resourceService;
 
-	@RequestMapping(value = { "/", "/index" })
+	@ApiIgnore
+	@RequestMapping(value = { "","/", "/index" })
 	public String index() {
 		return "admin/role/index";
 	}
 
-	@RequestMapping(value = { "/list" })
+	@RequestMapping(value = { "/list" },method = RequestMethod.POST)
 	@ResponseBody
 	public Page<Role> list() {
 		SimpleSpecificationBuilder<Role> builder = new SimpleSpecificationBuilder<Role>();
