@@ -90,11 +90,11 @@
 			    //启动分页  
 			    pagination: true,
 			    //每页显示的记录数  
-			    pageSize: 11,
+			    pageSize: 12,
 			    //当前第几页  
 			    pageNumber: 1,
 			    //记录数可选列表  
-			    pageList: [11, 22, 33, 44],
+			    pageList: [12, 24, 36, 48],
 			    //是否启用查询  
 			    search: true,
 			    //是否启用详细信息视图
@@ -121,7 +121,7 @@
                     title: "项目名称",
                     field: "module.project.name"
                 },{
-			        title: "模块名称",
+			        title: "功能名称",
 			        field: "module.name"
 			    },{
                         title: "环节序号",
@@ -171,13 +171,13 @@
                     formatter: function (value, row, index) {
 						//alert( "index: "+index+" row:"+row.createTime);
                     	if(value == 0)
-                    		return '<span class="label label-info">新创建</span>';
+                    		return '<span class="label label-info"><!--新创建-->Open</span>';
                     	else if(value == 1)
-                    		return '<span class="label label-danger">执行中</span>';
+                    		return '<span class="label label-info"><!--执行中-->Open</span>';
                         else if(value == 2)
-                            return '<span class="label label-danger">测试中</span>';
+                            return '<span class="label label-info"><!--测试中-->Open</span>';
                         else if(value == 3)
-                            return '<span class="label label-danger">归档完成</span>';
+                            return '<span class="label label-danger"><!--归档完成-->Close</span>';
                         else
                             return '<span class="label label-danger">未知</span>';
                     }

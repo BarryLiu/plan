@@ -17,6 +17,10 @@
     <link href="${ctx!}/assets/css/animate.css" rel="stylesheet">
     <link href="${ctx!}/assets/css/style.css?v=4.1.0" rel="stylesheet">
 
+
+    <#--多选下拉框-->
+    <link rel="stylesheet" href="/bootstrap_select/dist/css/bootstrap-select.css">
+
 </head>
 
 <body class="gray-bg">
@@ -48,7 +52,7 @@
                                         <input   readonly="readonly" class="form-control" type="text" value="${tache.module.project.name}">
                                     </div>
 
-                                    <label class="col-sm-3 control-label">模块名称：</label>
+                                    <label class="col-sm-3 control-label">功能名称：</label>
                                     <div class="col-sm-2">
                                         <input  readonly="readonly" class="form-control" type="text" value="${tache.module.name}">
                                     </div>
@@ -73,24 +77,47 @@
                                     </#list>
                                     </select>
                                 </div>
+                                <label class="col-sm-3 control-label">小组成员：</label>
+                                <div class="col-sm-2">
+
+                                    <select class="selectpicker" name="groupUserIds" id = "groupUserIds" multiple data-live-search="true" data-live-search-placeholder="Search" data-actions-box="true">
+                                        <#--<optgroup label="filter1">-->
+                                            <#list userList as u >
+                                                <option value="${u.id }" <#if u.id == (tache.user.id ) > selected="selected"</#if>>${u.nickName }</option>
+                                            </#list>
+                                        <#--</optgroup>
+                                        <optgroup label="filter2">
+                                            <option>option1</option>
+                                            <option>option2</option>
+                                            <option>option3</option>
+                                            <option>option4</option>
+                                        </optgroup>
+                                        <optgroup label="filter3">
+                                            <option>option1</option>
+                                            <option>option2</option>
+                                            <option>option3</option>
+                                            <option>option4</option>
+                                        </optgroup>-->
+                                    </select>
+                                </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">计划时间：</label>
                                 <div class="col-sm-2">
-                                    <input id="planBeginTime" name="planBeginTime" readonly="readonly"  class="laydate-icon form-control layer-date" value="${tache.planBeginTime}">
+                                    <input id="planBeginTime" name="planBeginTime" readonly="readonly" required="true"  class="laydate-icon form-control layer-date" value="${(tache.planBeginTime?string('yyyy-MM-dd'))!''}">
                                 </div>
                                 <div class="col-sm-2">
-                                    <input id="planEndTime" name="planEndTime" readonly="readonly" class="laydate-icon form-control layer-date" value="${tache.planEndTime}">
+                                    <input id="planEndTime" name="planEndTime" readonly="readonly" class="laydate-icon form-control layer-date" value="${(tache.planEndTime?string('yyyy-MM-dd'))!''}">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">实际时间：</label>
                                 <div class="col-sm-2">
-                                    <input id="realBeginTime" name="realBeginTime" readonly="readonly" class="laydate-icon form-control layer-date" value="${tache.realBeginTime}">
+                                    <input id="realBeginTime" name="realBeginTime" readonly="readonly" class="laydate-icon form-control layer-date" value="${(tache.realBeginTime?string('yyyy-MM-dd'))!''}">
                                 </div>
                                 <div class="col-sm-2">
-                                    <input id="realEndTime" name="realEndTime" readonly="readonly" class="laydate-icon form-control layer-date" value="${tache.realEndTime}">
+                                    <input id="realEndTime" name="realEndTime" readonly="readonly" class="laydate-icon form-control layer-date" value="${(tache.realEndTime?string('yyyy-MM-dd'))!''}">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -122,13 +149,15 @@
                                     <textarea style="height: 150px;" id="updateComment" name="updateComment" class="form-control">${tache.updateComment}</textarea>
                                 </div>
                             </div>
-                            <@shiro.hasPermission name="plan:tache:edit">
                                 <div class="form-group">
                                     <div class="col-sm-5 col-sm-offset-3">
-                                        <button class="btn btn-primary" type="submit">提交</button>
+                                        <@shiro.hasPermission name="plan:project:edit">
+                                            <button class="btn btn-primary" type="submit">提交</button>
+                                        </@shiro.hasPermission>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <button class="btn btn-primary" type="button" onclick="closeWindow();">取消</button>
                                     </div>
                                 </div>
-                            </@shiro.hasPermission>
                         </form>
                     </div>
                 </div>
@@ -150,6 +179,12 @@
     <script src="${ctx!}/assets/js/plugins/validate/messages_zh.min.js"></script>
     <script src="${ctx!}/assets/js/plugins/layer/layer.min.js"></script>
     <script src="${ctx!}/assets/js/plugins/layer/laydate/laydate.js"></script>
+
+    <#--多选下拉框-->
+    <script src="${ctx!}/bootstrap_select/dist/js/bootstrap-select.js"></script>
+
+
+
     <script type="text/javascript">
     $(document).ready(function () {
         //外部js调用
@@ -160,15 +195,18 @@
         });
         laydate({
             elem: '#planEndTime', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
-            event: 'focus' //响应事件。如果没有传入event，则按照默认的click
+            event: 'focus' ,//响应事件。如果没有传入event，则按照默认的click
+            format:"YYYY-MM-DD"
         });
         laydate({
             elem: '#realBeginTime', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
-            event: 'focus' //响应事件。如果没有传入event，则按照默认的click
+            event: 'focus' ,//响应事件。如果没有传入event，则按照默认的click
+            format:"YYYY-MM-DD"
         });
         laydate({
             elem: '#realEndTime', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
-            event: 'focus' //响应事件。如果没有传入event，则按照默认的click
+            event: 'focus' ,//响应事件。如果没有传入event，则按照默认的click
+            format:"YYYY-MM-DD"
         });
 	    $("#frm").validate({
     	    rules: {
@@ -202,6 +240,11 @@
             }
     	});
     });
+    var closeWindow = function(){
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+        parent.layer.close(index);
+    }
+
     </script>
 
 </body>

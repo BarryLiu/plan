@@ -100,6 +100,14 @@ public class User extends BaseEntity {
 	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
 	private Date updateTime;
 
+	/**
+	 * 最后登录时间
+	 */
+	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
+	private Date lastLoginTime;
+
+
+
 	@ManyToMany(cascade = { CascadeType.REFRESH }, fetch = FetchType.LAZY)
 	@JoinTable(name = "tb_user_role", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
 	private java.util.Set<Role> roles;
@@ -215,7 +223,12 @@ public class User extends BaseEntity {
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
-
+	public Date getLastLoginTime() {
+		return lastLoginTime;
+	}
+	public void setLastLoginTime(Date lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
+	}
 	public java.util.Set<Role> getRoles() {
 		return roles;
 	}

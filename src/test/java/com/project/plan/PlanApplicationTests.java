@@ -49,11 +49,20 @@ public class PlanApplicationTests {
 		List<TUser> users = LDAPControl.getInstance().getAllLadpUser();
 
 		List<User> userList = new ArrayList<>();
+
+		List<User> allSysUsers = userService.findAll();
+		Map<String,User> userMap = new HashMap<>();
+		for (User sys : allSysUsers) {
+			userMap.put(sys.getUserName(),sys);
+		}
+		
 		for(int i=0;i<users.size();i++){
 			TUser ldUser = users.get(i);
 			System.out.println(ldUser);
 			User sysUser = TUser.parseLdapUserToUser(ldUser);
-			userList.add(sysUser);
+			if(!userMap.containsKey(sysUser.getUserName())){
+				userList.add(sysUser);
+			}
 		}
 		System.out.print("----插入用户-----"+userService);
 		userService.save(userList);

@@ -32,12 +32,12 @@ public class Module extends AbstractEntity{
     private String name;
 
     @NotNull(message="启动时间不能为空")
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @JSONField(format = "yyyy-MM-dd")
     @Column(name="start_time",length=500)
     protected Date startTime;
 
     @NotNull(message="期望上线时间不能为空")
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @JSONField(format = "yyyy-MM-dd")
     @Column(name="wish_time",length=500)
     protected Date wishTime;
 

@@ -109,7 +109,7 @@ public class TacheServiceImpl extends BaseServiceImpl<Tache,Integer> {
 
 
     @Transactional
-    public void editTache(Tache tache, HttpServletRequest request) {
+    public void editTache(Tache tache,List<Integer> groupUserIds, HttpServletRequest request) {
 
         Date sysDate = new Date();
         if(tache.getId()!=null){//是修改添加修改了什么的记录
@@ -124,7 +124,7 @@ public class TacheServiceImpl extends BaseServiceImpl<Tache,Integer> {
             log.setStatus(Openate.STATUS_WARN);
             log.setDuration(0L);
 
-            String createComment = compateUpdateComment(dbTache,tache);
+            String createComment = compateUpdateComment(dbTache,tache,groupUserIds);
             log.setCreateComment(createComment);
 //                Tache t = new Tache();
 //                t.setId(tache.getId());
@@ -146,13 +146,21 @@ public class TacheServiceImpl extends BaseServiceImpl<Tache,Integer> {
      * @param tache
      * @return
      */
-    private String compateUpdateComment(Tache dbTache, Tache tache) {
+    private String compateUpdateComment(Tache dbTache, Tache tache,List<Integer> groupUserIds) {
         StringBuffer sb = new StringBuffer();
         if(dbTache==null||tache==null){
             throw new RuntimeException("修改的环节或要修改的环节为空!!!");
         }
-
         //System.out.println("懒加载 user对象 "+dbTache.getUser().getId());
+        Map<Integer,String> addGroupUser = new HashMap<>();
+        Map<Integer,String> removeGroupUser = new HashMap<>();
+
+
+        if(groupUserIds!=null&&groupUserIds.size()>0){
+            List<User> userList = userDao.findByIds(groupUserIds);
+        }
+
+
 
         if(dbTache.getUser()==null&&tache.getUser()==null){//没有选择负责人,默认修改人
 

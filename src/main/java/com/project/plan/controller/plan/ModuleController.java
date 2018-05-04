@@ -14,6 +14,7 @@ import com.project.plan.service.specification.SpecificationOperator;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -44,7 +45,9 @@ public class ModuleController extends BaseController {
 
     @ApiIgnore
     @RequestMapping(value = { "","/", "/index" })
-    public String index() {
+    public String index(ModelMap map) {
+        Map<String,Long> typeMap = tacheService.selectTypeMap();
+        map.put("typeMap",typeMap);
         return "plan/module/index";
     }
 
@@ -96,18 +99,18 @@ public class ModuleController extends BaseController {
             }else if(Tache.STAT_SUCCESS != status && Tache.STAT_SUCCESS == t.getStatus()){ //拿没有归档的描述，但是该环节已经归档 ,continue
                 continue;
             }
-            String comment = "“ <label class='control-label' style='color:green; '>"+t.getName()+"”</label>；" ;
+            String comment = "“ <label class='control-label' style='color:green; '>"+t.getName()+"</label>”；" ;
             if(Tache.STAT_SUCCESS != status){//归档只有一种状态,已经归档了的就不用显示状态了吧
-                comment += " 状态为“<label class='control-label' style='color:"+colorStr+"; '>"+statusStr+" ”</label>,";
+                comment += " 状态为“<label class='control-label' style='color:"+colorStr+"; '>"+statusStr+"</label>”,";
             }
 
             if(t.getUser()!=null){
                 comment += "由“<label class='control-label' style='color:green; '>"+t.getUser().getNickName()+"</label>”处理。";
             }
             if(i%2==0){
-                comment += " </br>'";
+                comment += " </br>";
             }else {
-                comment += " &nbsp;&nbsp;&nbsp;'";
+                comment += " &nbsp;&nbsp;&nbsp;";
             }
             sb.append(comment);
         }
@@ -116,6 +119,7 @@ public class ModuleController extends BaseController {
 
     @ApiOperation(value="跳到添加模块页面", notes="模块增加和修改需要拿到项目列表")
     @RequestMapping(value = "/add", method = RequestMethod.GET)
+    @RequiresPermissions("plan:module:add")
     public String add(ModelMap map) {
         List<Project> projectList = projectService.findAll();
         map.put("projectList",projectList);

@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <title>模块列表</title>
+    <title>功能列表</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
 
@@ -24,11 +24,25 @@
 
 <body class="gray-bg">
     <div class="wrapper wrapper-content  animated fadeInRight">
+
+        <table border="1" width="98%" align="center">
+            <tr>
+			<#list typeMap?keys as key >
+                <td>
+                    <div class="ibox-title">
+                        <h5>${key} <a href="${ctx!}/plan/tache/index?searchTypeName=${key}">（${typeMap[key]}个）</a> </h5>
+                    </div>
+                </td>
+			</#list>
+            </tr>
+            <tr>
+                <td colspan="${typeMap?size }">
+
         <div class="row">
             <div class="col-sm-12">
                 <div class="ibox ">
                     <div class="ibox-title">
-                        <h5>模块管理</h5>
+                        <h5>功能管理</h5>
                     </div>
                     <div class="ibox-content">
                         <p>
@@ -52,6 +66,9 @@
                 </div>
             </div>
         </div>
+				</td>
+            </tr>
+        </table>
     </div>
 
     <!-- 全局js -->
@@ -120,7 +137,7 @@
                     title: "项目名称",
                     field: "project.name"
                 },{
-			        title: "模块名称",
+			        title: "功能名称",
 			        field: "name",
                     formatter: function (value, row, index) {
 
@@ -128,18 +145,18 @@
 						return '<a href="'+detailUrl+'">'+value+'</a>';
                     }
 			    },{
-                    title: "未归档",
+                    title: "未完成",
                     field: "createCommentStr",
                     sortable: false,
                     formatter: function (value, row, index) {
-						return row.createComment;
+						return row.createCommentStr;
                     }
                 },{
-                    title: "已归档",
+                    title: "已完成",
                     field: "updateCommentStr",
                     sortable: false,
                     formatter: function (value, row, index) {
-                        return row.updateComment;
+                        return row.updateCommentStr;
                     }
                 },{
                     title: "启动时间",
@@ -155,11 +172,15 @@
 			        field: "status",
                     formatter: function (value, row, index) {
                     	if(value == 0)
-                    		return '<span class="label label-info">正常</span>';
+                    		return '<span class="label label-info">待启动</span>';
                     	else if(value == 1)
-                    		return '<span class="label label-danger">异常</span>';
+                    		return '<span class="label label-danger">进行中</span>';
                         else if(value == 2)
-                            return '<span class="label label-danger">已上线</span>';
+                            return '<span class="label label-danger">暂停</span>';
+                        else if(value == 3)
+                            return '<span class="label label-danger">待上线</span>';
+                        else if(value == 4)
+                            return '<span class="label label-danger">上线</span>';
                     }
 			    }
 					/*,{
@@ -185,10 +206,10 @@
         function edit(id){
         	layer.open({
         	      type: 2,
-        	      title: '资源修改',
+        	      title: '功能修改',
         	      shadeClose: true,
         	      shade: false,
-        	      area: ['1293px', '990px'],
+        	      area: ['893px', '890px'],
         	      content: rootUrl+'/edit/' + id,
         	      end: function(index){
         	    	  $('#table_list').bootstrapTable("refresh");
@@ -198,10 +219,10 @@
         function add(){
         	layer.open({
         	      type: 2,
-        	      title: '资源添加',
+        	      title: '功能添加',
         	      shadeClose: true,
         	      shade: false,
-				  area: ['1293px', '990px'],
+				  area: ['893px', '890px'],
         	      content: rootUrl+'/add',
         	      end: function(index){
         	    	  $('#table_list').bootstrapTable("refresh");

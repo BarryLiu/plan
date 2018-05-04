@@ -15,7 +15,8 @@
   * jpa  
   * shiro 1.2.4 
   * druid 1.1.6
-  * spring-boot-maven-plugin 持续集成
+  * swagger
+  * spring-boot-maven-plugin 
 
 
 # 产品设计

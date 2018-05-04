@@ -2,6 +2,7 @@ package com.project.plan.service.impl;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.project.plan.common.Constats;
@@ -97,5 +98,12 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements I
 		user.setRoles(roles);
 		update(user);
 	}
-	
+
+	/**
+	 * 查询所有登录过的用户
+	 * @return
+     */
+	public List<User> findAllLoginedUser() {
+		return userDao.findAllLoginedUser();
+	}
 }

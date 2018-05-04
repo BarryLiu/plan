@@ -73,13 +73,17 @@
                                     <textarea style="height: 150px;" id="updateComment" name="updateComment" class="form-control">${project.updateComment}</textarea>
                                 </div>
                             </div>
-                            <@shiro.hasPermission name="plan:project:edit">
+
                                 <div class="form-group">
                                     <div class="col-sm-8 col-sm-offset-3">
-                                        <button class="btn btn-primary" type="submit">提交</button>
+                                        <@shiro.hasPermission name="plan:project:edit">
+                                            <button class="btn btn-primary" type="submit">提交</button>
+                                        </@shiro.hasPermission>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <button class="btn btn-primary" type="button" onclick="closeWindow();">取消</button>
                                     </div>
                                 </div>
-                            </@shiro.hasPermission>
+
                         </form>
                     </div>
                 </div>
@@ -140,6 +144,10 @@
             } 
     	});
     });
+    var closeWindow = function(){
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+        parent.layer.close(index);
+    }
     </script>
 
 </body>

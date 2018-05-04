@@ -144,7 +144,7 @@ public class TacheController extends BaseController {
     @ApiOperation(value="跳到添加环节页面", notes="增加和修改是一个页面")
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String add(ModelMap map) {
-        List<User> userList = userService.findAll();
+        List<User> userList = userService.findAllLoginedUser();
         map.put("userList", userList);
         return "plan/tache/form";
     }
@@ -155,7 +155,7 @@ public class TacheController extends BaseController {
     public String edit(@PathVariable Integer id, ModelMap map) {
         Tache tache = tacheService.find(id);
         map.put("tache", tache);
-        List<User> userList = userService.getBaseDao().findAll();
+        List<User> userList = userService.findAllLoginedUser();
         map.put("userList", userList);
 
         return "plan/tache/form";
@@ -164,9 +164,10 @@ public class TacheController extends BaseController {
     @ApiOperation(value="修改或添加环节", notes="有id就是修改,没有id添加")
     @RequestMapping(value= {"/edit"}, method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult edit(Tache tache, ModelMap map,Integer moduleId){
+    public JsonResult edit(Tache tache, ModelMap map,Integer moduleId,List<Integer>  groupUserIds){
+        System.out.println("groupUserIds: "+groupUserIds);
         try {
-            tacheService.editTache(tache,request);
+            tacheService.editTache(tache,groupUserIds,request);
         } catch (Exception e) {
             e.printStackTrace();
             return JsonResult.failure(e.getMessage());
@@ -235,8 +236,8 @@ public class TacheController extends BaseController {
     @RequestMapping(value= {"/oneModuleDetail"},method = RequestMethod.GET)
     public String oneModuleDetail(ModelMap map ,Integer moduleId){
         Module module = moduleService.find(moduleId);
-        Map<String,Long> typeMap = tacheService.selectTypeMap();
-        map.put("typeMap",typeMap);
+//        Map<String,Long> typeMap = tacheService.selectTypeMap();
+//        map.put("typeMap",typeMap);
         map.put("module",module);
         return "plan/module/moduleDetail";
     }

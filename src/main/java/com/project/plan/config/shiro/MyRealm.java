@@ -1,5 +1,6 @@
 package com.project.plan.config.shiro;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -93,6 +94,8 @@ public class MyRealm extends AuthorizingRealm {
 
 		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, password, getName());
 		SecurityUtils.getSubject().getSession().setAttribute(Constats.CURRENTUSER,user);//session保存用户
+		user.setLastLoginTime(new Date());//记录最后登录时间
+		userService.saveOrUpdate(user);
 		return info;
 	}
 

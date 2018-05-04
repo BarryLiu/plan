@@ -90,6 +90,12 @@ public class Tache  extends AbstractEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    //组员,由责任人代领组员一起做这个活儿,不想复杂的多设计User-Tache 多对多的表啦,里面业务不多，主要是展示,就以json字符串来保存吧! eg: [{"id":2,"nikeName":"小华","id":23,"nikeName":"小明"}]
+    @Column(name="name",length=2000)
+    private String groupUsers;
+
+
+
     //模块
     @NotNull(message="模块不能为空")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -127,7 +133,16 @@ public class Tache  extends AbstractEntity {
             this.realBeginTime = tache.getRealBeginTime();
             this.realEndTime = tache.getRealEndTime();
             this.archiveTime = tache.getArchiveTime();
+
+            this.groupUsers = tache.getGroupUsers();
         }
     }
 
+    @Transient
+    @NonNull
+    public Map<Integer,String> getGroupUserMap(){
+        Map<Integer,String> map =new HashMap<>();
+
+        return map;
+    }
 }

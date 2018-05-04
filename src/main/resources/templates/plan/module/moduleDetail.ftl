@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>模块列表</title>
+    <title>功能列表</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
 
@@ -23,7 +23,7 @@
 
 <body class="gray-bg">
 <div class="wrapper wrapper-content  animated fadeInRight">
-	<table border="1" width="98%" align="center">
+	<#--<table border="1" width="98%" align="center">
 		<tr>
 			<#list typeMap?keys as key >
            		 <td>
@@ -34,7 +34,7 @@
 			</#list>
 		</tr>
         <tr>
-            <td colspan="${typeMap?size }">
+            <td colspan="${typeMap?size }">-->
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="ibox ">
@@ -42,7 +42,7 @@
                                 <h5>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									<font size="4"><b>${module.project.name}</b></font>&nbsp;&nbsp; 项目,&nbsp;&nbsp;&nbsp;
-                                    <font size="4"><b>${module.name }</b></font>&nbsp;&nbsp;模块
+                                    <font size="4"><b>${module.name }</b></font>&nbsp;&nbsp;功能
 									期望上线时间: <font size="4"> ${module.wishTime }</font>
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									启动时间: <font size="4">${module.startTime }</font>
@@ -65,9 +65,9 @@
                         </div>
                     </div>
                 </div>
-			</td>
+			<#--</td>
         </tr>
-	</table>
+	</table>-->
 
 </div>
 
@@ -136,10 +136,10 @@
 			    },{
                 title: "项目名称",
                 field: "module.project.name"
-            },*/{
-                title: "模块名称",
-                field: "module.name"
             },{
+                title: "功能名称",
+                field: "module.name"
+            },*/{
                 title: "环节序号",
                 field: "tacheIndex",
                 sortable: true

@@ -30,7 +30,7 @@
                     <div class="ibox-content">
                         <p>环节描述：</p>
                         开发系统某一功能模块会经历<b>市场需求->产品调研->产品设计->软件开发->软件测试-功能上线推向市场</b>等环节
-                        <b>添加模块会自动为其添加这一模块需要从设计到上线需要经过的环节。</b><br/>
+                        <b>添加功能会自动为其添加这一功能需要从设计到上线需要经过的环节。</b><br/>
                         环节:&nbsp;&nbsp;&nbsp;&nbsp;
                         一:线框图评审
                         二:原型交互稿评审
@@ -57,7 +57,7 @@
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>资源编辑</h5>
+                        <h5>功能编辑</h5>
                     </div>
                     <div class="ibox-content">
                         <form class="form-horizontal m-t" id="frm" method="post" action="${ctx!}/plan/module/edit">
@@ -65,7 +65,7 @@
 
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">项目名称：</label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-4">
                                     <select name="project.id" class="form-control">
                                         <#list projectList as project >
                                              <option value="${project.id }" <#if project.id == (module.project.id ) > selected="selected"</#if>>${project.name }</option>
@@ -75,8 +75,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" >模块名称：</label>
-                                <div class="col-sm-3">
+                                <label class="col-sm-3 control-label" >功能名称：</label>
+                                <div class="col-sm-4">
                                     <input id="name" name="name" class="form-control" type="text" value="${module.name}">
                                 </div>
                             </div>
@@ -96,31 +96,39 @@
                                 <label class="col-sm-3 control-label">状态：</label>
                                 <div class="col-sm-2">
                                 	<select name="status" class="form-control">
-                                		<option value="0" <#if module.status == 0>selected="selected"</#if>>正常</option>
-                                		<option value="1" <#if module.status == 1>selected="selected"</#if>>异常</option>
-                                        <option value="2" <#if module.status == 2>selected="selected"</#if>>已上线</option>
+                                		<#--<option value="0" <#if module.status == 0>selected="selected"</#if>>正常</option>-->
+                                		<#--<option value="1" <#if module.status == 1>selected="selected"</#if>>异常</option>-->
+                                        <#--<option value="2" <#if module.status == 2>selected="selected"</#if>>已上线</option>-->
+                                        <option value="0" <#if module.status == 0>selected="selected"</#if>>待启动</option>
+                                		<option value="1" <#if module.status == 1>selected="selected"</#if>>进行中</option>
+                                        <option value="2" <#if module.status == 2>selected="selected"</#if>>暂停</option>
+                                        <option value="3" <#if module.status == 3>selected="selected"</#if>>待上线</option>
+                                        <option value="4" <#if module.status == 4>selected="selected"</#if>>上线</option>
                                 	</select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">创建描述：</label>
                                 <div class="col-sm-8">
-                                    <textarea style="height: 150px;" id="createComment" name="createComment" class="form-control">${module.createComment}</textarea>
+                                    <textarea style="height: 80px;" id="createComment" name="createComment" class="form-control">${module.createComment}</textarea>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">修改描述：</label>
                                 <div class="col-sm-8">
-                                    <textarea style="height: 150px;" id="updateComment" name="updateComment" class="form-control">${module.updateComment}</textarea>
+                                    <textarea style="height: 80px;" id="updateComment" name="updateComment" class="form-control">${module.updateComment}</textarea>
                                 </div>
                             </div>
-                            <@shiro.hasPermission name="plan:module:edit">
-                                <div class="form-group">
+                            <div class="form-group">
                                     <div class="col-sm-8 col-sm-offset-3">
-                                        <button class="btn btn-primary" type="submit">提交</button>
+                                        <@shiro.hasPermission name="plan:module:edit">
+                                            <button class="btn btn-primary" type="submit">提交</button>
+                                        </@shiro.hasPermission>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <button class="btn btn-primary" type="button" onclick="closeWindow();">取消</button>
                                     </div>
-                                </div>
-                            </@shiro.hasPermission>
+                            </div>
+
                         </form>
                     </div>
                 </div>
@@ -192,14 +200,18 @@
    	    		   data: $(form).serialize(),
    	    		   success: function(msg){
 	   	    			layer.msg(msg.message, {time: 2000},function(){
-	   						var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-	   						parent.layer.close(index); 
+                            closeWindow();
 	   					});
    	    		   }
    	    		});
             } 
     	});
+
     });
+    var closeWindow = function(){
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+        parent.layer.close(index);
+    }
     </script>
 
 </body>
