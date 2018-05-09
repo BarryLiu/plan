@@ -1,5 +1,6 @@
 package com.project.plan.service.plan;
 
+import com.alibaba.druid.support.json.JSONUtils;
 import com.project.plan.common.Constats;
 import com.project.plan.common.utils.DateUtil;
 import com.project.plan.common.utils.TextUtil;
@@ -12,6 +13,7 @@ import com.project.plan.entity.plan.Module;
 import com.project.plan.entity.plan.Openate;
 import com.project.plan.entity.plan.Tache;
 import com.project.plan.service.support.impl.BaseServiceImpl;
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,6 +66,7 @@ public class TacheServiceImpl extends BaseServiceImpl<Tache,Integer> {
 
             dbTache.setUpdateComment(tache.getUpdateComment());
             dbTache.setUpdateTime(sysDate);
+            dbTache.setGroupUsers(tache.getGroupUsers());
 
             if(tache.getUser()!=null&&tache.getUser().getId()!=null){
                 User u = new User();//修改负责人
@@ -124,8 +127,26 @@ public class TacheServiceImpl extends BaseServiceImpl<Tache,Integer> {
             log.setStatus(Openate.STATUS_WARN);
             log.setDuration(0L);
 
-            String createComment = compateUpdateComment(dbTache,tache,groupUserIds);
+            List<User> groupUsers = groupUserIds.size()==0?new ArrayList<>():userDao.findByIds(groupUserIds);
+
+
+
+
+            String createComment = compateUpdateComment(dbTache,tache,groupUsers);
             log.setCreateComment(createComment);
+
+            List<Object> users = new ArrayList<>();
+            for (User u:groupUsers) {
+                Map<String,String> userMap = new HashMap<>();
+                userMap.put("id",u.getId()+"");
+                userMap.put("nickName",u.getNickName());
+
+                users.add(userMap);
+            }
+            String str= JSONUtils.toJSONString(users);
+            tache.setGroupUsers(str);//设置小组成员
+
+
 //                Tache t = new Tache();
 //                t.setId(tache.getId());
 //                log.setTache(m);
@@ -146,19 +167,67 @@ public class TacheServiceImpl extends BaseServiceImpl<Tache,Integer> {
      * @param tache
      * @return
      */
-    private String compateUpdateComment(Tache dbTache, Tache tache,List<Integer> groupUserIds) {
+    private String compateUpdateComment(Tache dbTache, Tache tache,List<User> userList) {
         StringBuffer sb = new StringBuffer();
         if(dbTache==null||tache==null){
             throw new RuntimeException("修改的环节或要修改的环节为空!!!");
         }
+
+
         //System.out.println("懒加载 user对象 "+dbTache.getUser().getId());
-        Map<Integer,String> addGroupUser = new HashMap<>();
-        Map<Integer,String> removeGroupUser = new HashMap<>();
+        Map<Integer,String> addGroupUser = new HashMap<>();//新加的小组成员
+        Map<Integer,String> removeGroupUser = new HashMap<>();//去掉的小组成员
+        List<Map<String, String>> groupList = dbTache.getGroupUserList();
+        Map<Integer,User> dbUsers = new HashMap<>();
+        Map<Integer,User> groupUsers = new HashMap<>();
+        for (Map<String, String> map:groupList) {
+            String idStr = map.get("id");
+            Integer id  = Integer.valueOf(idStr);
+            String name = map.get("nickName");
+            User u = new User();
+            u.setId(id);
+            u.setNickName(name);
 
-
-        if(groupUserIds!=null&&groupUserIds.size()>0){
-            List<User> userList = userDao.findByIds(groupUserIds);
+            dbUsers.put(u.getId(),u);
         }
+        for (User u:userList) {
+            groupUsers.put(u.getId(),u);
+        }
+
+        Map<Integer,User> allUsers = new HashMap<>();
+        allUsers.putAll(dbUsers);
+        allUsers.putAll(groupUsers);
+
+        for (Integer id:allUsers.keySet()) {
+            boolean dbflag = dbUsers.containsKey(id);
+            boolean newflag = groupUsers.containsKey(id);
+            User user = allUsers.get(id);
+            if(dbflag&&newflag){//修改之前有，修改之后也有,他不变
+                continue;
+            }else if(dbflag==true && newflag ==false ){//他已经不再这个小组
+                removeGroupUser.put(user.getId(),user.getNickName());
+            }else if(dbflag == false && newflag == true){//他新加入这个小组
+                addGroupUser.put(user.getId(),user.getNickName());
+            }
+        }
+        if(!addGroupUser.isEmpty()){
+            sb.append(" 添加小组成员: ");
+            for (Integer id: addGroupUser.keySet()) {
+                String nickName = addGroupUser.get(id);
+                sb.append(nickName+"、");
+            }
+            sb.append("。");
+        }
+        if(!removeGroupUser.isEmpty()){
+            sb.append(" 移除小组成员: ");
+            for (Integer id: removeGroupUser.keySet()) {
+                String nickName = removeGroupUser.get(id);
+                sb.append(nickName+"、");
+            }
+            sb.append("。");
+        }
+
+
 
 
 
@@ -168,14 +237,21 @@ public class TacheServiceImpl extends BaseServiceImpl<Tache,Integer> {
                 &&tache.getUser()!=null&&tache.getUser().getId()!=null){//添加负责人
             User u = userDao.findOne(tache.getUser().getId());
             sb.append(" 添加责任人为 “"+u.getUserName()+"”");
+            tache.setRealBeginTime(Calendar.getInstance().getTime());
+
+            
         }else if(dbTache.getUser() != null&&dbTache.getUser().getId()!=null
                 &&(tache.getUser() == null||tache.getUser().getId()==null)){//修改负责人为空
             sb.append(" 将责任人由“"+dbTache.getUser().getUserName()+"” 改为空");
+            tache.setRealEndTime(Calendar.getInstance().getTime());
+
         }else if(dbTache.getUser()!=null&&tache.getUser() !=null &&
                 dbTache.getUser().getId()!=null&&tache.getUser().getId()!=null&&
                 !dbTache.getUser().getId().equals(tache.getUser().getId())){
             User u = userDao.findOne(tache.getUser().getId());
             sb.append(" 将责任人由“"+dbTache.getUser().getUserName()+"” 改为 “"+u.getUserName()+"”");
+
+
         }else{//没有修改不记录
             System.out.println("dbTache: "+dbTache+"  ---> "+tache);
         }

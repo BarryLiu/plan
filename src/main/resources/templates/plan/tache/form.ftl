@@ -83,7 +83,7 @@
                                     <select class="selectpicker" name="groupUserIds" id = "groupUserIds" multiple data-live-search="true" data-live-search-placeholder="Search" data-actions-box="true">
                                         <#--<optgroup label="filter1">-->
                                             <#list userList as u >
-                                                <option value="${u.id }" <#if u.id == (tache.user.id ) > selected="selected"</#if>>${u.nickName }</option>
+                                                <option value="${u.id }" <#if userIdList?seq_contains(u.id) > selected="selected"</#if>>${u.nickName }</option>
                                             </#list>
                                         <#--</optgroup>
                                         <optgroup label="filter2">
@@ -198,16 +198,16 @@
             event: 'focus' ,//响应事件。如果没有传入event，则按照默认的click
             format:"YYYY-MM-DD"
         });
-        laydate({
-            elem: '#realBeginTime', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
-            event: 'focus' ,//响应事件。如果没有传入event，则按照默认的click
-            format:"YYYY-MM-DD"
-        });
-        laydate({
-            elem: '#realEndTime', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
-            event: 'focus' ,//响应事件。如果没有传入event，则按照默认的click
-            format:"YYYY-MM-DD"
-        });
+//        laydate({
+//            elem: '#realBeginTime', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
+//            event: 'focus' ,//响应事件。如果没有传入event，则按照默认的click
+//            format:"YYYY-MM-DD"
+//        });
+//        laydate({
+//            elem: '#realEndTime', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
+//            event: 'focus' ,//响应事件。如果没有传入event，则按照默认的click
+//            format:"YYYY-MM-DD"
+//        });
 	    $("#frm").validate({
     	    rules: {
     	    	name: {

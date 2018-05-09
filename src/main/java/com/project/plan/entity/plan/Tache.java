@@ -1,5 +1,9 @@
 package com.project.plan.entity.plan;
 
+import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.project.plan.entity.User;
 import com.project.plan.entity.support.AbstractEntity;
@@ -91,7 +95,7 @@ public class Tache  extends AbstractEntity {
     private User user;
 
     //组员,由责任人代领组员一起做这个活儿,不想复杂的多设计User-Tache 多对多的表啦,里面业务不多，主要是展示,就以json字符串来保存吧! eg: [{"id":2,"nikeName":"小华","id":23,"nikeName":"小明"}]
-    @Column(name="name",length=2000)
+    @Column(name="group_users",length=2000)
     private String groupUsers;
 
 
@@ -140,9 +144,38 @@ public class Tache  extends AbstractEntity {
 
     @Transient
     @NonNull
-    public Map<Integer,String> getGroupUserMap(){
-        Map<Integer,String> map =new HashMap<>();
+    public  List<Map<String,String>> getGroupUserList(){
+        List<Map<String,String>>  list =new ArrayList<>();
+        if(groupUsers!=null&&!"".equalsIgnoreCase(groupUsers)){
+            return ( List<Map<String,String>>) JSONUtils.parse(groupUsers);
+        }
+        return list;
+    }
+    public static void main(String[] args){
+        Map<String,String> tom =new HashMap<>();
+        tom.put("id","2");
+        tom.put("name","tom");
 
-        return map;
+        Map<String,String> jack =new HashMap<>();
+        jack.put("id","3");
+        jack.put("name","jack");
+
+        List<Object> users = new ArrayList<>();
+        users.add(tom);
+        users.add(jack);
+
+        String str= JSONUtils.toJSONString(users);
+        System.out.println("str: "+str);
+        System.out.println();
+
+        List<Map<String,String>> list = ( List<Map<String,String>>) JSONUtils.parse(str);
+
+        for (int i = 0 ;i<list.size();i++) {
+            Map<String,String> map = list.get(i);
+            String id= map.get("id");
+            String name = map.get("name");
+            System.out.println("id: "+id+" name: "+name);
+        }
+        System.out.println("list: "+list);
     }
 }

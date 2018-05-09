@@ -25,6 +25,7 @@ import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -155,8 +156,16 @@ public class TacheController extends BaseController {
     public String edit(@PathVariable Integer id, ModelMap map) {
         Tache tache = tacheService.find(id);
         map.put("tache", tache);
+        List<Map<String, String>> groupUserList = tache.getGroupUserList();
+        List<Integer> userIdList = new ArrayList<>();
+        for (Map<String, String> user:groupUserList) {
+            String idStr = user.get("id");
+            userIdList.add(Integer.valueOf(idStr));
+        }
+
         List<User> userList = userService.findAllLoginedUser();
         map.put("userList", userList);
+        map.put("userIdList",userIdList);
 
         return "plan/tache/form";
     }
@@ -164,10 +173,11 @@ public class TacheController extends BaseController {
     @ApiOperation(value="修改或添加环节", notes="有id就是修改,没有id添加")
     @RequestMapping(value= {"/edit"}, method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult edit(Tache tache, ModelMap map,Integer moduleId,List<Integer>  groupUserIds){
+    public JsonResult edit(Tache tache, ModelMap map,Integer moduleId,Integer[]  groupUserIds){
+        groupUserIds= groupUserIds ==null ?new Integer[0]:groupUserIds;//如果为空让其未leng=0的对象
         System.out.println("groupUserIds: "+groupUserIds);
         try {
-            tacheService.editTache(tache,groupUserIds,request);
+            tacheService.editTache(tache,Arrays.asList(groupUserIds),request);
         } catch (Exception e) {
             e.printStackTrace();
             return JsonResult.failure(e.getMessage());
@@ -175,7 +185,7 @@ public class TacheController extends BaseController {
         return JsonResult.success();
     }
 
-    @ApiOperation(value="删除用户", notes="根据用户id删除用户")
+    @ApiOperation(value="删除环节", notes="根据用户id删除环节")
     @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Integer",paramType = "path")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     @ResponseBody
