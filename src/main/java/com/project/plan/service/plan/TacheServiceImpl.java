@@ -7,11 +7,13 @@ import com.project.plan.common.utils.TextUtil;
 import com.project.plan.dao.IUserDao;
 import com.project.plan.dao.plan.IOpenateDao;
 import com.project.plan.dao.plan.ITacheDao;
+import com.project.plan.dao.plan.ITacheUserDao;
 import com.project.plan.dao.support.IBaseDao;
 import com.project.plan.entity.User;
 import com.project.plan.entity.plan.Module;
 import com.project.plan.entity.plan.Openate;
 import com.project.plan.entity.plan.Tache;
+import com.project.plan.entity.plan.TacheUser;
 import com.project.plan.service.support.impl.BaseServiceImpl;
 import com.sun.javafx.scene.control.skin.VirtualFlow;
 import org.apache.shiro.SecurityUtils;
@@ -36,6 +38,10 @@ public class TacheServiceImpl extends BaseServiceImpl<Tache,Integer> {
 
     @Autowired
     private IOpenateDao openateDao;
+
+    @Autowired
+    private ITacheUserDao tacheUserDao;
+
     @Override
     public IBaseDao<Tache, Integer> getBaseDao() {
         return this.tacheDao;
@@ -230,28 +236,40 @@ public class TacheServiceImpl extends BaseServiceImpl<Tache,Integer> {
 
 
 
-
+        Date sysDate = Calendar.getInstance().getTime();
         if(dbTache.getUser()==null&&tache.getUser()==null){//没有选择负责人,默认修改人
 
         }else if(dbTache.getUser()==null
                 &&tache.getUser()!=null&&tache.getUser().getId()!=null){//添加负责人
             User u = userDao.findOne(tache.getUser().getId());
-            sb.append(" 添加责任人为 “"+u.getUserName()+"”");
-            tache.setRealBeginTime(Calendar.getInstance().getTime());
+            sb.append(" 添加责任人为 “"+u.getNickName()+"”");
+            tache.setRealBeginTime(sysDate);
+            tache.setRealEndTime(null);
 
-            
+            TacheUser tu = new TacheUser(dbTache.getName()+"_"+u.getNickName(),dbTache,u,sysDate,null);//记录新的负责人记录
+            tu.setCreateTime(sysDate);
+            tacheUserDao.save(tu);
         }else if(dbTache.getUser() != null&&dbTache.getUser().getId()!=null
                 &&(tache.getUser() == null||tache.getUser().getId()==null)){//修改负责人为空
-            sb.append(" 将责任人由“"+dbTache.getUser().getUserName()+"” 改为空");
-            tache.setRealEndTime(Calendar.getInstance().getTime());
+            sb.append(" 将责任人由“"+dbTache.getUser().getNickName()+"” 改为空");
+            tache.setRealBeginTime(sysDate);
+            tache.setRealEndTime(null);
+
+            updateLastEndTime(dbTache.getId(),dbTache.getUser().getId(), sysDate);
 
         }else if(dbTache.getUser()!=null&&tache.getUser() !=null &&
                 dbTache.getUser().getId()!=null&&tache.getUser().getId()!=null&&
                 !dbTache.getUser().getId().equals(tache.getUser().getId())){
             User u = userDao.findOne(tache.getUser().getId());
-            sb.append(" 将责任人由“"+dbTache.getUser().getUserName()+"” 改为 “"+u.getUserName()+"”");
+            sb.append(" 将责任人由“"+dbTache.getUser().getNickName()+"” 改为 “"+u.getNickName()+"”");
+            tache.setRealBeginTime(sysDate);
+            tache.setRealEndTime(null);
 
+            updateLastEndTime(dbTache.getId(),dbTache.getUser().getId(), sysDate);
 
+            TacheUser tu2 = new TacheUser(dbTache.getName()+"_"+u.getNickName(),dbTache,u,sysDate,null);//记录新的负责人记录
+            tu2.setCreateTime(sysDate);
+            tacheUserDao.save(tu2);
         }else{//没有修改不记录
             System.out.println("dbTache: "+dbTache+"  ---> "+tache);
         }
@@ -259,7 +277,13 @@ public class TacheServiceImpl extends BaseServiceImpl<Tache,Integer> {
         if(dbTache.getStatus().intValue()!=tache.getStatus().intValue()){//修改环节状态
             String dbStatus = Tache.TACHE_STATUS(dbTache.getStatus());
             String status = Tache.TACHE_STATUS(tache.getStatus());
-            sb.append(" 将修改描述由“"+dbStatus+"”改成“"+status+"”");
+            sb.append(" 将状态由“"+dbStatus+"”改成“"+status+"”");
+
+            if(Tache.STAT_SUCCESS==tache.getStatus()&&Tache.STAT_SUCCESS!=dbTache.getStatus()){//状态是已归档,并且之前不是已归档,
+                tache.setArchiveTime(sysDate);
+                tache.setRealEndTime(sysDate);
+                updateLastEndTime(dbTache.getId(),dbTache.getUser().getId(), sysDate);
+            }
         }
 
         if(TextUtil.isNullOrEmpty(dbTache.getUpdateComment())
@@ -297,6 +321,23 @@ public class TacheServiceImpl extends BaseServiceImpl<Tache,Integer> {
         }else{}//还有一种空修改成空,不处理
         return sb.toString();
     }
+
+    /**
+     * 修改这个环节下这个人的最后一次操作的结束时间为指定时间
+     * @param tacheId
+     * @param userId
+     * @param sysDate
+     */
+    private void updateLastEndTime(Integer tacheId,Integer userId, Date sysDate) {
+        List<TacheUser> tuList= tacheUserDao.findTacheLastUser(tacheId,userId);//将之前那个记录结束掉
+        if(tuList!=null&&tuList.size()>0){
+            TacheUser tu = tuList.get(0);
+            tu.setEndTime(sysDate);
+            tu.setUpdateTime(sysDate);
+            tacheUserDao.save(tu);
+        }
+    }
+
     //未上线模块功能分布列表
     public Map<String, Long> selectTypeMap() {
         Map<String,Long> typeMap = new LinkedHashMap<>();

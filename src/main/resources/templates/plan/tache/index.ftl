@@ -129,7 +129,11 @@
                         sortable: true
 				},{
 					title: "环节名称",
-					field: "name"
+					field: "name",
+                    formatter: function (value, row, index) {
+                        var operateHtml= '<a   onclick="recordTacheUser(\''+row.id+'\',1)">'+row.name+'</a>';
+                        return operateHtml;
+                    }
 				},{
                     title: "计划时间",
                     field: "planBeginTime",
@@ -140,7 +144,7 @@
                         planBeginTime=planBeginTime==null?'':planBeginTime;
                         planEndTime=planEndTime==null?'':planEndTime;
 
-						return planBeginTime+" - "+planEndTime;
+						return planBeginTime+" / "+planEndTime;
                     }
                 },{
                     title: "实际时间",
@@ -151,7 +155,7 @@
 						var realEndTime = row.realEndTime;
                         realBeginTime=realBeginTime==null?'':realBeginTime;
                         realEndTime=realEndTime==null?'':realEndTime;
-                        return realBeginTime+" - "+realEndTime;
+                        return realBeginTime+" / "+realEndTime;
                     }
                 } ,{
                     title: "责任人",
@@ -189,18 +193,18 @@
                     title: "备注",
                     field: "createTime",
                     formatter: function (value, row, index) {
-						var operateHtml= '<a   onclick="record(\''+row.id+'\',1)">&nbsp;记录（'+row.openates.length+'）条</a>';
+						var operateHtml= '<a   onclick="record(\''+row.id+'\',1)">&nbsp;（'+row.openates.length+'）条</a>';
 						return operateHtml;
                     }
                 },{
 			        title: "最后更新时间",
 			        field: "updateTime",
 			        sortable: true
-			    },{
+			    }/*,{
                     title: "归档时间",
                     field: "archiveTime",
                     sortable: true
-                },{
+                }*/,{
 			        title: "操作",
 			        field: "empty",
                     formatter: function (value, row, index) {
@@ -219,7 +223,8 @@
         	      title: '环节修改',
         	      shadeClose: true,
         	      shade: false,
-        	      area: ['1093px', '800px'],
+//        	      area: ['1093px', '800px'],
+                  area: ['90%', '80%'],
         	      content: rootUrl+'/edit/' + id,
         	      end: function(index){
         	    	  $('#table_list').bootstrapTable("refresh");
@@ -232,8 +237,23 @@
                 title: '环节修改',
                 shadeClose: true,
                 shade: false,
-                area: ['1293px', '800px'],
+//                area: ['1293px', '800px'],
+                area: ['70%', '80%'],
                 content: rootUrl+'/recordlist?tacheId=' + id+'&type='+type,
+                end: function(index){
+                    $('#table_list').bootstrapTable("refresh");
+                }
+            });
+        }
+        function recordTacheUser(id,type){
+            layer.open({
+                type: 2,
+                title: '环节操作记录',
+                shadeClose: true,
+                shade: false,
+//                area: ['1293px', '800px'],
+                area: ['70%', '80%'],
+                content: rootUrl+'/recordTacheUserlist?tacheId=' + id+'&type='+type,
                 end: function(index){
                     $('#table_list').bootstrapTable("refresh");
                 }
@@ -245,7 +265,8 @@
         	      title: '环节添加(由自动添加)',
         	      shadeClose: true,
         	      shade: false,
-        	      area: ['893px', '600px'],
+        	      //area: ['893px', '600px'],
+                  area: ['70%', '80%'],
         	      content: rootUrl+'/add',
         	      end: function(index){
         	    	  $('#table_list').bootstrapTable("refresh");

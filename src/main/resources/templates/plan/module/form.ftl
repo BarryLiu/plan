@@ -103,7 +103,7 @@
                                 		<option value="1" <#if module.status == 1>selected="selected"</#if>>进行中</option>
                                         <option value="2" <#if module.status == 2>selected="selected"</#if>>暂停</option>
                                         <option value="3" <#if module.status == 3>selected="selected"</#if>>待上线</option>
-                                        <option value="4" <#if module.status == 4>selected="selected"</#if>>上线</option>
+                                        <option value="4" <#if module.status == 4>selected="selected"</#if>>已上线</option>
                                 	</select>
                                 </div>
                             </div>

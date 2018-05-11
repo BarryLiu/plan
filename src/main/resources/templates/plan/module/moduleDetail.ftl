@@ -106,11 +106,11 @@
             //启动分页
             pagination: true,
             //每页显示的记录数
-            pageSize: 11,
+            pageSize: 12,
             //当前第几页
             pageNumber: 1,
             //记录数可选列表
-            pageList: [11, 22, 33, 44],
+            pageList: [12, 24, 36, 48],
             //是否启用查询
             search: true,
             //是否启用详细信息视图
@@ -145,7 +145,11 @@
                 sortable: true
             },{
                 title: "环节名称",
-                field: "name"
+                field: "name",
+                formatter: function (value, row, index) {
+                    var operateHtml= '<a   onclick="recordTacheUser(\''+row.id+'\',1)">'+row.name+'</a>';
+                    return operateHtml;
+                }
             },{
                 title: "计划时间",
                 field: "planBeginTime",
@@ -153,10 +157,10 @@
                 formatter: function (value, row, index) {
                     var planBeginTime =  row.planBeginTime;
                     var planEndTime = row.planEndTime;
-                    planBeginTime=planBeginTime==null?'':planBeginTime;
-                    planEndTime=planEndTime==null?'':planEndTime;
+                    planBeginTime=planBeginTime==null?'N':planBeginTime;
+                    planEndTime=planEndTime==null?'N':planEndTime;
 
-                    return planBeginTime+" - "+planEndTime;
+                    return planBeginTime+" / "+planEndTime;
                 }
             },{
                 title: "实际时间",
@@ -165,9 +169,9 @@
                 formatter: function (value, row, index) {
                     var realBeginTime =  row.realBeginTime;
                     var realEndTime = row.realEndTime;
-                    realBeginTime=realBeginTime==null?'':realBeginTime;
-                    realEndTime=realEndTime==null?'':realEndTime;
-                    return realBeginTime+" - "+realEndTime;
+                    realBeginTime=realBeginTime==null?'N':realBeginTime;
+                    realEndTime=realEndTime==null?'N':realEndTime;
+                    return realBeginTime+" / "+realEndTime;
                 }
             } ,{
                 title: "责任人",
@@ -250,6 +254,19 @@
             shade: false,
             area: ['1293px', '800px'],
             content: rootUrl+'/recordlist?tacheId=' + id+'&type='+type,
+            end: function(index){
+                $('#table_list').bootstrapTable("refresh");
+            }
+        });
+    }
+    function recordTacheUser(id,type){
+        layer.open({
+            type: 2,
+            title: '环节操作记录',
+            shadeClose: true,
+            shade: false,
+            area: ['1293px', '800px'],
+            content: rootUrl+'/recordTacheUserlist?tacheId=' + id+'&type='+type,
             end: function(index){
                 $('#table_list').bootstrapTable("refresh");
             }

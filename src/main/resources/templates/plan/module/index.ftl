@@ -25,7 +25,7 @@
 <body class="gray-bg">
     <div class="wrapper wrapper-content  animated fadeInRight">
 
-        <table border="1" width="98%" align="center">
+       <#-- <table border="1" width="98%" align="center">
             <tr>
 			<#list typeMap?keys as key >
                 <td>
@@ -36,7 +36,7 @@
 			</#list>
             </tr>
             <tr>
-                <td colspan="${typeMap?size }">
+                <td colspan="${typeMap?size }">-->
 
         <div class="row">
             <div class="col-sm-12">
@@ -66,9 +66,9 @@
                 </div>
             </div>
         </div>
-				</td>
+				<#--</td>
             </tr>
-        </table>
+        </table>-->
     </div>
 
     <!-- 全局js -->
@@ -209,7 +209,7 @@
         	      title: '功能修改',
         	      shadeClose: true,
         	      shade: false,
-        	      area: ['893px', '890px'],
+				  area: ['80%', '90%'],
         	      content: rootUrl+'/edit/' + id,
         	      end: function(index){
         	    	  $('#table_list').bootstrapTable("refresh");
@@ -222,7 +222,7 @@
         	      title: '功能添加',
         	      shadeClose: true,
         	      shade: false,
-				  area: ['893px', '890px'],
+				  area: ['80%', '90%'],
         	      content: rootUrl+'/add',
         	      end: function(index){
         	    	  $('#table_list').bootstrapTable("refresh");

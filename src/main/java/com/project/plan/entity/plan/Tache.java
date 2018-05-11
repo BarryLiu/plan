@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -69,11 +70,13 @@ public class Tache  extends AbstractEntity {
     protected Date planEndTime;
 
     //实际开始时间
-    @JSONField(format = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     @Column(name="real_begin_time",length=500)
     protected Date realBeginTime;
     //实际结束时间
-    @JSONField(format = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     @Column(name="real_end_time",length=500)
     protected Date realEndTime;
 
@@ -82,6 +85,7 @@ public class Tache  extends AbstractEntity {
     private Integer status ;
 
     //归档时间
+    @Deprecated //归档时间不用了， 它就是最后一个实际结束时间
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     @Column(name="archive_time",length=500)
     protected Date archiveTime;

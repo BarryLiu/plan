@@ -33,6 +33,8 @@
                     </div>
                     <div class="ibox-content">
                         <p>每个环节由响应的人员编辑修改,每次修改都有记录其操作内容,如此功能模块删除则下面环节以及环节下面的操作记录都删除。</p>
+                        <p>实际时间是记录这个责任人执行时间,责任人变更,时间时间开始时间变为修改时的时间。</p>
+                        <p>状态为【新创建>新执行中>测试中>归档完成】只能基于当前变更或者往后面变更,要想回退,找有响应权限的人</p>
                     </div>
                 </div>
             </div>
@@ -104,33 +106,55 @@
 
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">计划时间：</label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input id="planBeginTime" name="planBeginTime" readonly="readonly" required="true"  class="laydate-icon form-control layer-date" value="${(tache.planBeginTime?string('yyyy-MM-dd'))!''}">
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input id="planEndTime" name="planEndTime" readonly="readonly" class="laydate-icon form-control layer-date" value="${(tache.planEndTime?string('yyyy-MM-dd'))!''}">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">实际时间：</label>
-                                <div class="col-sm-2">
-                                    <input id="realBeginTime" name="realBeginTime" readonly="readonly" class="laydate-icon form-control layer-date" value="${(tache.realBeginTime?string('yyyy-MM-dd'))!''}">
+                                <div class="col-sm-3">
+                                    <input id="realBeginTime" name="realBeginTime" readonly="readonly" class="laydate-icon form-control layer-date" value="${(tache.realBeginTime?string('yyyy-MM-dd HH:mm:ss'))!''}">
                                 </div>
-                                <div class="col-sm-2">
-                                    <input id="realEndTime" name="realEndTime" readonly="readonly" class="laydate-icon form-control layer-date" value="${(tache.realEndTime?string('yyyy-MM-dd'))!''}">
+                                <div class="col-sm-3">
+                                    <input id="realEndTime" name="realEndTime" readonly="readonly" class="laydate-icon form-control layer-date" value="${(tache.realEndTime?string('yyyy-MM-dd HH:mm:ss'))!''}">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">状态：</label>
                                 <div class="col-sm-2">
-                                	<select name="status" class="form-control">
-                                		<option value="0" <#if tache.status == 0>selected="selected"</#if>>新创建</option>
-                                		<option value="1" <#if tache.status == 1>selected="selected"</#if>>新执行中</option>
+                                <#-- 回退环节状态, 有权限:所有修改, 负责人权限:可以回退到上一个版本，否则: 只能往下一个版本进行   -->
+                                <@shiro.hasPermission name="plan:tache:rollbackStatus"><#--有权限-->
+                                    <select name="status" class="form-control">
+                                        <option value="0" <#if tache.status == 0>selected="selected"</#if>>新创建</option>
+                                        <option value="1" <#if tache.status == 1>selected="selected"</#if>>新执行中</option>
                                         <option value="2" <#if tache.status == 2>selected="selected"</#if>>测试中</option>
                                         <option value="3" <#if tache.status == 3>selected="selected"</#if>>归档完成</option>
-                                	</select>
+                                    </select>
+                                </@shiro.hasPermission>
+                                <@shiro.lacksPermission name="plan:tache:rollbackStatus"><#--没有权限-->
+                                    <#assign stat= tache.status />
+
+                                    <select name="status" class="form-control">
+                                        <#if tache.status lte 0> <#--小等于0-->
+                                            <option value="0" <#if tache.status == 0>selected="selected"</#if>>新创建</option>
+                                        </#if>
+                                        <#if tache.status lte 1> <#--小等于1-->
+                                            <option value="1" <#if tache.status == 1>selected="selected"</#if>>新执行中</option>
+                                        </#if>
+                                        <#if tache.status lte 2> <#--小等于2-->
+                                            <option value="2" <#if tache.status == 2>selected="selected"</#if>>测试中</option>
+                                        </#if>
+                                        <#if tache.status lte 3> <#--小等于3-->
+                                            <option value="3" <#if tache.status == 3>selected="selected"</#if>>归档完成</option>
+                                        </#if>
+                                    </select>
+                                </@shiro.lacksPermission>
                                 </div>
                             </div>
+
                             <#--<div class="form-group">
                                 <label class="col-sm-3 control-label">创建描述${tache.createComment}：</label>
                                 <div class="col-sm-5">
@@ -212,7 +236,7 @@
     	    rules: {
     	    	name: {
     	        required: true,
-    	        minlength: 4,
+    	        minlength: 2,
     	    	maxlength: 20
     	      },
                 status: {

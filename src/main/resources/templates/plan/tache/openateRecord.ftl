@@ -60,19 +60,21 @@
                                 <label>-----------------------------------------------------------</label>
                             </#list>
                             <#if type == 0 >
-                                <input type="hidden" id="tacheId" name="tacheId" value="${tache.id}">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">备注：</label>
-                                    <div class="col-sm-5">
-                                        <textarea style="height: 150px;" id="createComment" name="createComment" class="form-control"></textarea>
+                                <@shiro.authenticated><#--没有认证不让提交-->
+                                    <input type="hidden" id="tacheId" name="tacheId" value="${tache.id}">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">备注：</label>
+                                        <div class="col-sm-5">
+                                            <textarea style="height: 150px;" id="createComment" name="createComment" class="form-control"></textarea>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <div class="col-sm-5 col-sm-offset-3">
-                                        <button class="btn btn-primary" type="submit">提交</button>
+                                    <div class="form-group">
+                                        <div class="col-sm-5 col-sm-offset-3">
+                                            <button class="btn btn-primary" type="submit">提交</button>
+                                        </div>
                                     </div>
-                                </div>
+                                </@shiro.authenticated>
                             </#if>
                         </form>
                     </div>

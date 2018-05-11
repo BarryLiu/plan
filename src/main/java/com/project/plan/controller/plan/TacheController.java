@@ -10,11 +10,9 @@ import com.project.plan.entity.User;
 import com.project.plan.entity.plan.Module;
 import com.project.plan.entity.plan.Openate;
 import com.project.plan.entity.plan.Tache;
+import com.project.plan.entity.plan.TacheUser;
 import com.project.plan.service.impl.UserServiceImpl;
-import com.project.plan.service.plan.ModuleServiceImpl;
-import com.project.plan.service.plan.OpenateServiceImpl;
-import com.project.plan.service.plan.PlanServiceImpl;
-import com.project.plan.service.plan.TacheServiceImpl;
+import com.project.plan.service.plan.*;
 import com.project.plan.service.specification.SimpleSpecificationBuilder;
 import com.project.plan.service.specification.SpecificationOperator;
 import io.swagger.annotations.ApiImplicitParam;
@@ -50,7 +48,8 @@ public class TacheController extends BaseController {
     private UserServiceImpl userService;
     @Autowired
     private ModuleServiceImpl moduleService;
-
+    @Autowired
+    private TacheUserServiceImpl tacheUserService;
 
 
     @ApiIgnore
@@ -215,7 +214,20 @@ public class TacheController extends BaseController {
         map.put("type",type);//客户端请求过来的路径类型, 0默认是点击记录按钮进来的(给他显示添加记录),1是来查看记录的,不给他添加记录
         return "plan/tache/openateRecord";
     }
+    /** 某环节环节备注记录列表 */
+    @ApiOperation(value="环节负责人记录列表", notes="记录此环节由谁负责中所有做过的操作")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "tacheId", value = "环节ID", required = true, dataType = "Integer"),
+    })
+    @RequestMapping(value = "/recordTacheUserlist",method = RequestMethod.GET)
+    public String recordTacheUserlist(ModelMap map ,Integer tacheId) {
+        Tache tache = tacheService.getBaseDao().findOne(tacheId);
+        List<TacheUser> tacheUserList = tacheUserService.findByTacheId(tache.getId());
 
+        map.put("tache",tache);
+        map.put("tacheUserList",tacheUserList);
+        return "plan/tache/tacheUserRecord";
+    }
 
     /** 添加环节备注记录 */
     @ApiOperation(value="添加操作记录", notes="添加环节操作记录")

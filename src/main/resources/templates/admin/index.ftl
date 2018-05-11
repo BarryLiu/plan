@@ -41,7 +41,7 @@
                                 </span>
                             </a>
                         </div>
-                        <div class="logo-element">PlanAdmin
+                        <div class="logo-element">Plan
                         </div>
                     </li>
                     <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
@@ -97,6 +97,14 @@
                                 <i class="fa fa-user"></i> <span class="label label-primary"></span>【<@shiro.principal type="com.project.plan.entity.User" property="nickName"/>】
                             </a>
                             <ul class="dropdown-menu dropdown-alerts">
+                                <li>
+                                    <a href="${ctx!}/">
+                                        <div>
+                                            <i class="glyphicon glyphicon-record"></i> 前台页面
+                                            <span class="pull-right text-muted small"></span>
+                                        </div>
+                                    </a>
+                                </li>
                                 <li>
                                     <a href="${ctx!}/admin/logout">
                                         <div>

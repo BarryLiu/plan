@@ -67,18 +67,23 @@ public class ModuleController extends BaseController {
         for(Module m: page.getContent()){//查询一个模块下面的描述,具体哪些人哪些功能已经上线，哪些功能没有还做,放到createComments 里面,
             List<Tache> taches = tacheService.findAllByModuleIdWithUser(m.getId());
 
-            String createComments = findModuleComments(taches,Tache.STAT_NEW);       //未归档了环节描述
-            String updateComments = findModuleComments(taches,Tache.STAT_SUCCESS);   //已经归档了环节描述
+            String createComments = findModuleComments(taches,Tache.STAT_NEW,false);       //未归档了环节描述
+            String updateComments = findModuleComments(taches,Tache.STAT_SUCCESS,false);   //已经归档了环节描述
 
             m.setCreateCommentStr(createComments);
             m.setUpdateCommentStr(updateComments);
         }
         return page;
     }
+
+    public static String findModuleComments(List<Tache> taches,int status) {
+        return findModuleComments(taches,status,true);
+    }
     /**
      * 查询这个项目下面的描述
+     * @param withComment 需不需要描述,如果不需要直接返回环节名称
      */
-    public String findModuleComments(List<Tache> taches,int status) {
+    public static String findModuleComments(List<Tache> taches,int status,boolean withComment) {
 
         StringBuffer sb = new StringBuffer();
         for (int i =0 ; i< taches.size() ; i++) {
@@ -100,6 +105,17 @@ public class ModuleController extends BaseController {
                 continue;
             }
             String comment = "“ <label class='control-label' style='color:green; '>"+t.getName()+"</label>”；" ;
+            if(!withComment){//不需要 状态等描述
+                int lastIndex = sb.lastIndexOf("<br/>");
+//                String sub=sb.substring(lastIndex,sb.length());
+//                System.out.println(sub+"   _ "+sub.length());
+                if((sb.lastIndexOf("<br/>") == -1 && sb.length()>100) || lastIndex>0&&sb.substring(lastIndex,sb.length()).length()>100) {//大于100个字就换行 : (没有换行标签&&字数大于指定值)||(有换行&& 大于定值)
+                    comment += " <br/>";
+                }
+                sb.append(comment);
+                continue;
+            }
+
             if(Tache.STAT_SUCCESS != status){//归档只有一种状态,已经归档了的就不用显示状态了吧
                 comment += " 状态为“<label class='control-label' style='color:"+colorStr+"; '>"+statusStr+"</label>”,";
             }
@@ -107,8 +123,8 @@ public class ModuleController extends BaseController {
             if(t.getUser()!=null){
                 comment += "由“<label class='control-label' style='color:green; '>"+t.getUser().getNickName()+"</label>”处理。";
             }
-            if(i%2==0){
-                comment += " </br>";
+            if(i%1==0){
+                comment += " <br/>";
             }else {
                 comment += " &nbsp;&nbsp;&nbsp;";
             }
