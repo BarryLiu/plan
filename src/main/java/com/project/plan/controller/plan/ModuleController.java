@@ -106,6 +106,10 @@ public class ModuleController extends BaseController {
             }
             String comment = "“ <label class='control-label' style='color:green; '>"+t.getName()+"</label>”；" ;
             if(!withComment){//不需要 状态等描述
+                if(true){//一个名称换一行
+                    sb.append(comment+" <br/>");
+                    continue;
+                }
                 int lastIndex = sb.lastIndexOf("<br/>");
 //                String sub=sb.substring(lastIndex,sb.length());
 //                System.out.println(sub+"   _ "+sub.length());

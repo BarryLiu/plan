@@ -140,14 +140,15 @@
                 title: "功能名称",
                 field: "module.name"
             },*/{
-                title: "环节序号",
+                title: "环节",
                 field: "tacheIndex",
                 sortable: true
             },{
                 title: "环节名称",
                 field: "name",
                 formatter: function (value, row, index) {
-                    var operateHtml= '<a   onclick="recordTacheUser(\''+row.id+'\',1)">'+row.name+'</a>';
+                    //white-space: nowrap; 添加禁止换行
+                    var operateHtml= '<a  style="white-space: nowrap;"  onclick="recordTacheUser(\''+row.id+'\',1)">'+row.name+'</a>';
                     return operateHtml;
                 }
             },{
@@ -209,18 +210,18 @@
                 title: "备注",
                 field: "createTime",
                 formatter: function (value, row, index) {
-                    var operateHtml= '<a   onclick="record(\''+row.id+'\',1)">&nbsp;记录（'+row.openates.length+'）条</a>';
+                    var operateHtml= '<a  style="white-space: nowrap;" onclick="record(\''+row.id+'\',1)">&nbsp;（'+row.openates.length+'）条</a>';
                     return operateHtml;
                 }
             },{
                 title: "最后更新时间",
                 field: "updateTime",
                 sortable: true
-            },{
+            }/*,{
                 title: "归档时间",
                 field: "archiveTime",
                 sortable: true
-            },{
+            }*/,{
                 title: "操作",
                 field: "empty",
                 formatter: function (value, row, index) {

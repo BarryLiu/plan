@@ -111,11 +111,11 @@
 			        };
 			    },
 			    //数据列
-			    columns: [{
+			    columns: [/*{
 			        title: "ID",
 			        field: "id",
 			        sortable: true
-			    },{
+			    },*/{
 			        title: "资源名称",
 			        field: "name"
 			    },{

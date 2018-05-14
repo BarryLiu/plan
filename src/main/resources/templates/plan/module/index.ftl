@@ -129,11 +129,11 @@
 			        };
 			    },
 			    //数据列
-			    columns: [{
+			    columns: [/*{
 			        title: "ID",
 			        field: "id",
 			        sortable: true
-			    },{
+			    },*/{
                     title: "项目名称",
                     field: "project.name"
                 },{

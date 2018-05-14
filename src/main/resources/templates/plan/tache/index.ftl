@@ -124,14 +124,14 @@
 			        title: "功能名称",
 			        field: "module.name"
 			    },{
-                        title: "环节序号",
+                        title: "环节",
                         field: "tacheIndex",
                         sortable: true
 				},{
 					title: "环节名称",
 					field: "name",
                     formatter: function (value, row, index) {
-                        var operateHtml= '<a   onclick="recordTacheUser(\''+row.id+'\',1)">'+row.name+'</a>';
+                        var operateHtml= '<a style="white-space: nowrap;"  onclick="recordTacheUser(\''+row.id+'\',1)">'+row.name+'</a>';
                         return operateHtml;
                     }
 				},{
@@ -193,7 +193,7 @@
                     title: "备注",
                     field: "createTime",
                     formatter: function (value, row, index) {
-						var operateHtml= '<a   onclick="record(\''+row.id+'\',1)">&nbsp;（'+row.openates.length+'）条</a>';
+						var operateHtml= '<a  style="white-space: nowrap;" onclick="record(\''+row.id+'\',1)">&nbsp;（'+row.openates.length+'）条</a>';
 						return operateHtml;
                     }
                 },{
