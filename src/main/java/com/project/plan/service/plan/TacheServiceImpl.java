@@ -92,9 +92,14 @@ public class TacheServiceImpl extends BaseServiceImpl<Tache,Integer> {
 
 
     /**
-     * 每个模块都有11个环节,添加模块为其添加11个环节记录
+     * 每个模块都有12个环节,添加模块为其添加12个环节记录
+     * ,这里是用的是配好的12个环节的做法,弃用,后面要改用更具数据库表中动态配置的来做
+     * <br/>
+     * 弃用,弃用,弃用
      * @param module
+     * @see #saveTache(Module, Integer[])
      */
+    @Deprecated
     public void saveTache(Module module) {
         List<Tache> tacheList = new ArrayList<>();
 
@@ -115,7 +120,9 @@ public class TacheServiceImpl extends BaseServiceImpl<Tache,Integer> {
         }
         tacheDao.save(tacheList);
     }
+    public void saveTache(Module module, Integer[] haveTacheIds) {
 
+    }
 
     @Transactional
     public void editTache(Tache tache,List<Integer> groupUserIds, HttpServletRequest request) {
@@ -422,4 +429,6 @@ public class TacheServiceImpl extends BaseServiceImpl<Tache,Integer> {
 
 
     }
+
+
 }

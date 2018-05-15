@@ -46,7 +46,7 @@ public class ModuleServiceImpl extends BaseServiceImpl<Module,Integer> {
         return this.moduleDao;
     }
 
-    public void saveOrUpdate(Module module) {
+    public void saveOrUpdate(Module module,Integer[]haveTacheIds) {
         if(module.getId() != null){
             Module dbModule = super.find(module.getId());
 
@@ -69,7 +69,7 @@ public class ModuleServiceImpl extends BaseServiceImpl<Module,Integer> {
             module.setUpdateTime(new Date());
             save(module);
 
-            tacheService.saveTache(module);
+            tacheService.saveTache(module,haveTacheIds);
         }
 
     }

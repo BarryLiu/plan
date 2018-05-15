@@ -2,13 +2,8 @@ package com.project.plan.controller.plan;
 
 import com.project.plan.common.JsonResult;
 import com.project.plan.controller.BaseController;
-import com.project.plan.entity.plan.Module;
-import com.project.plan.entity.plan.Project;
-import com.project.plan.entity.plan.Tache;
-import com.project.plan.service.plan.ModuleServiceImpl;
-import com.project.plan.service.plan.PlanServiceImpl;
-import com.project.plan.service.plan.ProjectServiceImpl;
-import com.project.plan.service.plan.TacheServiceImpl;
+import com.project.plan.entity.plan.*;
+import com.project.plan.service.plan.*;
 import com.project.plan.service.specification.SimpleSpecificationBuilder;
 import com.project.plan.service.specification.SpecificationOperator;
 import io.swagger.annotations.ApiImplicitParam;
@@ -42,6 +37,9 @@ public class ModuleController extends BaseController {
     private ProjectServiceImpl projectService;
     @Autowired
     private TacheServiceImpl tacheService;
+    @Autowired
+    private ProjectTacheServiceImpl projectTacheService;
+
 
     @ApiIgnore
     @RequestMapping(value = { "","/", "/index" })
@@ -142,7 +140,13 @@ public class ModuleController extends BaseController {
     @RequiresPermissions("plan:module:add")
     public String add(ModelMap map) {
         List<Project> projectList = projectService.findAll();
+
+        SimpleSpecificationBuilder<ProjectTache> builder = new SimpleSpecificationBuilder<ProjectTache>();
+        builder.add("status",SpecificationOperator.Operator.eq.name(),ProjectTache.STAT_DEFAULT);
+        List<ProjectTache> projectTacheList = projectTacheService.findList(builder.generateSpecification());
+
         map.put("projectList",projectList);
+        map.put("projectTacheList",projectTacheList);
         return "plan/module/form";
     }
 
@@ -152,10 +156,17 @@ public class ModuleController extends BaseController {
     public String edit(@PathVariable Integer id, ModelMap map) {
         Module module = moduleService.find(id);
         List<Project> projectList = projectService.findAll();
+
+
+        SimpleSpecificationBuilder<ProjectTache> builder = new SimpleSpecificationBuilder<>();
+        builder.add("status",SpecificationOperator.Operator.eq.name(),ProjectTache.STAT_DEFAULT);
+        List<ProjectTache> projectTacheList = projectTacheService.findList(builder.generateSpecification());
+
+
         map.put("module", module);
         map.put("projectList",projectList);
-        List<Module> list = moduleService.findAll();
-        map.put("list", list);
+        map.put("projectTacheList",projectTacheList);
+
         return "plan/module/form";
     }
 
@@ -163,9 +174,12 @@ public class ModuleController extends BaseController {
     @ApiOperation(value="修改或添加模块", notes="有id就是修改,没有id添加")
     @RequestMapping(value= {"/edit"}, method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult edit(Module module, ModelMap map){
+    public JsonResult edit(Module module,Integer[]haveTacheIds, ModelMap map){
         try {
-            moduleService.saveOrUpdate(module);
+            if(module.getId()==null&&haveTacheIds.length<=0){
+                throw new RuntimeException("新建功能必须为其设定有哪些环节！");
+            }
+            moduleService.saveOrUpdate(module,haveTacheIds);
         } catch (Exception e) {
             e.printStackTrace();
             return JsonResult.failure(e.getMessage());

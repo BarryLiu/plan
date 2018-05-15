@@ -225,9 +225,9 @@
                 title: "操作",
                 field: "empty",
                 formatter: function (value, row, index) {
-                    var operateHtml = '<@shiro.hasPermission name="plan:tache:add"><button class="btn btn-primary btn-xs" type="button" onclick="edit(\''+row.id+'\')"><i class="fa fa-edit"></i>&nbsp;修改</button> &nbsp;</@shiro.hasPermission>';
-                    //operateHtml = operateHtml + '<@shiro.hasPermission name="system:resource:deleteBatch"><button class="btn btn-danger btn-xs" type="button" onclick="del(\''+row.id+'\')"><i class="fa fa-remove"></i>&nbsp;删除</button></@shiro.hasPermission>';
-                    operateHtml = operateHtml + '<button class="btn btn-info btn-xs" type="button" onclick="record(\''+row.id+'\',0)">&nbsp;记录</button>';
+                    var operateHtml = '<@shiro.hasPermission name="plan:tache:add"><button class="btn btn-primary btn-xs" type="button" onclick="edit(\''+row.id+'\')">修改</button> &nbsp;</@shiro.hasPermission>';
+                    operateHtml = operateHtml + '<button class="btn btn-info btn-xs" type="button" onclick="record(\''+row.id+'\',0)">&nbsp;记录</button>&nbsp;';
+                    operateHtml = operateHtml + '<@shiro.hasPermission name="plan:tache:deleteBatch"><button class="btn btn-danger btn-xs" type="button" onclick="del(\''+row.id+'\')">删除</button></@shiro.hasPermission>';
                     return operateHtml;
                 }
             }]

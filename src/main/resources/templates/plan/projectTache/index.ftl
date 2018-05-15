@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <title>环节列表</title>
+    <title>项目环节列表</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
 
@@ -24,18 +24,18 @@
 
 <body class="gray-bg">
     <div class="wrapper wrapper-content  animated fadeInRight">
+
         <div class="row">
             <div class="col-sm-12">
                 <div class="ibox ">
                     <div class="ibox-title">
-                        <h5>环节管理</h5>
+                        <h5>项目环节管理</h5>
                     </div>
                     <div class="ibox-content">
                         <p>
-							<#--环节没有添加功能-->
-                        	<#--<@shiro.hasPermission name="system:resource:add">
+                        	<@shiro.hasPermission name="plan:module:add">
                         		<button class="btn btn-success " type="button" onclick="add();"><i class="fa fa-plus"></i>&nbsp;添加</button>
-                        	</@shiro.hasPermission>-->
+                        	</@shiro.hasPermission>
                         </p>
                         <hr>
                         <div class="row row-lg">
@@ -75,7 +75,7 @@
 
     <!-- Page-Level Scripts -->
     <script>
-		var rootUrl = "${ctx!}/plan/tache";
+		var rootUrl = "${ctx!}/plan/projectTache";
         $(document).ready(function () {
 			//初始化表格,动态从服务器加载数据  
 			$("#table_list").bootstrapTable({
@@ -84,17 +84,17 @@
 			    //必须设置，不然request.getParameter获取不到请求参数
 			    contentType: "application/x-www-form-urlencoded",
 			    //获取数据的Servlet地址  
-			    url: rootUrl+"/list?searchTypeName=${searchTypeName}",
+			    url: rootUrl+"/list",
 			    //表格显示条纹  
 			    striped: true,
 			    //启动分页  
 			    pagination: true,
 			    //每页显示的记录数  
-			    pageSize: 12,
+			    pageSize: 10,
 			    //当前第几页  
 			    pageNumber: 1,
 			    //记录数可选列表  
-			    pageList: [12, 24, 36, 48],
+			    pageList: [5, 10, 15, 20, 25],
 			    //是否启用查询  
 			    search: true,
 			    //是否启用详细信息视图
@@ -118,100 +118,56 @@
 			        field: "id",
 			        sortable: true
 			    },*/{
-                    title: "项目名称",
-                    field: "module.project.name"
-                },{
-			        title: "功能名称",
-			        field: "module.name"
+			        title: "项目环节名称",
+			        field: "name"
 			    },{
-                        title: "环节",
-                        field: "tacheIndex",
-                        sortable: true
-				},{
-					title: "环节名称",
-					field: "name",
-                    formatter: function (value, row, index) {
-                        var operateHtml= '<a style="white-space: nowrap;"  onclick="recordTacheUser(\''+row.id+'\',1)">'+row.name+'</a>';
-                        return operateHtml;
-                    }
-				},{
-                    title: "计划时间",
-                    field: "planBeginTime",
-                    sortable: true,
-                    formatter: function (value, row, index) {
-                        var planBeginTime =  row.planBeginTime;
-                        var planEndTime = row.planEndTime;
-                        planBeginTime=planBeginTime==null?'':planBeginTime;
-                        planEndTime=planEndTime==null?'':planEndTime;
-
-						return planBeginTime+" / "+planEndTime;
-                    }
+                    title: "项目环节简称",
+                    field: "simpleName"
                 },{
-                    title: "实际时间",
-                    field: "wishTime",
-                    sortable: true,
-                    formatter: function (value, row, index) {
-						var realBeginTime =  row.realBeginTime;
-						var realEndTime = row.realEndTime;
-                        realBeginTime=realBeginTime==null?'N':realBeginTime;
-                        realEndTime=realEndTime==null?'N':realEndTime;
-                        return realBeginTime+" / "+realEndTime;
-                    }
-                } ,{
-                    title: "责任人",
-                    field: "user_nickName",
-                    formatter: function (value, row, index) {
-                        //alert("index: " + index + " row:" + row.user);
-						var nickName = ' - ';
-						if(row.user!=null && row.user != undefined ){
-							nickName = row.user.nickName;
-						}
-						return nickName;
-                    }
+                    title: "排序",
+                    field: "sortIndex",
+                    sortable: false
                 },{
 			        title: "状态",
 			        sortable: true,
 			        field: "status",
                     formatter: function (value, row, index) {
-						//alert( "index: "+index+" row:"+row.createTime);
                     	if(value == 0)
-                    		return '<span class="label label-info"><!--新创建-->Open</span>';
+                    		return '<span class="label label-info">正常</span>';
                     	else if(value == 1)
-                    		return '<span class="label label-info"><!--执行中-->Open</span>';
-                        else if(value == 2)
-                            return '<span class="label label-info"><!--测试中-->Open</span>';
-                        else if(value == 3)
-                            return '<span class="label label-danger"><!--归档完成-->Close</span>';
+                    		return '<span class="label label-danger">异常</span>';
                         else
                             return '<span class="label label-danger">未知</span>';
                     }
-			    }/*,{
+			    },{
+                    title: "所属阶段",
+                    sortable: true,
+                    field: "stage",
+                    formatter: function (value, row, index) {
+                        if(value == 0)
+                            return '<span class="label label-info">产品</span>';
+                        else if(value == 1)
+                            return '<span class="label label-danger">开发</span>';
+                        else if(value == 2)
+                            return '<span class="label label-danger">测试</span>';
+						else
+                            return '<span class="label label-danger">未知</span>';
+                    }
+                }
+					/*,{
 			        title: "创建时间",
 			        field: "createTime",
 			        sortable: true
-			    }*/,{
-                    title: "备注",
-                    field: "createTime",
-                    formatter: function (value, row, index) {
-						var operateHtml= '<a  style="white-space: nowrap;" onclick="record(\''+row.id+'\',1)">&nbsp;（'+row.openates.length+'）条</a>';
-						return operateHtml;
-                    }
-                },{
-			        title: "最后更新时间",
+			    },{
+			        title: "更新时间",
 			        field: "updateTime",
 			        sortable: true
-			    }/*,{
-                    title: "归档时间",
-                    field: "archiveTime",
-                    sortable: true
-                }*/,{
+			    }*/,{
 			        title: "操作",
 			        field: "empty",
                     formatter: function (value, row, index) {
-                    	var operateHtml = '<@shiro.hasPermission name="plan:tache:add"><button class="btn btn-primary btn-xs" type="button" onclick="edit(\''+row.id+'\')">修改</button> &nbsp;</@shiro.hasPermission>';
-                        operateHtml = operateHtml + '<button class="btn btn-info btn-xs" type="button" onclick="record(\''+row.id+'\',0)">&nbsp;记录</button>&nbsp;';
-                    	operateHtml = operateHtml + '<@shiro.hasPermission name="plan:tache:deleteBatch"><button class="btn btn-danger btn-xs" type="button" onclick="del(\''+row.id+'\')">删除</button></@shiro.hasPermission>';
-
+                    	var operateHtml = '<@shiro.hasPermission name="plan:module:add"><button class="btn btn-primary btn-xs" type="button" onclick="edit(\''+row.id+'\')"><i class="fa fa-edit"></i>&nbsp;修改</button> &nbsp;</@shiro.hasPermission>';
+                    	operateHtml = operateHtml + '<@shiro.hasPermission name="plan:module:deleteBatch"><button class="btn btn-danger btn-xs" type="button" onclick="del(\''+row.id+'\')"><i class="fa fa-remove"></i>&nbsp;删除</button></@shiro.hasPermission>';
                         return operateHtml;
                     }
 			    }]
@@ -221,53 +177,23 @@
         function edit(id){
         	layer.open({
         	      type: 2,
-        	      title: '环节修改',
+        	      title: '项目环节修改',
         	      shadeClose: true,
         	      shade: false,
-//        	      area: ['1093px', '800px'],
-                  area: ['90%', '80%'],
+				  area: ['80%', '90%'],
         	      content: rootUrl+'/edit/' + id,
         	      end: function(index){
         	    	  $('#table_list').bootstrapTable("refresh");
        	    	  }
         	    });
         }
-        function record(id,type){
-            layer.open({
-                type: 2,
-                title: '环节修改',
-                shadeClose: true,
-                shade: false,
-//                area: ['1293px', '800px'],
-                area: ['70%', '80%'],
-                content: rootUrl+'/recordlist?tacheId=' + id+'&type='+type,
-                end: function(index){
-                    $('#table_list').bootstrapTable("refresh");
-                }
-            });
-        }
-        function recordTacheUser(id,type){
-            layer.open({
-                type: 2,
-                title: '环节操作记录',
-                shadeClose: true,
-                shade: false,
-//                area: ['1293px', '800px'],
-                area: ['70%', '80%'],
-                content: rootUrl+'/recordTacheUserlist?tacheId=' + id+'&type='+type,
-                end: function(index){
-                    $('#table_list').bootstrapTable("refresh");
-                }
-            });
-        }
         function add(){
         	layer.open({
         	      type: 2,
-        	      title: '环节添加(由自动添加)',
+        	      title: '项目环节添加',
         	      shadeClose: true,
         	      shade: false,
-        	      //area: ['893px', '600px'],
-                  area: ['70%', '80%'],
+				  area: ['80%', '90%'],
         	      content: rootUrl+'/add',
         	      end: function(index){
         	    	  $('#table_list').bootstrapTable("refresh");
@@ -292,7 +218,8 @@
         
         function detailFormatter(index, row) {
 	        var html = [];
-	        html.push('<p><b>描述:</b> ' + '这个环节很坑的啊,小心点做,不然打你哦!' + '</p>');
+	        html.push('<b>创建描述:</b> ' + row.createComment + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+            html.push('<b>修改描述:</b> ' + row.updateComment + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
 	        return html.join('');
 	    }
     </script>

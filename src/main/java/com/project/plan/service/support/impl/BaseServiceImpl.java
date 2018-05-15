@@ -44,6 +44,15 @@ public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializa
     public List<T> findList(Specification<T> spec, Sort sort) {
         return getBaseDao().findAll(spec, sort);
     }
+    @Override
+    public List<T> findList(Sort sort){
+        return getBaseDao().findAll(sort);
+    }
+    @Override
+    public List<T> findList(Specification<T> spec){
+        return getBaseDao().findAll(spec);
+    }
+
 
     @Override
     public Page<T> findAll(Pageable pageable) {
@@ -120,7 +129,5 @@ public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializa
         // TODO Auto-generated method stub
         return getBaseDao().findAll(spec, pageable);
     }
-
-
 
 }

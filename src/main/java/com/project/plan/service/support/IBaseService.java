@@ -13,9 +13,12 @@ public interface IBaseService<T, ID extends Serializable> {
 
     public abstract List<T> findAll();
 
+    public abstract List<T> findList(Sort sort);
     public abstract List<T> findList(ID[] ids);
 
     public abstract List<T> findList(Iterable<ID> ids);
+
+    public abstract List<T> findList(Specification<T> spec);
 
     public abstract Page<T> findAll(Pageable pageable);
 
