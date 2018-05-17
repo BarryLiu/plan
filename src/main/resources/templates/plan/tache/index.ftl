@@ -171,10 +171,10 @@
                 },{
 			        title: "状态",
 			        sortable: true,
-			        field: "status",
+			        field: "statusName",
                     formatter: function (value, row, index) {
 						//alert( "index: "+index+" row:"+row.createTime);
-                    	if(value == 0)
+                    	/*if(value == 0)
                     		return '<span class="label label-info"><!--新创建-->Open</span>';
                     	else if(value == 1)
                     		return '<span class="label label-info"><!--执行中-->Open</span>';
@@ -183,7 +183,8 @@
                         else if(value == 3)
                             return '<span class="label label-danger"><!--归档完成-->Close</span>';
                         else
-                            return '<span class="label label-danger">未知</span>';
+                            return '<span class="label label-danger">未知</span>';*/
+                     return '<span class="label label-info"></span>';
                     }
 			    }/*,{
 			        title: "创建时间",

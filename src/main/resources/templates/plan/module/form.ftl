@@ -111,26 +111,28 @@
                                 	</select>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">拥有环节：</label>
-                                <div class="col-sm-2">
+                            <#if !module.id?exists ><#--moduleId不存在, -->
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">拥有环节：</label>
+                                    <div class="col-sm-4">
 
-                                    <select class="selectpicker" name="haveTacheIds" id = "haveTacheIds" multiple data-live-search="true" data-live-search-placeholder="Search" data-actions-box="true">
-                                    <#--<optgroup label="filter1">-->
-                                    <#list projectTacheList as u >
-                                        <option value="${u.id }"  >${u.name }</option>
-                                    </#list>
-                                    <#--</optgroup>
-                                    <optgroup label="filter2">
-                                        <option>option1</option>
-                                        <option>option2</option>
-                                        <option>option3</option>
-                                        <option>option4</option>
-                                    </optgroup>
-                                    -->
-                                    </select>
+                                        <select class="selectpicker" name="haveTacheIds" id = "haveTacheIds" multiple data-live-search="true" data-live-search-placeholder="Search" data-actions-box="true">
+                                        <#--<optgroup label="filter1">-->
+                                            <#list projectTacheList as u >
+                                                <option value="${u.id }"  >${u.name }&nbsp;</option>
+                                            </#list>
+                                        <#--</optgroup>
+                                        <optgroup label="filter2">
+                                            <option>option1</option>
+                                            <option>option2</option>
+                                            <option>option3</option>
+                                            <option>option4</option>
+                                        </optgroup>
+                                        -->
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
+                            </#if>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">创建描述：</label>
                                 <div class="col-sm-8">
@@ -223,14 +225,16 @@
     	    messages: {},
     	    submitHandler:function(form){
 
-                var haveTacheIds = $("#haveTacheIds").val();
-                var flag = (haveTacheIds==null);
-                if(flag){
-                    layer.msg("必须选择一个以上拥有的环节", {time: 4000},function(){
-                        $("#haveStatus").focus();
-                    });
-                    return;
-                }
+                <#if !module.id?exists ><#--moduleId不存在, -->
+                    var haveTacheIds = $("#haveTacheIds").val();
+                    var flag = (haveTacheIds==null&&);
+                    if(flag){
+                        layer.msg("必须选择一个以上拥有的环节", {time: 4000},function(){
+                            $("#haveStatus").focus();
+                        });
+                        return;
+                    }
+                </#if>
 
     	    	$.ajax({
    	    		   type: "POST",

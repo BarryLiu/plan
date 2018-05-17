@@ -32,32 +32,37 @@ public class Tache  extends AbstractEntity {
 
 
 
-    public static final int STAT_NEW = 0;//新创建
-    public static final int STAT_DEBUG = 1;//执行中
-    public static final int STAT_TESTING = 2;//测试中
-    public static final int STAT_SUCCESS = 3;//归档完成
+//    public static final int STAT_NEW = 0;//新创建
+//    public static final int STAT_DEBUG = 1;//执行中
+//    public static final int STAT_TESTING = 2;//测试中
+//    public static final int STAT_SUCCESS = 3;//归档完成
 
-    public static final String TACHE_STATUS(int stat){
-        String statStr = null;
-        switch (stat){
-            case STAT_NEW:statStr="新创建";break;
-            case STAT_DEBUG:statStr="执行中";break;
-            case STAT_TESTING:statStr="测试中";break;
-            case STAT_SUCCESS:statStr="归档完成";break;
-            default: statStr="未知";break;
-        }
-        return statStr;
-    }
-
+//    public static final String TACHE_STATUS(int stat){
+//        String statStr = null;
+//        switch (stat){
+//            case STAT_NEW:statStr="新创建";break;
+//            case STAT_DEBUG:statStr="执行中";break;
+//            case STAT_TESTING:statStr="测试中";break;
+//            case STAT_SUCCESS:statStr="归档完成";break;
+//            default: statStr="未知";break;
+//        }
+//        return statStr;
+//    }
+    @NotNull(message="所继承项目环节id不能为空")
+    @Column(name="project_tache_id",length=2,nullable = false)
+    private Integer projectTacheId ;
 
     @NotNull(message="环节名称不能为空")
     @Column(name="name",length=500)
     private String name;
 
+    @NotNull(message="环节名称不能为空")
+    @Column(name="simple_name",length=500)// 根据 project_tache_id 表中冗余而来,此冗余为了避免过多的查询
+    private String simpleName;
+
     @NotNull(message="环节序号不能为空")
     @Column(name="tache_index",length=2,nullable = false)
     private Integer tacheIndex ;
-
 
 //    @NotNull(message="计划开始时间不能为空")
     @JSONField(format = "yyyy-MM-dd")
@@ -120,6 +125,11 @@ public class Tache  extends AbstractEntity {
     @OneToMany(cascade = { CascadeType.REFRESH, CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REMOVE },mappedBy ="tacheId")
     //这里配置关系，并且确定关系维护端和被维护端。mappBy表示关系被维护端，只有关系端有权去更新外键。这里还有注意OneToMany默认的加载方式是赖加载。当看到设置关系中最后一个单词是Many，那么该加载默认为懒加载
     private Set<Openate> openates;
+
+
+    @Transient//状态值由每次查询出来，不冗余到数据库
+    private String statusName;
+
 
     public Tache(Tache tache,User user){
         this(tache,null,user);

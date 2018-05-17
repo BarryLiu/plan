@@ -20,6 +20,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "t_project_tache")
 public class ProjectTache extends AbstractEntity {
+    private static final long serialVersionUID = 1234124241L;
 
     public static final Integer STAT_DEFAULT = 0;//正常
     public static final Integer STAT_UNUSUAL =1;//异常

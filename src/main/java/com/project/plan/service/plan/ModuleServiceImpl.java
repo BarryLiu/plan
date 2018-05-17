@@ -1,10 +1,7 @@
 package com.project.plan.service.plan;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
-import com.project.plan.dao.plan.IModuleDao;
-import com.project.plan.dao.plan.IOpenateDao;
-import com.project.plan.dao.plan.IProjectDao;
-import com.project.plan.dao.plan.ITacheDao;
+import com.project.plan.dao.plan.*;
 import com.project.plan.dao.support.IBaseDao;
 import com.project.plan.entity.plan.Module;
 import com.project.plan.entity.plan.Openate;
@@ -36,6 +33,8 @@ public class ModuleServiceImpl extends BaseServiceImpl<Module,Integer> {
     private IOpenateDao openateDao;
     @Autowired
     private ITacheDao tacheDao;
+    @Autowired
+    private ITacheUserDao tacheUserDao;
 
     @Autowired
     private  TacheServiceImpl tacheService;
@@ -103,6 +102,8 @@ public class ModuleServiceImpl extends BaseServiceImpl<Module,Integer> {
             tacheIds[i] = taches.get(i).getId();
         }
         if(tacheIds!=null&&tacheIds.length>0){
+
+            tacheUserDao.deleteByTacheIds(tacheIds);
             openateDao.deleteByTacheIds(tacheIds);
         }
         tacheDao.deleteByModuleId(m.getId());
@@ -119,7 +120,7 @@ public class ModuleServiceImpl extends BaseServiceImpl<Module,Integer> {
         Project p = new Project();
         p.setId(1);
         module.setProject(p);
-        module.setStatus(Tache.STAT_DEBUG);
+        module.setStatus(0);
         module.setCreateTime(d);
         module.setWishTime(d);
         module.setStartTime(d);

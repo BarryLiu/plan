@@ -33,9 +33,12 @@
                     </div>
                     <div class="ibox-content">
                         <p>
-                        	<@shiro.hasPermission name="plan:module:add">
+                        	<@shiro.hasPermission name="plan:projectTache:add">
                         		<button class="btn btn-success " type="button" onclick="add();"><i class="fa fa-plus"></i>&nbsp;添加</button>
                         	</@shiro.hasPermission>
+							<@shiro.hasPermission name="plan:projectTache:add">
+                                <button class="btn btn-success " type="button" onclick="changeSort();"><i class="fa fa-plus"></i>&nbsp;调整排序</button>
+							</@shiro.hasPermission>
                         </p>
                         <hr>
                         <div class="row row-lg">
@@ -90,11 +93,11 @@
 			    //启动分页  
 			    pagination: true,
 			    //每页显示的记录数  
-			    pageSize: 10,
+			    pageSize: 15,
 			    //当前第几页  
 			    pageNumber: 1,
 			    //记录数可选列表  
-			    pageList: [5, 10, 15, 20, 25],
+			    pageList: [10, 15, 20, 25],
 			    //是否启用查询  
 			    search: true,
 			    //是否启用详细信息视图
@@ -128,18 +131,6 @@
                     field: "sortIndex",
                     sortable: false
                 },{
-			        title: "状态",
-			        sortable: true,
-			        field: "status",
-                    formatter: function (value, row, index) {
-                    	if(value == 0)
-                    		return '<span class="label label-info">正常</span>';
-                    	else if(value == 1)
-                    		return '<span class="label label-danger">异常</span>';
-                        else
-                            return '<span class="label label-danger">未知</span>';
-                    }
-			    },{
                     title: "所属阶段",
                     sortable: true,
                     field: "stage",
@@ -147,10 +138,22 @@
                         if(value == 0)
                             return '<span class="label label-info">产品</span>';
                         else if(value == 1)
-                            return '<span class="label label-danger">开发</span>';
+                            return '<span class="label label-success">开发</span>';
                         else if(value == 2)
                             return '<span class="label label-danger">测试</span>';
 						else
+                            return '<span class="label label-danger">未知</span>';
+                    }
+                },{
+                    title: "状态",
+                    sortable: true,
+                    field: "status",
+                    formatter: function (value, row, index) {
+                        if(value == 0)
+                            return '<span class="label label-info">正常</span>';
+                        else if(value == 1)
+                            return '<span class="label label-danger">异常</span>';
+                        else
                             return '<span class="label label-danger">未知</span>';
                     }
                 }
@@ -166,14 +169,26 @@
 			        title: "操作",
 			        field: "empty",
                     formatter: function (value, row, index) {
-                    	var operateHtml = '<@shiro.hasPermission name="plan:module:add"><button class="btn btn-primary btn-xs" type="button" onclick="edit(\''+row.id+'\')"><i class="fa fa-edit"></i>&nbsp;修改</button> &nbsp;</@shiro.hasPermission>';
-                    	operateHtml = operateHtml + '<@shiro.hasPermission name="plan:module:deleteBatch"><button class="btn btn-danger btn-xs" type="button" onclick="del(\''+row.id+'\')"><i class="fa fa-remove"></i>&nbsp;删除</button></@shiro.hasPermission>';
+                    	var operateHtml = '<@shiro.hasPermission name="plan:projectTache:add"><button class="btn btn-primary btn-xs" type="button" onclick="edit(\''+row.id+'\')"><i class="fa fa-edit"></i>&nbsp;修改</button> &nbsp;</@shiro.hasPermission>';
+                    	operateHtml = operateHtml + '<@shiro.hasPermission name="plan:projectTache:deleteBatch"><button class="btn btn-danger btn-xs" type="button" onclick="del(\''+row.id+'\')"><i class="fa fa-remove"></i>&nbsp;删除</button></@shiro.hasPermission>';
                         return operateHtml;
                     }
 			    }]
 			});
         });
-        
+        function changeSort(){
+            layer.open({
+                type: 2,
+                title: '项目环节顺序调整',
+                shadeClose: true,
+                shade: false,
+                area: ['50%', '95%'],
+                content: rootUrl+'/changeSort',
+                end: function(index){
+                    $('#table_list').bootstrapTable("refresh");
+                }
+            });
+        }
         function edit(id){
         	layer.open({
         	      type: 2,

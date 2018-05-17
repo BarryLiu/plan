@@ -32,7 +32,7 @@
                         <h5>功能简介</h5>
                     </div>
                     <div class="ibox-content">
-                        <p>环节描述：</p>
+                        <p>项目环节为全局环节,后续添加功能所具有的环节都从这里选,新添加的功能中环节由此继承</p>
 
                     </div>
                 </div>
@@ -51,26 +51,26 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" >项目环节名称：</label>
                                 <div class="col-sm-2">
-                                    <input id="name" name="name" class="form-control" type="text" value="${projectTache.simpleName}">
+                                    <input id="name" name="name" class="form-control" type="text" value="${projectTache.name}">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">项目环节简称：</label>
                                 <div class="col-sm-1">
-                                    <input id="name" name="simpleName" class="form-control" type="text" value="${projectTache.name}">
+                                    <input id="name" name="simpleName" class="form-control" type="text" value="${projectTache.simpleName}">
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <#--<div class="form-group">
                                 <label class="col-sm-3 control-label">环节顺序(再次环节之后)：</label>
                                 <div class="col-sm-2">
                                     <select name="sortIndex" class="form-control">
-                                        <#--<option value="1" >请选择</option>-->
+                                        &lt;#&ndash;<option value="1" >请选择</option>&ndash;&gt;
                                         <#list projectTacheList as item >
                                             <option value="${item.id }" <#if item.id == (projectTache.sortIndex ) > selected="selected"</#if>>${item.name }</option>
                                         </#list>
                                     </select>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">状态：</label>
                                 <div class="col-sm-2">
@@ -104,9 +104,9 @@
                                 <label class="col-sm-3 control-label">所属阶段：</label>
                                 <div class="col-sm-2">
                                     <select name="stage" class="form-control">
-                                        <option value="0" <#if projectTache.status == 0>selected="selected"</#if>>产品</option>
-                                        <option value="1" <#if projectTache.status == 1>selected="selected"</#if>>开发</option>
-                                        <option value="2" <#if projectTache.status == 2>selected="selected"</#if>>测试</option>
+                                        <option value="0" <#if projectTache.stage == 0>selected="selected"</#if>>产品</option>
+                                        <option value="1" <#if projectTache.stage == 1>selected="selected"</#if>>开发</option>
+                                        <option value="2" <#if projectTache.stage == 2>selected="selected"</#if>>测试</option>
                                     </select>
                                 </div>
                             </div>

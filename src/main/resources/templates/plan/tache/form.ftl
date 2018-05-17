@@ -128,28 +128,43 @@
                                 <#-- 回退环节状态, 有权限:所有修改, 负责人权限:可以回退到上一个版本，否则: 只能往下一个版本进行   -->
                                 <@shiro.hasPermission name="plan:tache:rollbackStatus"><#--有权限-->
                                     <select name="status" class="form-control">
-                                        <option value="0" <#if tache.status == 0>selected="selected"</#if>>新创建</option>
-                                        <option value="1" <#if tache.status == 1>selected="selected"</#if>>新执行中</option>
-                                        <option value="2" <#if tache.status == 2>selected="selected"</#if>>测试中</option>
-                                        <option value="3" <#if tache.status == 3>selected="selected"</#if>>归档完成</option>
+                                        <#--
+                                            <option value="0" <#if tache.status == 0>selected="selected"</#if>>新创建</option>
+                                            <option value="1" <#if tache.status == 1>selected="selected"</#if>>新执行中</option>
+                                            <option value="2" <#if tache.status == 2>selected="selected"</#if>>测试中</option>
+                                            <option value="3" <#if tache.status == 3>selected="selected"</#if>>归档完成</option>
+                                        -->
+                                        <#list statusList as item ><#--系统所有状态-->
+                                            <#if haveStatusListIds?seq_contains(item.id) ><#--当前环节拥有的状态 -->
+                                                <option value="${item.id }"  <#if u.id == tache.status > selected="selected"</#if> >${item.name }</option>
+                                            </#if>
+                                        </#list>
                                     </select>
                                 </@shiro.hasPermission>
                                 <@shiro.lacksPermission name="plan:tache:rollbackStatus"><#--没有权限-->
-                                    <#assign stat= tache.status />
 
                                     <select name="status" class="form-control">
-                                        <#if tache.status lte 0> <#--小等于0-->
+                                        <#--<#if tache.status lte 0> &lt;#&ndash;小等于0&ndash;&gt;
                                             <option value="0" <#if tache.status == 0>selected="selected"</#if>>新创建</option>
                                         </#if>
-                                        <#if tache.status lte 1> <#--小等于1-->
+                                        <#if tache.status lte 1> &lt;#&ndash;小等于1&ndash;&gt;
                                             <option value="1" <#if tache.status == 1>selected="selected"</#if>>新执行中</option>
                                         </#if>
-                                        <#if tache.status lte 2> <#--小等于2-->
+                                        <#if tache.status lte 2> &lt;#&ndash;小等于2&ndash;&gt;
                                             <option value="2" <#if tache.status == 2>selected="selected"</#if>>测试中</option>
                                         </#if>
-                                        <#if tache.status lte 3> <#--小等于3-->
+                                        <#if tache.status lte 3> &lt;#&ndash;小等于3&ndash;&gt;
                                             <option value="3" <#if tache.status == 3>selected="selected"</#if>>归档完成</option>
-                                        </#if>
+                                        </#if>-->
+                                        <#-- 因为状态的顺序是由 ProjectStatus 中的 status先做判断,再以 sortIndex判断,所以现在以这个实现比较大小 -->
+                                        <#list statusList as item ><#--系统所有状态-->
+                                            <#if haveStatusListIds?seq_contains(item.id) ><#--当前环节拥有的状态 -->
+                                                <#if (tacheStatus.status*100+tacheStatus.sortIndex ) lte (item.status * 100+ item.sortIndex )>
+                                                    <option value="${item.id }"  <#if item.id == tacheStatus.id > selected="selected"</#if> >${item.name } <#--(${(tacheStatus.status * 100+ tacheStatus.sortIndex)})<= (${(item.status * 100+ item.sortIndex )}) --></option>
+                                                </#if>
+                                            </#if>
+                                        </#list>
+
                                     </select>
                                 </@shiro.lacksPermission>
                                 </div>

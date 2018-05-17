@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -34,7 +35,10 @@ public class ProjectTacheController extends BaseController {
     @Autowired
     private ProjectTacheServiceImpl projectTacheService;
     @Autowired
-    private StatusServiceImpl statusService;
+    private ProjectStatusServiceImpl statusService;
+    @Autowired
+    private TacheServiceImpl tacheService;
+
 
     @ApiIgnore
     @RequestMapping(value = { "","/", "/index" })
@@ -52,7 +56,14 @@ public class ProjectTacheController extends BaseController {
             builder.add("name", SpecificationOperator.Operator.likeAll.name(), searchText);
         }
 
-        Page<ProjectTache> page = projectTacheService.findAll(builder.generateSpecification(),getPageRequest());
+        List<Sort.Order> orderList = new ArrayList<>();
+        Sort.Order order2 = new Sort.Order(Sort.Direction.ASC, "sortIndex");
+        orderList.add(order2);
+        Sort sort =new Sort(orderList);//根据 status 升序,再根据 sortIndex 升序
+        PageRequest pageRequest = getPageRequest(sort);
+
+
+        Page<ProjectTache> page = projectTacheService.findAll(builder.generateSpecification(),pageRequest);
 //        for(ProjectTache m: page.getContent()){//查询一个功能环节下面的状态,没做好，不到前端展示
 //            String haveStatus = m.getHaveStatus();
 //            if(TextUtil.isNullOrEmpty(haveStatus)){
@@ -84,9 +95,7 @@ public class ProjectTacheController extends BaseController {
         Sort sort = new Sort(Sort.Direction.ASC, "sortIndex");
         List<ProjectTache> projectTacheList = projectTacheService.findList(sort);
 
-        SimpleSpecificationBuilder<Status> builder = new SimpleSpecificationBuilder<Status>();
-        builder.add("status",SpecificationOperator.Operator.eq.name(),Status.STAT_VIEW);
-        List<Status> statusList = statusService.findList(builder.generateSpecification());
+        List<ProjectStatus> statusList = statusService.findAll();
 
         map.put("projectTacheList",projectTacheList);
         map.put("statusList",statusList);
@@ -103,10 +112,7 @@ public class ProjectTacheController extends BaseController {
         Sort sort = new Sort(Sort.Direction.ASC, "sortIndex");
         List<ProjectTache> projectTacheList = projectTacheService.findList(sort);
 
-        SimpleSpecificationBuilder<Status> builder = new SimpleSpecificationBuilder<Status>();
-        builder.add("status",SpecificationOperator.Operator.eq.name(),Status.STAT_VIEW);
-        List<Status> statusList = statusService.findList(builder.generateSpecification());
-
+        List<ProjectStatus> statusList = statusService.findAll();
         String[] haveStatusList =projectTache.getHaveStatus()==null?new String[0]:projectTache.getHaveStatus().split(",");
         List<Integer> haveStatusListIds = new ArrayList<>();
         for (int i=0;i<haveStatusList.length;i++) {
@@ -152,6 +158,12 @@ public class ProjectTacheController extends BaseController {
     public JsonResult delete(@PathVariable Integer id,ModelMap map) {
         try {
             //判断业务能不能删除
+            SimpleSpecificationBuilder<Tache> builder = new SimpleSpecificationBuilder<Tache>();
+            builder.add("projectTacheId", SpecificationOperator.Operator.eq.name(), id);
+            long count = tacheService.count(builder.generateSpecification());
+            if(count>0){
+                throw new RuntimeException("有功能正在用这个项目环节,不能删除。");
+            }
             projectTacheService.delete(id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -159,4 +171,30 @@ public class ProjectTacheController extends BaseController {
         }
         return JsonResult.success();
     }
+    @ApiOperation(value="跳到调整环节状态页面", notes="项目环节调整需要拿到所有状态")
+    @RequestMapping(value = "/changeSort", method = RequestMethod.GET)
+    public String changeSort(ModelMap map) {
+        List<ProjectTache> projectTacheList = projectTacheService.findAll();
+
+        map.put("projectTacheList",projectTacheList);
+        return "plan/projectTache/changeSort";
+    }
+
+    @ApiOperation(value="调整项目环节页面排序", notes="项目环节排序")
+    @RequestMapping(value = "/changeSorted", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult changeSorted(ModelMap map,Integer[] projectTache1Ids,Integer[] projectTache2Ids,Integer[] projectTache3Ids) {
+        try {
+            System.out.println(projectTache1Ids+"\t"+projectTache2Ids +"\t"+projectTache3Ids );
+            // projectTache1Ids 所有产品下的环节, projectTache2Ids 开发下的环节 projectTache3Ids 测试下的环节
+            projectTacheService.changeSortIndex(projectTache1Ids);
+            projectTacheService.changeSortIndex(projectTache2Ids);
+            projectTacheService.changeSortIndex(projectTache3Ids);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return JsonResult.failure(e.getMessage());
+        }
+        return JsonResult.success();
+    }
+
 }

@@ -5,24 +5,17 @@ import com.project.plan.common.Constats;
 import com.project.plan.common.utils.DateUtil;
 import com.project.plan.common.utils.TextUtil;
 import com.project.plan.dao.IUserDao;
-import com.project.plan.dao.plan.IOpenateDao;
-import com.project.plan.dao.plan.ITacheDao;
-import com.project.plan.dao.plan.ITacheUserDao;
+import com.project.plan.dao.plan.*;
 import com.project.plan.dao.support.IBaseDao;
 import com.project.plan.entity.User;
-import com.project.plan.entity.plan.Module;
-import com.project.plan.entity.plan.Openate;
-import com.project.plan.entity.plan.Tache;
-import com.project.plan.entity.plan.TacheUser;
+import com.project.plan.entity.plan.*;
 import com.project.plan.service.support.impl.BaseServiceImpl;
-import com.sun.javafx.scene.control.skin.VirtualFlow;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.crypto.Data;
 import java.util.*;
 
 /**
@@ -42,6 +35,12 @@ public class TacheServiceImpl extends BaseServiceImpl<Tache,Integer> {
     @Autowired
     private ITacheUserDao tacheUserDao;
 
+    @Autowired
+    private IProjectTacheDao projectTacheDao;
+
+    @Autowired
+    private IProjectStatusDao statusDao;
+
     @Override
     public IBaseDao<Tache, Integer> getBaseDao() {
         return this.tacheDao;
@@ -57,11 +56,11 @@ public class TacheServiceImpl extends BaseServiceImpl<Tache,Integer> {
 //            Module m = new Module();//环节修改模块,不让修改
 //            m.setId(tache.getModule().getId());
 //            dbTache.setModule(m);
-            if (dbTache.getStatus()==null&&Tache.STAT_SUCCESS == tache.getStatus() ){//直接改成归档
-                dbTache.setArchiveTime(sysDate);
-            }else if(dbTache.getStatus()==null && !dbTache.getStatus().equals(tache.getStatus()) &&Tache.STAT_SUCCESS == tache.getStatus() ){//其他状态改成已归档
-                dbTache.setArchiveTime(sysDate);
-            }
+//            if (dbTache.getStatus()==null&&Tache.STAT_SUCCESS == tache.getStatus() ){//直接改成归档
+//                dbTache.setArchiveTime(sysDate);
+//            }else if(dbTache.getStatus()==null && !dbTache.getStatus().equals(tache.getStatus()) &&Tache.STAT_SUCCESS == tache.getStatus() ){//其他状态改成已归档
+//                dbTache.setArchiveTime(sysDate);
+//            }
 
             dbTache.setPlanBeginTime(tache.getPlanBeginTime());
             dbTache.setPlanEndTime(tache.getPlanEndTime());
@@ -99,16 +98,52 @@ public class TacheServiceImpl extends BaseServiceImpl<Tache,Integer> {
      * @param module
      * @see #saveTache(Module, Integer[])
      */
-    @Deprecated
-    public void saveTache(Module module) {
+//    @Deprecated
+//    public void saveTache(Module module) {
+//        List<Tache> tacheList = new ArrayList<>();
+//
+//        Date date = new Date();
+//        for(int i=0 ; i<Constats.TACHE_INDEX_NAMES.length;i++ ){
+//            Tache t = new Tache();
+//            t.setTacheIndex(i+1);
+//            t.setName(Constats.TACHE_INDEX_NAMES[i]);
+//            t.setStatus(Tache.STAT_NEW);
+//            t.setModule(module);
+//
+//            t.setPlanBeginTime(module.getStartTime());//环节的计划开始时间和计划结束时间先默认功能模块的计划时间,后续给其修改
+//            t.setPlanEndTime(module.getWishTime());
+//
+//            t.setCreateTime(date);
+//
+//            tacheList.add(t);
+//        }
+//        tacheDao.save(tacheList);
+//    }
+    public void saveTache(Module module, Integer[] haveTacheIds) {
         List<Tache> tacheList = new ArrayList<>();
 
+        List<ProjectTache> projectTacheList = projectTacheDao.findAll(Arrays.asList(haveTacheIds));
+//        tacheDao.findAll(haveTacheIds);
         Date date = new Date();
-        for(int i=0 ; i<Constats.TACHE_INDEX_NAMES.length;i++ ){
+        for(int i=0 ; i<projectTacheList.size();i++ ){
+            ProjectTache pt = projectTacheList.get(i);
+
             Tache t = new Tache();
             t.setTacheIndex(i+1);
-            t.setName(Constats.TACHE_INDEX_NAMES[i]);
-            t.setStatus(Tache.STAT_NEW);
+            t.setProjectTacheId(pt.getId());
+            t.setName(pt.getName());
+            t.setSimpleName(pt.getSimpleName());
+//            t.setStatus(Tache.STAT_NEW);//换成取第一个状态
+            String[] haveStatusList =pt.getHaveStatus()==null?new String[0]:pt.getHaveStatus().split(",");
+            if(haveStatusList!=null&&haveStatusList.length>0){
+                String statusStr = haveStatusList[0];//取第一个状态
+                if(!TextUtil.isNullOrEmpty(statusStr)){
+                    t.setStatus(Integer.valueOf(statusStr));
+                }
+            }else{
+                t.setStatus(0);//设置为未知
+            }
+
             t.setModule(module);
 
             t.setPlanBeginTime(module.getStartTime());//环节的计划开始时间和计划结束时间先默认功能模块的计划时间,后续给其修改
@@ -119,9 +154,6 @@ public class TacheServiceImpl extends BaseServiceImpl<Tache,Integer> {
             tacheList.add(t);
         }
         tacheDao.save(tacheList);
-    }
-    public void saveTache(Module module, Integer[] haveTacheIds) {
-
     }
 
     @Transactional
@@ -281,13 +313,35 @@ public class TacheServiceImpl extends BaseServiceImpl<Tache,Integer> {
             System.out.println("dbTache: "+dbTache+"  ---> "+tache);
         }
 
-        if(dbTache.getStatus().intValue()!=tache.getStatus().intValue()){//修改环节状态
+       /* if(dbTache.getStatus().intValue()!=tache.getStatus().intValue()){//修改环节状态
             String dbStatus = Tache.TACHE_STATUS(dbTache.getStatus());
             String status = Tache.TACHE_STATUS(tache.getStatus());
             sb.append(" 将状态由“"+dbStatus+"”改成“"+status+"”");
 
             if(Tache.STAT_SUCCESS==tache.getStatus()&&Tache.STAT_SUCCESS!=dbTache.getStatus()){//状态是已归档,并且之前不是已归档,
                 tache.setArchiveTime(sysDate);
+                tache.setRealEndTime(sysDate);
+                updateLastEndTime(dbTache.getId(),dbTache.getUser().getId(), sysDate);
+            }
+        }*/
+        if(dbTache.getStatus().intValue()!=tache.getStatus().intValue()){//修改环节状态
+            ProjectStatus dbStatus = statusDao.findOne(dbTache.getStatus());
+            ProjectStatus newStatus = statusDao.findOne(tache.getStatus());
+            if(dbStatus == null){
+                dbStatus = new ProjectStatus();
+                dbStatus.setId(0);
+                dbStatus.setName("未知");
+            }
+            if(newStatus == null){
+                newStatus = new ProjectStatus();
+                newStatus.setId(0);
+                newStatus.setName("未知");
+            }
+
+            sb.append(" 将状态由“"+dbStatus.getName()+"”改成“"+newStatus.getName()+"”");
+
+            if(ProjectStatus.STAT_SUCCESS==newStatus.getStatus()&& ProjectStatus.STAT_SUCCESS!=dbStatus.getStatus()){//状态是已归档,并且之前不是已归档,
+//                tache.setArchiveTime(sysDate);
                 tache.setRealEndTime(sysDate);
                 updateLastEndTime(dbTache.getId(),dbTache.getUser().getId(), sysDate);
             }
@@ -346,36 +400,36 @@ public class TacheServiceImpl extends BaseServiceImpl<Tache,Integer> {
     }
 
     //未上线模块功能分布列表
-    public Map<String, Long> selectTypeMap() {
-        Map<String,Long> typeMap = new LinkedHashMap<>();
-        long count = tacheDao.count();
-        typeMap.put("全部",count);
-        Integer[] statusDoing = new Integer[]{Tache.STAT_DEBUG,Tache.STAT_TESTING};//正在执行
-        Integer[] statusSuccess = new Integer[]{Tache.STAT_SUCCESS};//正在已经归档
-
-        long count1 = tacheDao.countByIndex(statusDoing,Constats.getTacheIndexByType(Constats.TACHE_TYPE_NAMES[0]));//这里的数字是 Constats.TACHE_INDEX_NAMES 里面的下标
-        typeMap.put(Constats.TACHE_TYPE_NAMES[0],count1);
-
-        long count2 = tacheDao.countByIndex(statusDoing,Constats.getTacheIndexByType(Constats.TACHE_TYPE_NAMES[1]));
-        typeMap.put(Constats.TACHE_TYPE_NAMES[1],count2);
-
-        long count3 = tacheDao.countByIndex(statusDoing,Constats.getTacheIndexByType(Constats.TACHE_TYPE_NAMES[2]));
-        typeMap.put(Constats.TACHE_TYPE_NAMES[2],count3);
-
-        long count4 = tacheDao.countByIndex(statusDoing,Constats.getTacheIndexByType(Constats.TACHE_TYPE_NAMES[3]));
-        typeMap.put(Constats.TACHE_TYPE_NAMES[3],count4);
-
-        long count5 = tacheDao.countByIndex(statusDoing,Constats.getTacheIndexByType(Constats.TACHE_TYPE_NAMES[4]));
-        typeMap.put(Constats.TACHE_TYPE_NAMES[4],count5);
-
-        long count6 = tacheDao.countByIndex(statusDoing,Constats.getTacheIndexByType(Constats.TACHE_TYPE_NAMES[5]));
-        typeMap.put(Constats.TACHE_TYPE_NAMES[5],count6);
-
-        long count7 = tacheDao.countByIndex(statusSuccess,Constats.getTacheIndexByType(Constats.TACHE_TYPE_NAMES[6]));//12个环节中已经归档的
-        typeMap.put(Constats.TACHE_TYPE_NAMES[6],count7);
-
-        return typeMap;
-    }
+//    public Map<String, Long> selectTypeMap() {
+//        Map<String,Long> typeMap = new LinkedHashMap<>();
+//        long count = tacheDao.count();
+//        typeMap.put("全部",count);
+//        Integer[] statusDoing = new Integer[]{Tache.STAT_DEBUG,Tache.STAT_TESTING};//正在执行
+//        Integer[] statusSuccess = new Integer[]{Tache.STAT_SUCCESS};//正在已经归档
+//
+//        long count1 = tacheDao.countByIndex(statusDoing,Constats.getTacheIndexByType(Constats.TACHE_TYPE_NAMES[0]));//这里的数字是 Constats.TACHE_INDEX_NAMES 里面的下标
+//        typeMap.put(Constats.TACHE_TYPE_NAMES[0],count1);
+//
+//        long count2 = tacheDao.countByIndex(statusDoing,Constats.getTacheIndexByType(Constats.TACHE_TYPE_NAMES[1]));
+//        typeMap.put(Constats.TACHE_TYPE_NAMES[1],count2);
+//
+//        long count3 = tacheDao.countByIndex(statusDoing,Constats.getTacheIndexByType(Constats.TACHE_TYPE_NAMES[2]));
+//        typeMap.put(Constats.TACHE_TYPE_NAMES[2],count3);
+//
+//        long count4 = tacheDao.countByIndex(statusDoing,Constats.getTacheIndexByType(Constats.TACHE_TYPE_NAMES[3]));
+//        typeMap.put(Constats.TACHE_TYPE_NAMES[3],count4);
+//
+//        long count5 = tacheDao.countByIndex(statusDoing,Constats.getTacheIndexByType(Constats.TACHE_TYPE_NAMES[4]));
+//        typeMap.put(Constats.TACHE_TYPE_NAMES[4],count5);
+//
+//        long count6 = tacheDao.countByIndex(statusDoing,Constats.getTacheIndexByType(Constats.TACHE_TYPE_NAMES[5]));
+//        typeMap.put(Constats.TACHE_TYPE_NAMES[5],count6);
+//
+//        long count7 = tacheDao.countByIndex(statusSuccess,Constats.getTacheIndexByType(Constats.TACHE_TYPE_NAMES[6]));//12个环节中已经归档的
+//        typeMap.put(Constats.TACHE_TYPE_NAMES[6],count7);
+//
+//        return typeMap;
+//    }
 
     public List<Tache> findAllByModuleIdWithUser(Integer moduleId) {
 
@@ -409,7 +463,7 @@ public class TacheServiceImpl extends BaseServiceImpl<Tache,Integer> {
         dbTache.setPlanEndTime(sysDate);
         dbTache.setRealBeginTime(sysDate);
         dbTache.setRealEndTime(sysDate);
-        dbTache.setStatus(Tache.STAT_SUCCESS);
+        dbTache.setStatus(0);
         dbTache.setArchiveTime(sysDate);
         dbTache.setCreateTime(sysDate);
 

@@ -29,13 +29,16 @@
             <div class="col-sm-12">
                 <div class="ibox ">
                     <div class="ibox-title">
-                        <h5>项目环节管理</h5>
+                        <h5>项目状态管理</h5>
                     </div>
                     <div class="ibox-content">
                         <p>
-                        	<@shiro.hasPermission name="plan:module:add">
+                        	<@shiro.hasPermission name="plan:status:add">
                         		<button class="btn btn-success " type="button" onclick="add();"><i class="fa fa-plus"></i>&nbsp;添加</button>
                         	</@shiro.hasPermission>
+							<@shiro.hasPermission name="plan:status:add">
+                                <button class="btn btn-success " type="button" onclick="changeSort();"><i class="fa fa-plus"></i>&nbsp;调整排序</button>
+							</@shiro.hasPermission>
                         </p>
                         <hr>
                         <div class="row row-lg">
@@ -90,11 +93,11 @@
 			    //启动分页  
 			    pagination: true,
 			    //每页显示的记录数  
-			    pageSize: 10,
+			    pageSize: 15,
 			    //当前第几页  
 			    pageNumber: 1,
 			    //记录数可选列表  
-			    pageList: [5, 10, 15, 20, 25],
+			    pageList: [10, 15, 20, 25,30],
 			    //是否启用查询  
 			    search: true,
 			    //是否启用详细信息视图
@@ -121,14 +124,16 @@
 			        title: "状态名称",
 			        field: "name"
 			    },{
-			        title: "状态",
+			        title: "状态类型",
 			        sortable: true,
 			        field: "status",
                     formatter: function (value, row, index) {
                     	if(value == 0)
-                    		return '<span class="label label-info">显示</span>';
+                    		return '<span class="label label-info">新创建</span>';
                     	else if(value == 1)
-                    		return '<span class="label label-danger">隐藏</span>';
+                    		return '<span class="label label-success">执行中</span>';
+                        else if(value == 2)
+                            return '<span class="label label-danger">已经完成</span>';
                         else
                             return '<span class="label label-danger">未知</span>';
                     }
@@ -145,8 +150,8 @@
 			        title: "操作",
 			        field: "empty",
                     formatter: function (value, row, index) {
-                    	var operateHtml = '<@shiro.hasPermission name="plan:module:add"><button class="btn btn-primary btn-xs" type="button" onclick="edit(\''+row.id+'\')"><i class="fa fa-edit"></i>&nbsp;修改</button> &nbsp;</@shiro.hasPermission>';
-                    	operateHtml = operateHtml + '<@shiro.hasPermission name="plan:module:deleteBatch"><button class="btn btn-danger btn-xs" type="button" onclick="del(\''+row.id+'\')"><i class="fa fa-remove"></i>&nbsp;删除</button></@shiro.hasPermission>';
+                    	var operateHtml = '<@shiro.hasPermission name="plan:status:add"><button class="btn btn-primary btn-xs" type="button" onclick="edit(\''+row.id+'\')"><i class="fa fa-edit"></i>&nbsp;修改</button> &nbsp;</@shiro.hasPermission>';
+                    	operateHtml = operateHtml + '<@shiro.hasPermission name="plan:status:deleteBatch"><button class="btn btn-danger btn-xs" type="button" onclick="del(\''+row.id+'\')"><i class="fa fa-remove"></i>&nbsp;删除</button></@shiro.hasPermission>';
                         return operateHtml;
                     }
 			    }]
@@ -169,7 +174,7 @@
         function add(){
         	layer.open({
         	      type: 2,
-        	      title: '项目环节添加',
+        	      title: '项目状态添加',
         	      shadeClose: true,
         	      shade: false,
 				  area: ['80%', '90%'],
@@ -178,6 +183,19 @@
         	    	  $('#table_list').bootstrapTable("refresh");
        	    	  }
         	    });
+        }
+        function changeSort(){
+            layer.open({
+                type: 2,
+                title: '项目状态顺序调整',
+                shadeClose: true,
+                shade: false,
+                area: ['60%', '90%'],
+                content: rootUrl+'/changeSort',
+                end: function(index){
+                    $('#table_list').bootstrapTable("refresh");
+                }
+            });
         }
         function del(id){
         	layer.confirm('确定删除吗?', {icon: 3, title:'提示'}, function(index){

@@ -75,7 +75,7 @@
                         <br/><br/><br/>
                         <@shiro.hasPermission name="plan:module:add">
                             点击【立即创建】按钮添加新的功能
-                            <button class="btn btn-success " type="button" onclick="location.href='${ctx!}/plan/module/add'"><i class="fa fa-plus"></i>&nbsp;添加</button>
+                            <button class="btn btn-success " type="button" onclick="add();"><i class="fa fa-plus"></i>&nbsp;添加</button>
                         </@shiro.hasPermission>
                     </div>
                 </div>
@@ -93,8 +93,25 @@
 <!-- 自定义js -->
 <script src="${ctx!}/assets/js/content.js?v=1.0.0"></script>
 
+<script src="${ctx!}/assets/js/plugins/layer/layer.min.js"></script>
 
+<script >
+    var rootUrl = "${ctx!}/plan/module";
 
+    function add(){
+        layer.open({
+            type: 2,
+            title: '功能添加',
+            shadeClose: true,
+            shade: false,
+            area: ['80%', '90%'],
+            content: rootUrl+'/add',
+            end: function(index){
+                $('#table_list').bootstrapTable("refresh");
+            }
+        });
+    }
+</script>
 
 
 </body>

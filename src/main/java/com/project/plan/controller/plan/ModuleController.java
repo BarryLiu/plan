@@ -2,6 +2,7 @@ package com.project.plan.controller.plan;
 
 import com.project.plan.common.JsonResult;
 import com.project.plan.controller.BaseController;
+import com.project.plan.dao.plan.IProjectStatusDao;
 import com.project.plan.entity.plan.*;
 import com.project.plan.service.plan.*;
 import com.project.plan.service.specification.SimpleSpecificationBuilder;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Barry on 2018/4/20.
@@ -39,13 +39,14 @@ public class ModuleController extends BaseController {
     private TacheServiceImpl tacheService;
     @Autowired
     private ProjectTacheServiceImpl projectTacheService;
-
+    @Autowired
+    private IProjectStatusDao statusDao;
 
     @ApiIgnore
     @RequestMapping(value = { "","/", "/index" })
     public String index(ModelMap map) {
-        Map<String,Long> typeMap = tacheService.selectTypeMap();
-        map.put("typeMap",typeMap);
+//        Map<String,Long> typeMap = tacheService.selectTypeMap();
+//        map.put("typeMap",typeMap);
         return "plan/module/index";
     }
 
@@ -62,11 +63,15 @@ public class ModuleController extends BaseController {
 //      builder
 
         Page<Module> page = moduleService.findAllWithProject(builder.generateSpecification(),getPageRequest());
+        List<ProjectStatus> statusList = statusDao.findAll();
         for(Module m: page.getContent()){//查询一个模块下面的描述,具体哪些人哪些功能已经上线，哪些功能没有还做,放到createComments 里面,
             List<Tache> taches = tacheService.findAllByModuleIdWithUser(m.getId());
 
-            String createComments = findModuleComments(taches,Tache.STAT_NEW,false);       //未归档了环节描述
-            String updateComments = findModuleComments(taches,Tache.STAT_SUCCESS,false);   //已经归档了环节描述
+            //String createComments = findModuleComments(taches,Tache.STAT_NEW,false);       //未归档了环节描述
+            //String updateComments = findModuleComments(taches,Tache.STAT_SUCCESS,false);   //已经归档了环节描述
+            String createComments = findModuleComments(taches,statusList, ProjectStatus.STAT_NEW,false);       //未归档了环节描述
+            String updateComments = findModuleComments(taches,statusList, ProjectStatus.STAT_SUCCESS,false);   //已经归档了环节描述
+
 
             m.setCreateCommentStr(createComments);
             m.setUpdateCommentStr(updateComments);
@@ -74,14 +79,73 @@ public class ModuleController extends BaseController {
         return page;
     }
 
-    public static String findModuleComments(List<Tache> taches,int status) {
-        return findModuleComments(taches,status,true);
-    }
     /**
      * 查询这个项目下面的描述
      * @param withComment 需不需要描述,如果不需要直接返回环节名称
      */
-    public static String findModuleComments(List<Tache> taches,int status,boolean withComment) {
+    public static String findModuleComments(List<Tache> taches, List<ProjectStatus> statusList, int status, boolean withComment) {
+
+        StringBuffer sb = new StringBuffer();
+        for (int i =0 ; i< taches.size() ; i++) {
+            Tache t = taches.get(i);
+            ProjectStatus tStatus = new ProjectStatus();
+            tStatus.setId(0);
+            tStatus.setName("未知");
+            tStatus.setStatus(-1);
+
+            String statusStr = "未知";
+            for (ProjectStatus s:statusList) {
+                if(s.getId().equals(t.getStatus())){
+                    statusStr = s.getName();
+                    tStatus = s ;
+                    break;
+                }
+            }
+
+
+            String colorStr = null;
+            switch (t.getStatus()){
+                case ProjectStatus.STAT_NEW:colorStr="#23c6c8";break;//蓝色
+                case ProjectStatus.STAT_DOING:colorStr="#27c24c";break;//绿色
+                case ProjectStatus.STAT_SUCCESS:colorStr="green";break; //
+                default: colorStr="red";break;
+            }
+            //区分是要拿 已经完成了的描述还是没有完成的描述 ,
+            if(ProjectStatus.STAT_SUCCESS==status && status != tStatus.getStatus()){//拿已经归档的描述，但是该环节没归档 ,continue
+                continue;
+            }else if(ProjectStatus.STAT_SUCCESS != tStatus.getStatus() && ProjectStatus.STAT_SUCCESS == tStatus.getStatus()){ //拿没有归档的描述，但是该环节已经归档 ,continue
+                continue;
+            }
+            String comment = "“ <label class='control-label' style='color:green; '>"+t.getSimpleName()+"</label>”；" ;
+            if(!withComment){//不需要 状态等描述
+                if(true){//一个名称换一行
+                    sb.append(comment+" <br/>");
+                    continue;
+                }
+                int lastIndex = sb.lastIndexOf("<br/>");
+                if((sb.lastIndexOf("<br/>") == -1 && sb.length()>100) || lastIndex>0&&sb.substring(lastIndex,sb.length()).length()>100) {//大于100个字就换行 : (没有换行标签&&字数大于指定值)||(有换行&& 大于定值)
+                    comment += " <br/>";
+                }
+                sb.append(comment);
+                continue;
+            }else{
+                if(ProjectStatus.STAT_SUCCESS != tStatus.getStatus()){//归档只有一种状态,已经归档了的就不用显示状态了吧
+                    comment += " 状态为“<label class='control-label' style='color:"+colorStr+"; '>"+statusStr+"</label>”,";
+                }
+                if(t.getUser()!=null){
+                    comment += "由“<label class='control-label' style='color:green; '>"+t.getUser().getNickName()+"</label>”处理。";
+                }
+                if(i%1==0){
+                    comment += " <br/>";
+                }else {
+                    comment += " &nbsp;&nbsp;&nbsp;";
+                }
+                sb.append(comment);
+            }
+        }
+        return sb.toString();
+    }
+    /*public static String findModuleComments(List<Tache> taches,int status,boolean withComment) {
 
         StringBuffer sb = new StringBuffer();
         for (int i =0 ; i< taches.size() ; i++) {
@@ -102,7 +166,7 @@ public class ModuleController extends BaseController {
             }else if(Tache.STAT_SUCCESS != status && Tache.STAT_SUCCESS == t.getStatus()){ //拿没有归档的描述，但是该环节已经归档 ,continue
                 continue;
             }
-            String comment = "“ <label class='control-label' style='color:green; '>"+t.getName()+"</label>”；" ;
+            String comment = "“ <label class='control-label' style='color:green; '>"+t.getSimpleName()+"</label>”；" ;
             if(!withComment){//不需要 状态等描述
                 if(true){//一个名称换一行
                     sb.append(comment+" <br/>");
@@ -133,7 +197,7 @@ public class ModuleController extends BaseController {
             sb.append(comment);
         }
         return sb.toString();
-    }
+    }*/
 
     @ApiOperation(value="跳到添加模块页面", notes="模块增加和修改需要拿到项目列表")
     @RequestMapping(value = "/add", method = RequestMethod.GET)

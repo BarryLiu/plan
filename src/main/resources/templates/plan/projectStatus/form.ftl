@@ -28,8 +28,7 @@
                         <h5>功能简介</h5>
                     </div>
                     <div class="ibox-content">
-                        <p>环节描述：</p>
-
+                        <p>项目环节状态为项目环节中全局状态,可以配置功能下的环节使用全局状态中的哪些状态,项目环节中选择要哪些。</p>
                     </div>
                 </div>
             </div>
@@ -41,7 +40,7 @@
                         <h5>功能编辑</h5>
                     </div>
                     <div class="ibox-content">
-                        <form class="form-horizontal m-t" id="frm" method="post" action="${ctx!}/plan/module/edit">
+                        <form class="form-horizontal m-t" id="frm" method="post" action="${ctx!}/plan/status/edit">
                         	<input type="hidden" id="id" name="id" value="${status.id}">
 
                             <div class="form-group">
@@ -51,11 +50,12 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">状态：</label>
+                                <label class="col-sm-3 control-label">状态类型：</label>
                                 <div class="col-sm-2">
                                 	<select name="status" class="form-control">
-                                		<option value="0" <#if status.status == 0>selected="selected"</#if>>显示</option>
-                                		<option value="1" <#if status.status == 1>selected="selected"</#if>>隐藏</option>
+                                		<option value="0" <#if status.status == 0>selected="selected"</#if>>新创建</option>
+                                		<option value="1" <#if status.status == 1>selected="selected"</#if>>执行中</option>
+                                        <option value="2" <#if status.status == 2>selected="selected"</#if>>已完成</option>
                                 	</select>
                                 </div>
                             </div>
