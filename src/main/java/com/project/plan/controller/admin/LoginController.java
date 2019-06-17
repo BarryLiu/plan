@@ -47,7 +47,7 @@ public class LoginController extends BaseController {
 			) {
 		try {
 
-			if(LDAPControl.getInstance().authorCheck(username,password)){//如ldap到与登录成功,让他以数据库里面设置的默认密码登录
+			/*if(LDAPControl.getInstance().authorCheck(username,password)){//如ldap到与登录成功,让他以数据库里面设置的默认密码登录
 				password = Constats.DEFAULT_USER_PWD;
 				User user = userService.findByUserName(username);
 				if(user==null){//如登录成功系统没有这个人的账号,ldap查询自动添加到 User列表
@@ -57,7 +57,7 @@ public class LoginController extends BaseController {
 						userService.save(newUser);
 					}
 				}
-			}
+			}*/
 
 
 			 Subject subject = SecurityUtils.getSubject();
