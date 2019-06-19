@@ -28,7 +28,7 @@ public class Order extends AbstractEntity {
     private String productName;
 
     @NotNull(message="订货人不能为空")
-    @Column(name="userName",length=50,nullable = false)
+    @Column(name="user_name",length=50,nullable = false)
     private String userName ;
 
     @NotNull(message="手机不能为空")
@@ -47,18 +47,16 @@ public class Order extends AbstractEntity {
     @Column(name="pay_stat",length=2,nullable = false)
     private Integer payStatus ;
 
-    @NotNull(message="快递公司不能为空")
-    @Column(name="express_company",length=50,nullable = true)
+    @Column(name="express_company",length=500)
     private String expressCompany ;
 
-    @NotNull(message="快递公司不能为空")
-    @Column(name="express_number",length=50,nullable = true)
+    @Column(name="express_number",length=500)
     private String expressNumber ;
 
     //    @NotNull(message="下单时间不能为空")
-    @JSONField(format = "yyyy-MM-dd")
-    @Column(name="create_time",length=500)
-    protected Date createTime;
+//    @JSONField(format = "yyyy-MM-dd")
+//    @Column(name="create_time",length=500)
+//    protected Date createTime;
 
     //    @NotNull(message="处理时间不能为空")
     @JSONField(format = "yyyy-MM-dd")//相当于修改时间,
