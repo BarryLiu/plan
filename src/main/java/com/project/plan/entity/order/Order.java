@@ -36,9 +36,13 @@ public class Order extends AbstractEntity {
     private String phone;
 
     @NotNull(message="订货地址不能为空")
-    @Column(name="adress",length=50,nullable = false)
-    private String adress ;
+    @Column(name="address",length=50,nullable = false)
+    private String address ;
 
+    @NotNull(message="价格不能为空")
+    @Column(name="price",length=10,nullable = false)
+    private Integer price ;
+    
     @NotNull(message="订单状态不能为空")
     @Column(name="stat",length=2,nullable = false)
     private Integer status ;

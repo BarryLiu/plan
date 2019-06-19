@@ -33,9 +33,11 @@
                     </div>
                     <div class="ibox-content">
                         <p>
-                        	<@shiro.hasPermission name="######">
+                        	<@shiro.hasPermission name="order:add">
                         		<button class="btn btn-success " type="button" onclick="add();"><i class="fa fa-plus"></i>&nbsp;添加</button>
                         	</@shiro.hasPermission>
+                        	<button class="btn btn-success " type="button" onclick="add();"><i class="fa fa-plus"></i>&nbsp;添加</button>
+                        	<button class="btn btn-danger btn-xs"type="button" onclick="delAll();"><i class="fa fa-plus"></i>&nbsp;批量删除</button>
                         </p>
                         <hr>
                         <div class="row row-lg">
@@ -101,7 +103,7 @@
 			    //是否启用查询  
 			    search: true,
 			    //是否启用详细信息视图
-			    detailView:true,
+			    detailView:false,
 			    detailFormatter:detailFormatter,
 			    //表示服务端请求  
 			    sidePagination: "server",
@@ -116,11 +118,14 @@
 			        };
 			    },
 			    //数据列
-			    columns: [/*{
-			        title: "ID",
+			    columns: [{
+			        title: "选中",
 			        field: "id",
-			        sortable: true
-			    },*/{
+			        sortable: false, 
+                    formatter: function (value, row, index) {
+                       return '<input type="checkbox" name="ids" value="'+value+'" />' ;
+                    }
+			    },{
                     title: "产品",
                     field: "productName"
                 },{
@@ -159,8 +164,10 @@
 			        title: "操作",
 			        field: "empty",
                     formatter: function (value, row, index) {
-                    	var operateHtml = '<@shiro.hasPermission name="plan:module:add"><button class="btn btn-primary btn-xs" type="button" onclick="edit(\''+row.id+'\')"><i class="fa fa-edit"></i>&nbsp;修改</button> &nbsp;</@shiro.hasPermission>';
-                    	operateHtml = operateHtml + '<@shiro.hasPermission name="plan:module:deleteBatch"><button class="btn btn-danger btn-xs" type="button" onclick="del(\''+row.id+'\')"><i class="fa fa-remove"></i>&nbsp;删除</button></@shiro.hasPermission>';
+                    	var operateHtml = '<@shiro.hasPermission name="order:add"><button class="btn btn-primary btn-xs" type="button" onclick="edit(\''+row.id+'\')"><i class="fa fa-edit"></i>&nbsp;修改</button> &nbsp;</@shiro.hasPermission>';
+                    	operateHtml = operateHtml + '<@shiro.hasPermission name="order:deleteBatch"><button class="btn btn-danger btn-xs" type="button" onclick="del(\''+row.id+'\')"><i class="fa fa-remove"></i>&nbsp;删除</button></@shiro.hasPermission>';
+                    	operateHtml = operateHtml + '<button class="btn btn-primary btn-xs" type="button" onclick="edit(\''+row.id+'\')"><i class="fa fa-edit"></i>&nbsp;修改</button>';
+                    	operateHtml = operateHtml + '<button class="btn btn-danger btn-xs" type="button" onclick="del(\''+row.id+'\')"><i class="fa fa-remove"></i>&nbsp;删除</button>';
                         return operateHtml;
                     }
 			    }]
@@ -170,7 +177,7 @@
         function edit(id){
         	layer.open({
         	      type: 2,
-        	      title: '功能修改',
+        	      title: '订单处理',
         	      shadeClose: true,
         	      shade: false,
 				  area: ['80%', '90%'],
@@ -183,7 +190,7 @@
         function add(){
         	layer.open({
         	      type: 2,
-        	      title: '功能添加',
+        	      title: '订单添加',
         	      shadeClose: true,
         	      shade: false,
 				  area: ['80%', '90%'],
@@ -208,7 +215,16 @@
     	    	});
        		});
         }
-
+        function delAll(){
+        	var ids = document.getElementsByName("ids");
+        	alert(ids);
+        	alert(ids.length);
+        	
+        }
+		function detailFormatter(index, row) {
+	        var html = []; 
+	        return html.join('');
+	    }
     </script>
 
     

@@ -29,56 +29,67 @@
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5><!--功能编辑--></h5>
+                        <h5><!--订单编辑--></h5>
                     </div>
                     <div class="ibox-content">
                         <form class="form-horizontal m-t" id="frm" method="post" action="${ctx!}/order/edit">
                         	<input type="hidden" id="id" name="id" value="${order.id}">
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">用户信息：</label>
+                                <label class="col-sm-4 control-label"><h2>用户信息</h2></label>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">姓名： ${order.userName}</label>
-                                
-                                <label class="col-sm-4 control-label">手机：${order.phone}</label>
-                                
-                                <label class="col-sm-4 control-label">付款方式：货到付款</label>
+                                <label class="col-sm-3 control-label">姓名： </label>
+                                <div class="col-sm-4">
+                                    <input id="userName" name="userName" class="form-control" type="text" value="${order.userName}">
+                                </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" >收货地址：${order.address}</label>
+                                <label class="col-sm-3 control-label">手机： </label>
+                                <div class="col-sm-4">
+                                    <input id="phone" name="phone" class="form-control" type="text" value="${order.phone}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">付款方式： </label>
+                                <div class="col-sm-4">
+                                    <input id="payStatus" name="payStatus" checked  type="radio" value="0"> 货到付款
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" >收货地址：</label>
+                                <div class="col-sm-4">
+                                    <input id="address" name="address" class="form-control" type="text" >
+                                </div>
                             </div>
                             
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">订单信息：</label>
+                                <label class="col-sm-4 control-label"><h2>订单信息</h2></label>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">订购商品： </label>
                                 <div class="col-sm-4">
-                                	${order.productName}
+                                	<input id="productName" name="productName" class="form-control" type="text" >
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">价格：</label>
-                                <div class="col-sm-4">
-                                	${order.price}元
+                                <div class="col-sm-3">
+                                	<input id="price" placeholder="单位:元" name="price" class="form-control" type="number" >
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">备注说明: </label>
                                 <div class="col-sm-4">
-                                	${order.createComment}
+                                	<input id="createComment" name="createComment" class="form-control" type="text" >
                                 </div>
                             </div>
                             
                             
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">状态信息：</label>
-                            </div>
-                            <div class="form-group">
                                 <label class="col-sm-3 control-label">下单时间：</label>
                                 <div class="col-sm-2">
-                                    <input id="startTime" name="createTime" readonly="readonly" class="laydate-icon form-control layer-date" value="${order.createTime}">
+                                    <input id="createTime" name="createTime" class="laydate-icon form-control layer-date" value="${order.createTime}">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -108,81 +119,11 @@
                                         <@shiro.hasPermission name="order:edit">
                                             <button class="btn btn-primary" type="submit">提交</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         </@shiro.hasPermission>
+                                        <button class="btn btn-primary" type="submit">提交</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         <button class="btn btn-primary" type="reset">重置</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                                         <button class="btn btn-primary" type="button" onclick="closeWindow();">取消</button>
                                     </div>
                             </div>
-
-							<#-- 
-							<div class="form-group">
-                                  <table width="60%" border="0" align="center" cellpadding="0" cellspacing="1" style="margin-top:-0px; background-color:#ccc"  >
-								<tr>
-								<td height="25" colspan="7" align="left" valign="top" background="Images/bg.jpg"  class="biaoti STYLE1" style="line-height:22px;">&nbsp;用户信息：</td>
-								</tr>
-								      <tr>
-								        <td width="33%" height="30"  bgcolor="#FFFFFF">&nbsp;姓 　名： ${order.userName} 　　  　 </td>
-								        <td width="33%"  bgcolor="#FFFFFF">&nbsp;手机：${order.phone}</td>
-								        <td width="33%"  bgcolor="#FFFFFF">&nbsp;付款方式：货到付款</td>
-								      　      </tr>
-								      <tr>
-								        <td height="30" colspan="7"  bgcolor="#FFFFFF">&nbsp;收货地址：${order.adress}</td>
-								    </tr>
-									<tr>
-								<td height="25" colspan="7" align="left" background="Images/bg.jpg"  class="biaoti STYLE1">&nbsp;订单信息：</td>
-								</tr>
-								
-								   <tr>
-								 <td height="30" colspan="3"  bgcolor="#FFFFFF">&nbsp;订购商品：${order.productName}</td>                                                                                                                                                    
-								 </tr>
-								    <tr>
-								 <td height="30" colspan="3"  bgcolor="#FFFFFF">&nbsp;价格：${order.price}元</td>                                                                                                                                                    
-								 </tr>
-								 
-								 
-									  	  	 <tr>
-								        <td height="30" colspan="7"  bgcolor="#FFFFFF">&nbsp;备注说明：${order.createComment} 　 </td> 　        </tr>
-									  <tr>
-									<tr>
-								
-								
-								<td height="25" colspan="7" align="left" background="Images/bg.jpg"  class="biaoti STYLE1">&nbsp;状态信息：</td>
-								</tr>
-								      <td height="30" colspan="7"  bgcolor="#FFFFFF">&nbsp;下单时间：&nbsp;&nbsp;
-								        <input id="startTime" name="startTime" readonly="readonly" class="laydate-icon form-control layer-date" value="${order.createTime}"></td>
-								    </tr>
-								
-								<tr>
-								      <td height="30" colspan="7"  bgcolor="#FFFFFF">&nbsp;快递公司：&nbsp;
-								     
-								        <input name="kd" type="text" id="kd"  value="${order.expressCompany}"/></td>
-								    </tr>
-								      <tr>
-								      <td height="30" colspan="7"  bgcolor="#FFFFFF">&nbsp;快递运单号：
-								     
-								        <input name="yundan" type="text" id="yundan"  value="${order.expressNumber}"/></td>
-								    </tr>
-								
-								
-								
-									<tr>
-								      <td height="30" colspan="7"  bgcolor="#FFFFFF">&nbsp;订单状态：&nbsp;&nbsp;
-								        <select name="zhuangtai1" class="liebiao" id="zhuangtai1">
-								          <option value="待处理" <#if order.status == 0>selected="selected"</#if>>待处理</option>
-								          <option value="已处理" <#if order.status == 1>selected="selected"</#if>>已处理</option>
-								        </select>
-								      </td>
-								    </tr>
-									
-								    <tr>
-								      <td height="25" colspan="7" align="center"  bgcolor="#FFFFFF">&nbsp;
-										<button class="btn btn-primary" type="submit">提交</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										<button class="btn btn-primary" type="reset">重置</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	                                    <button class="btn btn-primary" type="button" onclick="closeWindow();">取消</button>
-								    </tr>
-								  </table>  
-                            </div>
-						 	-->
-
 
                         </form>
                     </div>
@@ -216,15 +157,20 @@
 
 	    $("#frm").validate({
     	    rules: {
-    	    	expressCompany: {
+    	    	userName: {
     	        required: true,
     	        minlength: 2,
     	    	maxlength: 50
     	      },
-    	      expressNumber: {
+    	      phone: {
                 required: true,
                 minlength: 6,
-                maxlength: 500
+                maxlength: 13
+              },
+              address: {
+                required: true,
+                minlength: 6,
+                maxlength: 13
               },
                 status: {
     	        required: true

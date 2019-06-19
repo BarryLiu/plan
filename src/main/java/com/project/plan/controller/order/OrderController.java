@@ -3,6 +3,7 @@ package com.project.plan.controller.order;
 import com.project.plan.common.JsonResult;
 import com.project.plan.controller.BaseController;
 import com.project.plan.entity.order.Order;
+import com.project.plan.entity.plan.Project;
 import com.project.plan.service.order.OrderServiceImpl;
 import com.project.plan.service.specification.SimpleSpecificationBuilder;
 import com.project.plan.service.specification.SpecificationOperator;
@@ -41,19 +42,25 @@ public class OrderController  extends BaseController {
         SimpleSpecificationBuilder<Order> builder = new SimpleSpecificationBuilder<Order>();
         String searchText = request.getParameter("searchText");
         if(StringUtils.isNotBlank(searchText)){
-            builder.add("name", SpecificationOperator.Operator.likeAll.name(), searchText);
+            builder.add("productName", SpecificationOperator.Operator.likeAll.name(), searchText);
         }
         Page<Order> page = orderService.findAll(builder.generateSpecification(),getPageRequest());
         return page;
     }
 
+    @ApiOperation(value="跳到添加项目页面", notes="增加和修改是一个页面")
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String add(ModelMap map) {
+    	
+        return "order/add";
+    }
 
     @ApiOperation(value="跳到修改订单页面", notes="增加和修改是一个页面")
     @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Integer",paramType = "path")
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String edit(@PathVariable Integer id, ModelMap map) {
-        Order project = orderService.find(id);
-        map.put("project", project);
+        Order order = orderService.find(id);
+        map.put("order", order);
 
         return "order/form";
     }

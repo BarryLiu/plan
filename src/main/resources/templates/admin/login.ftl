@@ -36,17 +36,17 @@
                 </#if>
                 <form method="post" action="${ctx!}/admin/login" id="frm">
                     <h4 class="no-margins">登录：</h4>
-                    <p class="m-t-md">项目进度跟踪后台</p>
+                    <p class="m-t-md">网站后台管理系统</p>
                     <input type="text" class="form-control uname" name="username" value="admin" id="username" placeholder="用户名" />
                     <input type="password" class="form-control pword m-b" value="111111" name="password" id="password"  placeholder="密码" />
-                    <a href="javascript:alert('电脑密码')" class="forget">忘记密码了？</a>
+                    <!--<a href="javascript:" class="forget">忘记密码了？</a> -->
                     <button class="btn btn-success btn-block">登录</button>
                 </form>
             </div>
         </div>
         <div class="signup-footer">
             <div class="pull-left">
-                &copy; Barry
+                
             </div>
         </div>
     </div>

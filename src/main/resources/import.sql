@@ -36,3 +36,11 @@ insert  into `tb_role_resource`(`role_id`,`resource_id`) values (1,32),(1,33),(1
 
 insert into t_project (id,`name`,stat,create_time,create_comment,update_time,update_comment )values (1,'作业本',0,now(),'创建作业本项目',now(),'修改作业本项目');
 insert  into `tb_role`(`id`,`create_time`,`description`,`role_key`,`name`,`status`,`update_time`) values(2,'2018-04-20 17:25:30','产品描述','product','产品',0,'2018-04-20 17:26:25'),(3,'2018-04-20 17:25:30','开发描述','develop','开发',0,'2018-04-20 17:26:25'),(4,'2018-04-20 17:25:30','测试描述','test','测试',0,'2018-04-20 17:26:25');
+
+
+-- 订单添加sql语句
+
+insert  into `tb_resource`(`id`,`create_time`,`description`,`icon`,`is_hide`,`level`,`name`,`sort`,`source_key`,`source_url`,`type`,`update_time`,`parent_id`) values(40,'2018-04-20 13:56:51','订单管理',NULL,0,1,'订单管理',1,'order:index','/order/index',1,'2018-01-10 13:59:01',NULL);
+insert  into `tb_resource`(`id`,`create_time`,`description`,`icon`,`is_hide`,`level`,`name`,`sort`,`source_key`,`source_url`,`type`,`update_time`,`parent_id`) values(41,'2018-04-20 11:21:12','订单管理',NULL,0,2,'订单管理',3,'order:list','/order/index',1,'2018-04-20 11:21:42',40),(42,'2018-04-20 11:21:52','订单编辑',NULL,0,3,'订单编辑',1,'plan:project:edit','/order/edit*',2,'2018-04-20 11:22:36',40),(43,'2018-04-20 11:21:54','订单添加',NULL,0,3,'订单添加',2,'plan:project:add','/order/add',2,'2018-04-20 11:22:39',40),(44,'2018-04-20 11:21:54','订单删除',NULL,0,3,'订单删除',3,'plan:project:deleteBatch','/plan/project/deleteBatch',2,'2018-01-18 14:12:31',40);
+
+insert  into `tb_role_resource`(`role_id`,`resource_id`) values (1,40),(1,41),(1,42),(1,43),(1,44);

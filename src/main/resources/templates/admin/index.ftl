@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
 
-    <title> Plan后台管理- 主页</title>
+    <title> 后台管理- 主页</title>
 
     <meta name="keywords" content="">
     <meta name="description" content="">
@@ -36,7 +36,7 @@
                                 <span class="clear">
                                     <span class="block m-t-xs" style="font-size:20px;">
                                         <i class="fa fa-area-chart"></i>
-                                        <strong class="font-bold">PlanAdmin</strong>
+                                        <strong class="font-bold">管理后台</strong>
                                     </span>
                                 </span>
                             </a>
@@ -48,7 +48,7 @@
                         <span class="ng-scope">分类</span>
                     </li>
                     <li>
-                        <a class="J_menuItem" href="${ctx!}/admin/welcome">
+                        <a class="J_menuItem" href="${ctx!}/order/index">
                             <i class="fa fa-home"></i>
                             <span class="nav-label">主页</span>
                         </a>
