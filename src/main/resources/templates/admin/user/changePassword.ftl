@@ -30,7 +30,7 @@
                     <div class="ibox-content">
                     <#--<p>系统登录用户是由员工登录系统后自动添加,这里不需要添加,这里添加后默认登录密码是“111111”</p>
                         因为是用的员工系统ldap登录系统,不需要通过此密码登录-->
-                        用户可以登录系统
+                        密码请妥善保管，别告诉他人
                     </div>
                 </div>
             </div>
@@ -51,63 +51,9 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">昵称：</label>
+                                <label class="col-sm-3 control-label">原密码：</label>
                                 <div class="col-sm-8">
-                                    <input id="nickName" name="nickName" class="form-control" type="text" value="${user.nickName}">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">性别：</label>
-                                <div class="col-sm-8">
-                                	<select name="sex" class="form-control">
-                                		<option value="0" <#if user.sex == 0>selected="selected"</#if>>女</option>
-                                		<option value="1" <#if user.sex == 1>selected="selected"</#if>>男</option>
-                                	</select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">出生日期：</label>
-                                <div class="col-sm-8">
-                                    <input id="birthday" name="birthday" readonly="readonly" class="laydate-icon form-control layer-date" value="${user.birthday}">
-                                </div>
-                            </div>
-                            <#--<div class="form-group">
-                                <label class="col-sm-3 control-label">密码：</label>
-                                <div class="col-sm-8">
-                                    <input id="password" name="password" class="form-control" value="">
-                                </div>
-                            </div>-->
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">电话：</label>
-                                <div class="col-sm-8">
-                                    <input id="telephone" name="telephone" class="form-control" value="${user.telephone}">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">E-mail：</label>
-                                <div class="col-sm-8">
-                                    <input id="email" name="email" class="form-control" value="${user.email}">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">地址：</label>
-                                <div class="col-sm-8">
-                                    <input id="address" name="address" class="form-control" value="${user.address}">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">状态：</label>
-                                <div class="col-sm-8">
-                                	<select name="locked" class="form-control">
-                                		<option value="0" <#if user.locked == 0>selected="selected"</#if>>未锁定</option>
-                                		<option value="1" <#if user.locked == 1>selected="selected"</#if>>锁定</option>
-                                	</select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">描述：</label>
-                                <div class="col-sm-8">
-                                    <input id="description" name="description" class="form-control" value="${user.description}">
+                                    <input id="password" name="oldPassword" class="form-control" type="password" value="${user.password}" >
                                 </div>
                             </div>
                             <div class="form-group">
@@ -150,7 +96,11 @@
     	        required: true,
     	        minlength: 4,
     	    	maxlength: 20
-    	      },
+    	      },password: {
+                    required: true,
+                    minlength: 4,
+                    maxlength: 20
+                },
     	      	nickName: {
     	        required: true,
     	        minlength: 2,
