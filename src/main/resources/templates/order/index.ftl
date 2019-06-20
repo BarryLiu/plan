@@ -36,7 +36,6 @@
                         	<@shiro.hasPermission name="order:add">
                         		<button class="btn btn-success " type="button" onclick="add();"><i class="fa fa-plus"></i>&nbsp;添加</button>
                         	</@shiro.hasPermission>
-                        	<button class="btn btn-success " type="button" onclick="add();"><i class="fa fa-plus"></i>&nbsp;添加</button>
                         	<button class="btn btn-danger btn-xs"type="button" onclick="delAll();"><i class="fa fa-plus"></i>&nbsp;批量删除</button>
                         </p>
                         <hr>
@@ -130,13 +129,13 @@
                     field: "productName"
                 },{
 			        title: "姓名",
-			        field: "name"
+			        field: "userName"
 			    },{
                     title: "手机",
                     field: "phone"
                 },{
                     title: "收货人地址",
-                    field: "adress"
+                    field: "address"
                 },{
                     title: "订单状态",
                     sortable: true,
@@ -151,23 +150,12 @@
                     title: "启动时间",
                     field: "createTime",
                     sortable: true
-                }
-					/*,{
-			        title: "创建时间",
-			        field: "createTime",
-			        sortable: true
-			    },{
-			        title: "更新时间",
-			        field: "updateTime",
-			        sortable: true
-			    }*/,{
+                },{
 			        title: "操作",
 			        field: "empty",
                     formatter: function (value, row, index) {
                     	var operateHtml = '<@shiro.hasPermission name="order:add"><button class="btn btn-primary btn-xs" type="button" onclick="edit(\''+row.id+'\')"><i class="fa fa-edit"></i>&nbsp;修改</button> &nbsp;</@shiro.hasPermission>';
                     	operateHtml = operateHtml + '<@shiro.hasPermission name="order:deleteBatch"><button class="btn btn-danger btn-xs" type="button" onclick="del(\''+row.id+'\')"><i class="fa fa-remove"></i>&nbsp;删除</button></@shiro.hasPermission>';
-                    	operateHtml = operateHtml + '<button class="btn btn-primary btn-xs" type="button" onclick="edit(\''+row.id+'\')"><i class="fa fa-edit"></i>&nbsp;修改</button>';
-                    	operateHtml = operateHtml + '<button class="btn btn-danger btn-xs" type="button" onclick="del(\''+row.id+'\')"><i class="fa fa-remove"></i>&nbsp;删除</button>';
                         return operateHtml;
                     }
 			    }]

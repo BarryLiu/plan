@@ -41,7 +41,7 @@ public class AdminIndexController extends BaseController {
 	@ApiOperation(value="后台欢迎界面", notes="登录成功进入后台主界面后页面回立即请求这个页面,先给内容重定向到别的页面")
 	@RequestMapping(value = {"/admin/welcome"},method = RequestMethod.GET)
 	public String welcome(ModelMap map,Integer moduleId){
-		return  redirect("/plan/module/index");
+		return  "/admin/welcome";
 	}
 
 

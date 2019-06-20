@@ -69,7 +69,12 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">订购商品： </label>
                                 <div class="col-sm-4">
-                                	<input id="productName" name="productName" class="form-control" type="text" >
+                                	<select id="productName" name="productName" class="form-control">
+                                		<option  >请选择</option>
+                                		<option value="零售客户 490元（1盒装）" >零售客户 490元（1盒装）</option>
+                                		<option value="天使代理 680元（2盒装）" >天使代理 680元（2盒装）</option>
+                                        <option value="特约代理 3100元（10盒装）">特约代理 3100元（10盒装）</option>
+                                	</select>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -116,10 +121,9 @@
                             </div>
                             <div class="form-group">
                                     <div class="col-sm-8 col-sm-offset-3">
-                                        <@shiro.hasPermission name="order:edit">
+                                        <@shiro.hasPermission name="order:add">
                                             <button class="btn btn-primary" type="submit">提交</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         </@shiro.hasPermission>
-                                        <button class="btn btn-primary" type="submit">提交</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         <button class="btn btn-primary" type="reset">重置</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                                         <button class="btn btn-primary" type="button" onclick="closeWindow();">取消</button>
                                     </div>
@@ -171,10 +175,26 @@
                 required: true,
                 minlength: 6,
                 maxlength: 13
-              },
+              },{
+    	    	productName: {
+    	        required: true
+    	      },
                 status: {
     	        required: true
-    	      }
+    	      },
+                price: {
+    	        required: true
+    	      },{
+    	    	expressCompany: {
+    	        required: false,
+    	        minlength: 2,
+    	    	maxlength: 50
+    	      },
+    	      expressNumber: {
+                required: false,
+                minlength: 6,
+                maxlength: 500
+              }
     	    },
     	    messages: {},
     	    submitHandler:function(form){
@@ -184,6 +204,7 @@
    	    		   url: "${ctx!}/order/edit",
    	    		   data: $(form).serialize(),
    	    		   success: function(msg){
+   	    		   alert(msg);
 	   	    			layer.msg(msg.message, {time: 2000},function(){
                             closeWindow();
 	   					});

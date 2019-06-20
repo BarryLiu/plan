@@ -32,8 +32,13 @@ public class OrderServiceImpl extends BaseServiceImpl<Order,Integer> {
             dbModule.setUpdateTime(new Date());
             super.update(dbModule);
         }else{
-            order.setCreateTime(new Date());
-            order.setUpdateTime(new Date());
+        	if(order.getCreateTime()!=null) {
+                order.setUpdateTime(order.getCreateTime());	
+        	}else {
+        		order.setCreateTime(new Date());
+                order.setUpdateTime(new Date());
+        	}
+            
             save(order);
         }
     }
