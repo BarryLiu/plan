@@ -71,12 +71,12 @@
                                     <input id="birthday" name="birthday" readonly="readonly" class="laydate-icon form-control layer-date" value="${user.birthday}">
                                 </div>
                             </div>
-                            <#--<div class="form-group">
+                            <div class="form-group">
                                 <label class="col-sm-3 control-label">密码：</label>
                                 <div class="col-sm-8">
-                                    <input id="password" name="password" class="form-control" value="">
+                                    <input id="password" name="password" placeholder="未输入表示不修改" class="form-control" value="">
                                 </div>
-                            </div>-->
+                            </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">电话：</label>
                                 <div class="col-sm-8">
