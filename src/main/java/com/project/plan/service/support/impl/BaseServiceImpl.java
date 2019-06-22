@@ -4,20 +4,16 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-
-import com.project.plan.dao.support.IBaseDao;
-import com.project.plan.entity.plan.Module;
-import com.project.plan.entity.plan.Project;
-import com.project.plan.entity.plan.Tache;
-import com.project.plan.entity.support.BaseEntity;
-import com.project.plan.service.support.IBaseService;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+
+import com.project.plan.dao.support.IBaseDao;
+import com.project.plan.entity.support.BaseEntity;
+import com.project.plan.service.support.IBaseService;
 
 @Transactional
 public abstract class BaseServiceImpl<T extends BaseEntity, ID extends Serializable> implements IBaseService<T, ID> {

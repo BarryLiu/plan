@@ -1,13 +1,5 @@
 package com.project.plan.controller.admin.system;
 
-import com.project.plan.controller.BaseController;
-import com.project.plan.common.JsonResult;
-import com.project.plan.entity.Role;
-import com.project.plan.service.IResourceService;
-import com.project.plan.service.IRoleService;
-import com.project.plan.service.specification.SimpleSpecificationBuilder;
-import com.project.plan.service.specification.SpecificationOperator.Operator;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.project.plan.common.JsonResult;
+import com.project.plan.controller.BaseController;
+import com.project.plan.entity.Role;
+import com.project.plan.service.IRoleService;
+import com.project.plan.service.specification.SimpleSpecificationBuilder;
+import com.project.plan.service.specification.SpecificationOperator.Operator;
+
 import springfox.documentation.annotations.ApiIgnore;
 
 @Controller
@@ -27,8 +27,6 @@ public class RoleController extends BaseController {
 	@Autowired
 	private IRoleService roleService;
 	
-	@Autowired
-	private IResourceService resourceService;
 
 	@ApiIgnore
 	@RequestMapping(value = { "","/", "/index" })

@@ -11,8 +11,6 @@ import com.project.plan.service.support.IBaseService;
  * 资源服务类
  * </p>
  *
- * @author SPPan
- * @since 2016-12-28
  */
 public interface IResourceService extends IBaseService<Resource, Integer> {
 

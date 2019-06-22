@@ -23,8 +23,6 @@ import com.project.plan.entity.support.BaseEntity;
  * 角色表
  * </p>
  *
- * @author SPPan
- * @since 2016-12-28
  */
 @Entity
 @Table(name = "tb_role")

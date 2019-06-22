@@ -6,9 +6,6 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.project.plan.common.DateEditor;
-import com.project.plan.service.IUserService;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -18,6 +15,8 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 
+import com.project.plan.common.DateEditor;
+
 public class BaseController {
 	@Autowired
 	protected HttpServletRequest request;
@@ -25,8 +24,6 @@ public class BaseController {
 	@Autowired
 	protected HttpServletResponse response;
 	
-	@Autowired
-	private IUserService userService;
 	
 	@InitBinder
     protected void initBinder(WebDataBinder webDataBinder) {

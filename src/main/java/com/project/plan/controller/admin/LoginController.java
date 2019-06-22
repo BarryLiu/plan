@@ -1,33 +1,26 @@
 package com.project.plan.controller.admin;
 
-import com.project.plan.common.Constats;
-import com.project.plan.common.utils.LDAPControl;
-import com.project.plan.common.utils.TUser;
-import com.project.plan.controller.BaseController;
-
-import com.project.plan.entity.User;
-import com.project.plan.service.impl.UserServiceImpl;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import org.apache.catalina.webresources.TomcatURLStreamHandlerFactory;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.project.plan.common.Constats;
+import com.project.plan.controller.BaseController;
+
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import springfox.documentation.annotations.ApiIgnore;
 
 @Controller
 public class LoginController extends BaseController {
 
-	@Autowired
-	private UserServiceImpl userService;
 
 	@ApiIgnore
 	@RequestMapping(value = { "/admin/login" }, method = RequestMethod.GET)

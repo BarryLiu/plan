@@ -1,11 +1,5 @@
 package com.project.plan.common.utils;
 
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import sun.misc.BASE64Encoder;
-
-import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,6 +7,15 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import sun.misc.BASE64Encoder;
+
+@SuppressWarnings("restriction")
 public class TextUtil {
 	private static Logger logger = LoggerFactory.getLogger(TextUtil.class);
 

@@ -1,17 +1,24 @@
 package com.project.plan.common.utils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.*;
-import java.util.ArrayList;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 public class HttpUtil {
@@ -229,28 +236,15 @@ public class HttpUtil {
     	return localIp;
     }
     
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws IOException, InterruptedException {
 		 
 		//发送 POST 请求 ios 请求更新  http://itunes.apple.com/lookup?id=1195792578
 		//发送 GET 请求
-		// String sr=HttpUtil.sendGet("http://61.129.57.40:8083/HomeworkManagement/server/req.action", "id=1195792578");
 //        String sr=HttpUtil.sendGet("http://itunes.apple.com/lookup", "id=1195792578");
 		//发送 POST 请求
 // 		  String sr=HttpUtil.sendPost("http://itunes.apple.com/lookup", "id=1195792578");
 		
-		String testGetHomeworks="{\"name\":\"c_get_homeworks\",\"details\":{\"classId\":\"99\",\"deviceType\":\"Android\",\"pageIndex\":1,\"pageSize\":20,\"protocol\":\"1.0\",\"sessionId\":\"fb1ec40c-8811-48c9-80fe-8c11f1609d30\",\"status\":1,\"userId\":\"20110\",\"userType\":2,\"versionId\":1,\"versionName\":\"1.0\"}}";
-		String testGetTeaClassDetail="{\"name\":\"c_get_tea_class_details\",\"details\":{\"classId\":\"109\",\"deviceType\":\"Android\",\"protocol\":\"1.0\",\"sessionId\":\"a9d54dee-3d92-4fb0-99fb-614f531c985a\",\"userId\":\"20191\",\"userType\":2,\"versionId\":1,\"versionName\":\"1.0\"}}";
-		String testGetHomeworkStat="{\"name\":\"c_get_homework_stat\",\"details\":{\"deviceType\":\"Android\",\"homeworkId\":\"690\",\"orderType\":0,\"protocol\":\"1.0\",\"sessionId\":\"b0943509-2e9b-4f49-abcf-42283e1f5c57\",\"sortType\":1,\"topNum\":1,\"userId\":\"20849\",\"userType\":2,\"versionId\":1,\"versionName\":\"1.0\"}}";
-		String testToken = "{'name':'c_get_oss_permission','details':{'protocol':'1.0','userType':'-1','userId':'-1','sessionId':'-1','deviceType':'4','token':'123'}}";
-		long start = System.currentTimeMillis();
-		for(int i=0 ; i<1 ;i++){
-			//0.5秒发送一个请求
-			Thread.sleep(100l);
-			String sr=HttpUtil.sendPost("http://www.stubook.com.cn:8080/server/req.action", "json="+testToken);
-	        System.out.println("结果"+sr+"\n 次数"+(i+1));
-		}
-		long end = System.currentTimeMillis();
-		System.out.println("\n\n\n\n一共耗时："+(end-start));
 		
 	/*	String sr=HttpUtil.sendPost("http://192.168.2.6:8081/HomeworkManagement/server/req.action", "json="+testGetHomeworks);
         System.out.println("结果"+sr);*/

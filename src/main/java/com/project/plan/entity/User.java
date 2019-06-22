@@ -12,9 +12,6 @@ import com.project.plan.entity.support.BaseEntity;
  * <p>
  * 用户账户表
  * </p>
- *
- * @author SPPan
- * @since 2016-12-28
  */
 @Entity
 @Table(name = "tb_user",uniqueConstraints= {@UniqueConstraint(columnNames= {"userName","password"})})//添加账号密码唯一联合约束

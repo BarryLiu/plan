@@ -8,8 +8,6 @@ import com.project.plan.service.support.IBaseService;
  * 用户服务类
  * </p>
  *
- * @author SPPan
- * @since 2016-12-28
  */
 public interface IUserService extends IBaseService<User, Integer> {
 

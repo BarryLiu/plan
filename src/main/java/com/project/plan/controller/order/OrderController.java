@@ -1,14 +1,8 @@
 package com.project.plan.controller.order;
 
-import com.project.plan.common.JsonResult;
-import com.project.plan.controller.BaseController;
-import com.project.plan.entity.order.Order;
-import com.project.plan.entity.plan.Project;
-import com.project.plan.service.order.OrderServiceImpl;
-import com.project.plan.service.specification.SimpleSpecificationBuilder;
-import com.project.plan.service.specification.SpecificationOperator;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,11 +12,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import springfox.documentation.annotations.ApiIgnore;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.project.plan.common.JsonResult;
+import com.project.plan.controller.BaseController;
+import com.project.plan.entity.order.Order;
+import com.project.plan.service.order.OrderServiceImpl;
+import com.project.plan.service.specification.SimpleSpecificationBuilder;
+import com.project.plan.service.specification.SpecificationOperator;
+
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import springfox.documentation.annotations.ApiIgnore;
 
 @Controller
 @RequestMapping("/order")
@@ -164,7 +164,6 @@ public class OrderController  extends BaseController {
 //    	String phone = (String) map.get("phone");
     	
     	
-    	String realAddr = address1 +"-"+address2;
     	if(productName==null||"".equals(productName.trim())) {
     		res = false;
     		msg.append("请选择套餐");
