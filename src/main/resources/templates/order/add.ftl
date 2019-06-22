@@ -70,7 +70,7 @@
                                 <label class="col-sm-3 control-label">订购商品： </label>
                                 <div class="col-sm-4">
                                 	<select id="productName" name="productName" class="form-control">
-                                		<option  >请选择</option>
+                                		<option value="" >请选择</option>
                                 		<option value="零售客户 490元（1盒装）" >零售客户 490元（1盒装）</option>
                                 		<option value="天使代理 680元（2盒装）" >天使代理 680元（2盒装）</option>
                                         <option value="特约代理 3100元（10盒装）">特约代理 3100元（10盒装）</option>

@@ -1,0 +1,41 @@
+/* PHPORDER */
+
+/**  
+ * by:WENFEI qq:183712356
+ * since: 2012020
+ */
+
+*{margin:0;padding:0;}
+body{font:12px "ËÎÌו",Arial,Verdana;color:#000;text-align:left;background-color:#FFF;} 
+a:link,a:visited{color:#000;text-decoration:none;}a:hover{color:#F00;text-decoration:underline;}
+ul,ol,li{list-style:none;display:block;}
+input,button,select{font:100% arial,helvetica,clean,sans-serif;}
+img,a img{border:0 none;}
+em{font-style:normal;color:#F00;margin-right:6px;}
+.center{text-align:center;}
+#order{width:950px;height:670px;margin:0 auto;}
+.left{float:left;width:578px;}
+.right{float:right;width:310px;}
+.left,.right{height:644px;overflow:hidden;padding:10px;border:3px solid #F36;}
+.title{height:36px;line-height:36px;font-size:14px;color:#F00;margin-bottom:13px;border-bottom:1px solid #F36;}
+.bdbox{width:578px;height:594px;}
+.bdbox li{width:578px;height:30px;line-height:20px;padding:4px 0 0;*padding:0;_padding:0;border-bottom:1px solid #e4e4e4;}
+.bdbox li input.dxk{display:block;float:left;width:15px;height:15px;color:#F00;padding:1px 1px 0 0;cursor:pointer;background-color:#E6E6E6;}
+.bdbox li label{display:block;float:left;height:18px;line-height:18px;background-color:#F5F5F5;margin:0 12px 0 6px;cursor:pointer;}
+.bdbox li span.bdl{float:left;width:90px;line-height:24px;text-align:right;}
+.bdbox li span.bdr{float:right;width:460px;padding-left:10px;border-left:1px solid #CCC;}
+.bdbox li span.bdr #showprit{clear:both;display:inline;font-family:Arial,Verdana;font-size:14px;font-weight:bold;color:#F60;margin:0 5px;}
+.bdbox li.product{height:82px;}
+.bdbox li.pay{height:42px;}
+.bdbox li.shsj{height:62px;}
+.bdbox li.guest{height:76px;}
+.bdbox li.code{height:30px;border:none;}
+.bdbox li.code img{width:48px;height:26px;vertical-align:middle;cursor:pointer;}
+.bdbox li span.bdr input.txt{height:22px;line-height:22px;font-size:14px;color:#060;padding:0 5px;border:none;outline:none;border:1px solid #c8c8c8;background:url(putbg.jpg) no-repeat;}
+.bdbox li span.bdr input.txt2{height:26px;line-height:26px;vertical-align:middle;}
+.bdbox li span.bdr input.zjia{border:none;background:none;color:#bd0000;}
+.bdbox li span.bdr textarea{width:383px;height:50px;font-size:14px;color:#999;padding:10px;border:none;border:1px solid #c8c8c8;background:url(putbg.jpg) no-repeat;}
+.bdbox li input.send{width:200px;height:30px;color:#F00;vertical-align:middle;}
+#wffahuo{width:290px;height:445px;line-height:1.8em;color:#666;padding-left:20px;margin-bottom:13px;}
+
+/* PHPORDER end */

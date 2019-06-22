@@ -31,7 +31,7 @@ public class AdminIndexController extends BaseController {
 	@RequestMapping(value ={"/admin/","/admin/index","/admin"},method = RequestMethod.GET)
 	public String index(){
 
-		List<Resource> resourceList = (List<Resource>) request.getSession().getServletContext().getAttribute(Constats.APPLICATION_RESOURCES);
+		List<Resource> resourceList = null;//(List<Resource>) request.getSession().getServletContext().getAttribute(Constats.APPLICATION_RESOURCES);
 		if(resourceList==null||resourceList.isEmpty()){
 			resourceList = resourceService.findAll();//启动和重新启动都查一下全局权限
 			request.getSession().getServletContext().setAttribute(Constats.APPLICATION_RESOURCES,resourceList);

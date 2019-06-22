@@ -25,9 +25,9 @@ public class Visit extends AbstractEntity {
 	
 	private String url; // 访问的url地址
 	
-	@Size(max=5000)
+	@Size(max=2000)
 	private String requestBody;  // 访问参数
-	@Size(max=8000)
+	@Size(max=4000)
 	private String responseBody; // 响应参数
 	private String ip; // 访问ip地址
 	private long duration; //访问处理时间
