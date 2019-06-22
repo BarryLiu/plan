@@ -61,7 +61,7 @@
 						<div class="p1 p3">
 							<span class="p1_fh">*</span>
 							<span class="address1">收货地址（请输入详细地址）</span><br />
-							<input type="text" name="From" value="" placeholder="" autocomplete="off" style="width:580px;">
+							<input type="text" name="address1" value="" placeholder="" autocomplete="off" style="width:580px;">
 						</div>
 					</div>
 					

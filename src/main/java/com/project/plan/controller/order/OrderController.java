@@ -168,19 +168,22 @@ public class OrderController  extends BaseController {
     	if(productName==null||"".equals(productName.trim())) {
     		res = false;
     		msg.append("请选择套餐");
+    	}else if(userName==null||"".equals(userName.trim())) {
+    		res = false;
+    		msg.append("请输入姓名");
     	}else if(price == null || price==0) {
     		res = false;
     		msg.append("价格不能为空");
-    	}else if(address1==null||"".equals(address1.trim())) {
+    	}else if(phone==null||"".equals(phone.trim())) {
+			res = false;
+			msg.append("请填入手机号");
+		}else if(address1==null||"".equals(address1.trim())) {
     		res = false;
-    		msg.append("请选择收获地区");
+    		msg.append("请选择收货地址");
 		}/*else if(address2==null||"".equals(address2.trim())) {
 			res = false;
     		msg.append("请填入详细地址");
-		}*/else if(phone==null||"".equals(phone.trim())) {
-			res = false;
-			msg.append("请填入手机号");
-		}
+		}*/
         try {
         	if(res) {
         		if("零售客户 490元（1盒装）".equals(productName)) {
