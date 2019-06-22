@@ -80,12 +80,9 @@
     <!-- Page-Level Scripts -->
     <script>
     window.onload=function (){
-    	alert(2);
     	a();
     }
-		var rootUrl = "${ctx!}/order";
 		function a() {
-		alert($("#table_list_order").html());
 			//初始化表格,动态从服务器加载数据  
 			$("#table_list_order").bootstrapTable({
 			    //使用get请求到服务器获取数据  
@@ -93,7 +90,7 @@
 			    //必须设置，不然request.getParameter获取不到请求参数
 			    contentType: "application/x-www-form-urlencoded",
 			    //获取数据的Servlet地址  
-			    url: rootUrl+"/list",
+			    url: "${ctx!}/order/list",
 			    //表格显示条纹  
 			    striped: true,
 			    //启动分页  
@@ -167,7 +164,7 @@
 			});
 		}
         $(document).ready(function () {
-			alert(1);
+
         });
         
         function edit(id){
@@ -177,7 +174,7 @@
         	      shadeClose: true,
         	      shade: false,
 				  area: ['80%', '90%'],
-        	      content: rootUrl+'/edit/' + id,
+        	      content: '${ctx!}/order/edit/' + id,
         	      end: function(index){
         	    	  $('#table_list').bootstrapTable("refresh");
        	    	  }
@@ -190,7 +187,7 @@
         	      shadeClose: true,
         	      shade: false,
 				  area: ['80%', '90%'],
-        	      content: rootUrl+'/add',
+        	      content: '${ctx!}/order/add',
         	      end: function(index){
         	    	  $('#table_list').bootstrapTable("refresh");
        	    	  }
@@ -201,7 +198,7 @@
         		$.ajax({
     	    		   type: "POST",
     	    		   dataType: "json",
-    	    		   url: rootUrl+"/delete/" + id,
+    	    		   url: "${ctx!}/order/delete/" + id,
     	    		   success: function(msg){
 	 	   	    			layer.msg(msg.message, {time: 2000},function(){
 	 	   	    				$('#table_list').bootstrapTable("refresh");

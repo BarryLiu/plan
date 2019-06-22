@@ -53,11 +53,10 @@
                     </ul>
                     <div class="tab-content">
                         <div id="tab-1" class="tab-pane active >
-                            <#include "${ctx!}/order/index.ftl">
+ 							<#include "${ctx!}/admin/user/index.ftl">
                         </div>
                         <div id="tab-2" class="tab-pane">
-                             
-                             <iframe id="J_iframe" width="100%" height="100%" src="${ctx!}/admin/user/index" frameborder="0" seamless></iframe>
+                            <#include "${ctx!}/order/index.ftl">
                         </div>
                         <div id="tab-3" class="tab-pane">
                         </div>
@@ -79,18 +78,15 @@
     <script src="${ctx!}/assets/js/jquery.min.js?v=2.1.4"></script>
     <script src="${ctx!}/assets/js/bootstrap.min.js?v=3.3.6"></script>
 
-
+    <script src="${ctx!}/assets/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+    <script src="${ctx!}/assets/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
 
     <!-- 自定义js -->
     <script src="${ctx!}/assets/js/content.js?v=1.0.0"></script>
 	<script >
     var rootUrl = "${ctx!}/plan/module";
 
-    function add(){
-    	var a = document.getElementById("table_list_user");
-    	alert(a);
-        setTimeout("alert('document.getElementById(\"table_list\")');",2000);
-    }
+    
 </script>
 </body>
 
