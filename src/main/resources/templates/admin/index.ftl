@@ -48,7 +48,7 @@
                         <span class="ng-scope">分类</span>
                     </li>
                     <li>
-                        <a class="J_menuItem" href="${ctx!}/admin/welcome">
+                        <a class="J_menuItem" href="javascript:window.open('${ctx!}/admin/welcome');">
                             <i class="fa fa-home"></i>
                             <span class="nav-label">主页</span>
                         </a>

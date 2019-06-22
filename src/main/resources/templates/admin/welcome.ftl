@@ -17,6 +17,23 @@
     <link href="${ctx!}/assets/css/animate.css" rel="stylesheet">
     <link href="${ctx!}/assets/css/style.css?v=4.1.0" rel="stylesheet">
 
+        <!-- 全局js -->
+    <script src="${ctx!}/assets/js/jquery.min.js?v=2.1.4"></script>
+    <script src="${ctx!}/assets/js/bootstrap.min.js?v=3.3.6"></script>
+
+
+	<!-- Bootstrap table -->
+    <script src="${ctx!}/assets/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+    <script src="${ctx!}/assets/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+    <script src="${ctx!}/assets/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+
+    <!-- Peity -->
+    <script src="${ctx!}/assets/js/plugins/peity/jquery.peity.min.js"></script>
+
+    <script src="${ctx!}/assets/js/plugins/layer/layer.min.js"></script>
+
+    <!-- 自定义js -->
+    <script src="${ctx!}/assets/js/content.js?v=1.0.0"></script>
 </head>
 
 <body class="gray-bg">
@@ -40,10 +57,9 @@
                         </div>
                         <div id="tab-2" class="tab-pane">
                              
-                             <iframe id="J_iframe" width="100%" height="100%" src="${ctx!}/order/index.ftl" frameborder="0" seamless></iframe>
+                             <iframe id="J_iframe" width="100%" height="100%" src="${ctx!}/admin/user/index" frameborder="0" seamless></iframe>
                         </div>
                         <div id="tab-3" class="tab-pane">
-                            <iframe id="J_iframe" width="100%" height="100%" src="${ctx!}/order/index.ftl" frameborder="0" seamless></iframe>
                         </div>
                         <div id="tab-4" class="tab-pane">
                             <div class="panel-body">
@@ -67,7 +83,15 @@
 
     <!-- 自定义js -->
     <script src="${ctx!}/assets/js/content.js?v=1.0.0"></script>
+	<script >
+    var rootUrl = "${ctx!}/plan/module";
 
+    function add(){
+    	var a = document.getElementById("table_list_user");
+    	alert(a);
+        setTimeout("alert('document.getElementById(\"table_list\")');",2000);
+    }
+</script>
 </body>
 
 </html>

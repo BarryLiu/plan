@@ -3,16 +3,16 @@
     <head>
         <meta charset="UTF-8">
         <title>什么是燕窝？</title>
-        <meta name="viewport"content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=no" />
+        <!-- <meta name="viewport"content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=no" />-->
 		<link rel="shortcut icon" href="images/favicon.ico">
         <meta name="format-detection" content="telephone=no,email=no"/>
-<!-- 		<link rel="stylesheet" type="text/css"
+		<!-- <link rel="stylesheet" type="text/css"
 				media="screen and (max-device-width:640px)"
 				href="css/moblie.css" />
 		<link rel="stylesheet" type="text/css"
 				media="screen and (min-device-width:640px)"
-				href="css/pc.css" />	 -->
-		<link rel="stylesheet" type="text/css" href="css/style.css">
+				href="css/style.css" /> -->
+		<link rel="stylesheet" type="text/css" href="css/style.css" />	
 				
 		
 		
@@ -60,13 +60,8 @@
 						</div>
 						<div class="p1 p3">
 							<span class="p1_fh">*</span>
-							<span class="p1_name">收货地址（省市区）</span><br />
-							<input type="text" name="address1" value="" placeholder="" autocomplete="off" style="width:200px;">
-						</div>
-						<div class="p1 p4">
-							<span class="p1_fh">*</span>
-							<span class="p1_name">详细地址</span><br />
-							<input type="text" name="address2" value="" placeholder="" style="width:450px;" autocomplete="off">
+							<span class="address1">收货地址（请输入详细地址）</span><br />
+							<input type="text" name="From" value="" placeholder="" autocomplete="off" style="width:580px;">
 						</div>
 					</div>
 					
@@ -74,12 +69,11 @@
 						<div class="page_2_left">
 							<span class="p2_l_1">*</span>
 							<span class="p2_l_2">请选择套餐</span><br />
-							<input id="sex" type="text" name="productName" list="sexlist" style="width:426px;" placeholder="" autocomplete="off">
-							<datalist id="sexlist">
-								<option>零售客户 490元（1盒装）</option>
-								<option>天使代理 680元（2盒装）</option>
-								<option>天使代理 3100元（10盒装）</option>
-							</datalist>
+							<select name="productName">
+								<option value ="零售客户 490元（1盒装）">零售客户 490元（1盒装）</option>
+								<option value ="天使代理 680元（2盒装）">天使代理 680元（2盒装）</option>
+								<option value="天使代理 3100元（10盒装）">天使代理 3100元（10盒装）</option>
+							</select>
 						</div>
 						<div class="page_2_right">
 							<span class="p2_r_1">*</span>
@@ -93,7 +87,7 @@
 							 
 						</div>
 					</div>
-					
+						
 					<input type="submit" id="submitBtn" value="提交订单" class="btn">
 				</form> 
 			</div>
@@ -101,7 +95,7 @@
 		</div>
 		
 		
-		<div class="footeS">
+		<div class="footer">
 			<img src="images/footer_img.png" width="100%" height="auto"/>
 		</div>
     </body>

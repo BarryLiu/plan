@@ -1,10 +1,11 @@
 *{
     margin: 0px;
     padding: 0px;
-    font-family: "寰蒋闆呴粦";
+    font-family: "微软雅黑";
 }
 body{
 	background-image:url(../images/body_img.png);
+	
 }
 .img_div{
 	text-align: center;
@@ -17,7 +18,7 @@ body{
 	border: 0;
 }
 .zhuti{
-	width: 950px;
+	max-width:950px;
 	height: auto;
 	margin:0 auto;
 	font-size: 0;
@@ -35,13 +36,13 @@ body{
 	font-size: 0;
 }
 .biaodan{
-	width: 950px;
+	width: 870px;
 	height: 410px;
 	background: #ffffff;
 	border-radius:10px;
 	margin-top: 20px;
 	padding:25px 40px 0px 40px;
-	font-family: 寰蒋闆呴粦;
+	font-family: 微软雅黑;
 }
 .bd_title{
 	height:40px;
@@ -106,20 +107,29 @@ body{
 	margin-top: 30px;
 }
 .page_2_left{
-	width: 426px;
+	width:386px;
 	height:40px;
 	border: solid #efefef 2px;
 	float: left;
 	font-size: 12px;
 	padding:30px 20px;
 }
-.page_2_left input{
+/* .page_2_left input{
 	outline: none;
 	-webkit-appearance: none;
 	border-radius: 0;
 	border:solid #efefef 1px;
 	height: 20px;
 	margin-top:10px ;
+} */
+.page_2_left select{
+	margin-top: 10px;
+	width: 100%;
+	outline: none;
+	-webkit-appearance: none;
+	border-radius: 0;
+	border:solid #efefef 1px;
+	height: 20px;
 }
 .p2_l_1{
 	color:#88b688;
@@ -128,7 +138,7 @@ body{
 	color:#666666;
 }
 .page_2_right{
-	width: 426px;
+	width: 386px;
 	height:40px;
 	border: solid #efefef 2px;
 	padding:30px 20px;
@@ -149,7 +159,7 @@ body{
 	width: 244px;
 	height: 30px;
 	margin: 0 auto;
-	margin-left: 353px;
+	margin-left: 313px;
 	margin-top:40px;
 }
 
@@ -161,4 +171,4 @@ body{
 	font-size: 0;
 	background-position: bottom;
 }
-/* 缁欏浘鐗囩埗绾ц缃竴涓瓧浣撳ぇ灏忎负0,鍙互鍙栨秷鍥剧墖闂磋窛 */
+/* 给图片父级设置一个字体大小为0,可以取消图片间距 */

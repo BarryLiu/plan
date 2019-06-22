@@ -43,7 +43,7 @@
 		                        <!-- Example Card View -->
 		                        <div class="example-wrap">
 		                            <div class="example">
-		                            	<table id="table_list"></table>
+		                            	<table id="table_list_user"></table>
 		                            </div>
 		                        </div>
 		                        <!-- End Example Card View -->
@@ -76,7 +76,7 @@
     <script>
         $(document).ready(function () {
         	//初始化表格,动态从服务器加载数据  
-			$("#table_list").bootstrapTable({
+			$("#table_list_user").bootstrapTable({
 			    //使用get请求到服务器获取数据  
 			    method: "POST",
 			    //必须设置，不然request.getParameter获取不到请求参数

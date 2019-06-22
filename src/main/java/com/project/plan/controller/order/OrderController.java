@@ -174,16 +174,23 @@ public class OrderController  extends BaseController {
     	}else if(address1==null||"".equals(address1.trim())) {
     		res = false;
     		msg.append("请选择收获地区");
-		}else if(address2==null||"".equals(address2.trim())) {
+		}/*else if(address2==null||"".equals(address2.trim())) {
 			res = false;
     		msg.append("请填入详细地址");
-		}else if(phone==null||"".equals(phone.trim())) {
+		}*/else if(phone==null||"".equals(phone.trim())) {
 			res = false;
 			msg.append("请填入手机号");
 		}
         try {
         	if(res) {
-        		Order order = new Order(productName,userName , phone, realAddr, price, orderStatus, payType, null, null, null);
+        		if("零售客户 490元（1盒装）".equals(productName)) {
+        			price=490;
+        		}else if("天使代理 680元（2盒装）".equals(productName)) {
+        			price=680;
+        		}else if("天使代理 3100元（10盒装）".equals(productName)) {
+        			price=3100;
+        		}
+        		Order order = new Order(productName,userName , phone, address1, price, orderStatus, payType, null, null, null);
         		orderService.saveOrUpdate(order);
         	}
         } catch (Exception e) {

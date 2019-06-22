@@ -19,7 +19,7 @@
 
     <link href="${ctx!}/assets/css/animate.css" rel="stylesheet">
     <link href="${ctx!}/assets/css/style.css?v=4.1.0" rel="stylesheet">
-
+    
 </head>
 
 <body class="gray-bg">
@@ -36,7 +36,6 @@
                         	<@shiro.hasPermission name="order:add">
                         		<button class="btn btn-success " type="button" onclick="add();"><i class="fa fa-plus"></i>&nbsp;添加</button>
                         	</@shiro.hasPermission>
-                        	<button class="btn btn-danger btn-xs"type="button" onclick="delAll();"><i class="fa fa-plus"></i>&nbsp;批量删除</button>
                         </p>
                         <hr>
                         <div class="row row-lg">
@@ -44,7 +43,7 @@
 		                        <!-- Example Card View -->
 		                        <div class="example-wrap">
 		                            <div class="example">
-		                            	<table id="table_list"></table>
+		                            	<table id="table_list_order"></table>
 		                            </div>
 		                        </div>
 		                        <!-- End Example Card View -->
@@ -76,13 +75,19 @@
 
     <!-- 自定义js -->
     <script src="${ctx!}/assets/js/content.js?v=1.0.0"></script>
+   <!-- <script src="${ctx!}/assets/js/plugins/bootstrap-table/bootstrap-table-editable.js"></script> -->
 
     <!-- Page-Level Scripts -->
     <script>
+    window.onload=function (){
+    	alert(2);
+    	a();
+    }
 		var rootUrl = "${ctx!}/order";
-        $(document).ready(function () {
+		function a() {
+		alert($("#table_list_order").html());
 			//初始化表格,动态从服务器加载数据  
-			$("#table_list").bootstrapTable({
+			$("#table_list_order").bootstrapTable({
 			    //使用get请求到服务器获取数据  
 			    method: "POST",
 			    //必须设置，不然request.getParameter获取不到请求参数
@@ -160,6 +165,9 @@
                     }
 			    }]
 			});
+		}
+        $(document).ready(function () {
+			alert(1);
         });
         
         function edit(id){

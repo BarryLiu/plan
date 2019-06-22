@@ -122,7 +122,7 @@
                             <div class="form-group">
                                     <div class="col-sm-8 col-sm-offset-3">
                                         <@shiro.hasPermission name="order:add">
-                                            <button class="btn btn-primary" type="submit">提交</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <button class="btn btn-primary" type="submit" >提交</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         </@shiro.hasPermission>
                                         <button class="btn btn-primary" type="reset">重置</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                                         <button class="btn btn-primary" type="button" onclick="closeWindow();">取消</button>
@@ -175,7 +175,7 @@
                 required: true,
                 minlength: 6,
                 maxlength: 13
-              },{
+              },
     	    	productName: {
     	        required: true
     	      },
@@ -184,7 +184,7 @@
     	      },
                 price: {
     	        required: true
-    	      },{
+    	      },
     	    	expressCompany: {
     	        required: false,
     	        minlength: 2,
@@ -204,7 +204,6 @@
    	    		   url: "${ctx!}/order/edit",
    	    		   data: $(form).serialize(),
    	    		   success: function(msg){
-   	    		   alert(msg);
 	   	    			layer.msg(msg.message, {time: 2000},function(){
                             closeWindow();
 	   					});
@@ -212,8 +211,13 @@
    	    		});
             } 
     	});
-
+    	
+    	 
     });
+  
+    
+    
+    
     var closeWindow = function(){
         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
         parent.layer.close(index);
