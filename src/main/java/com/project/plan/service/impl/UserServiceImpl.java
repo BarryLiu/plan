@@ -57,7 +57,9 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer> implements I
 			dbUser.setDescription(user.getDescription());
 			dbUser.setUpdateTime(new Date());
 			if(user.getPassword()!=null&&!"".equalsIgnoreCase(user.getPassword())){//输入的新密码有效就让其修改密码
-				dbUser.setPassword(user.getPassword());
+				if(!user.getPassword().equals(dbUser.getPassword())) {//自己更新不需要修改md5
+					dbUser.setPassword(MD5Utils.md5(user.getPassword()));
+				}
 			}
 			update(dbUser);
 		}else{

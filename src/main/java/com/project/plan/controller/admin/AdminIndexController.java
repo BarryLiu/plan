@@ -30,7 +30,7 @@ public class AdminIndexController extends BaseController {
 			resourceList = resourceService.findAll();//启动和重新启动都查一下全局权限
 			request.getSession().getServletContext().setAttribute(Constats.APPLICATION_RESOURCES,resourceList);
 		}
-		return "admin/index";
+		return "admin/welcome";
 	}
 	@ApiOperation(value="后台欢迎界面", notes="登录成功进入后台主界面后页面回立即请求这个页面,先给内容重定向到别的页面")
 	@RequestMapping(value = {"/admin/welcome"},method = RequestMethod.GET)

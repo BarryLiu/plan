@@ -34,7 +34,7 @@
                     <div class="ibox-content">
                         <p>
                         	<@shiro.hasPermission name="system:user:add">
-                        		<button class="btn btn-success " type="button" onclick="add();"><i class="fa fa-plus"></i>&nbsp;添加</button>
+                        		<button class="btn btn-success " type="button" onclick="addUser();"><i class="fa fa-plus"></i>&nbsp;添加</button>
                         	</@shiro.hasPermission>
                         </p>
                         <hr>
@@ -117,7 +117,10 @@
 			        sortable: true
 			    },{
 			        title: "用户名",
-			        field: "userName"
+			        field: "userName",
+                    formatter: function (value, row, index) {
+                      return '<nobr>'+value+'</nobr>';
+                    }
 			    },{
 			        title: "所属角色",
 			        field: "roles",
@@ -130,7 +133,10 @@
                     }
 			    },{
 			        title: "昵称",
-			        field: "nickName"
+			        field: "nickName",
+                    formatter: function (value, row, index) {
+                      return '<nobr>'+value+'</nobr>';
+                    }
 			    },{
 			        title: "性别",
 			        field: "sex",
@@ -141,13 +147,22 @@
                     }
 			    },{
 			        title: "出生日期",
-			        field: "birthday"
+			        field: "birthday",
+                    formatter: function (value, row, index) {
+                      return '<nobr>'+value+'</nobr>';
+                    }
 			    },{
 			        title: "电话",
-			        field: "telephone"
+			        field: "telephone",
+                    formatter: function (value, row, index) {
+                      return '<nobr>'+value+'</nobr>';
+                    }
 			    },{
 			        title: "邮箱",
-			        field: "email"
+			        field: "email",
+                    formatter: function (value, row, index) {
+                      return '<nobr>'+value+'</nobr>';
+                    }
 			    },{
 			        title: "状态",
 			        sortable: true,
@@ -168,18 +183,24 @@
 			    },{
 			        title: "创建时间",
 			        field: "createTime",
-			        sortable: true
+			        sortable: true,
+                    formatter: function (value, row, index) {
+                      return '<nobr>'+value+'</nobr>';
+                    }
 			    },{
 			        title: "更新时间",
 			        field: "updateTime",
-			        sortable: true
+			        sortable: true,
+                    formatter: function (value, row, index) {
+                      return '<nobr>'+value+'</nobr>';
+                    }
 			    },{
 			        title: "操作",
 			        field: "empty",
                     formatter: function (value, row, index) {
                     	var operateHtml = '';
-                    	operateHtml = operateHtml + '<@shiro.hasPermission name="system:user:edit"><button class="btn btn-primary btn-xs" type="button" onclick="edit(\''+row.id+'\')"><i class="fa fa-edit"></i>&nbsp;修改</button> &nbsp;</@shiro.hasPermission>';
-                    	operateHtml = operateHtml + '<@shiro.hasPermission name="system:user:deleteBatch"><button class="btn btn-danger btn-xs" type="button" onclick="del(\''+row.id+'\')"><i class="fa fa-remove"></i>&nbsp;删除</button> &nbsp;</@shiro.hasPermission>';
+                    	operateHtml = operateHtml + '<@shiro.hasPermission name="system:user:edit"><button class="btn btn-primary btn-xs" type="button" onclick="editUser(\''+row.id+'\')"><i class="fa fa-edit"></i>&nbsp;修改</button> &nbsp;</@shiro.hasPermission>';
+                    	operateHtml = operateHtml + '<@shiro.hasPermission name="system:user:deleteBatch"><button class="btn btn-danger btn-xs" type="button" onclick="delUser(\''+row.id+'\')"><i class="fa fa-remove"></i>&nbsp;删除</button> &nbsp;</@shiro.hasPermission>';
                     	operateHtml = operateHtml + '<@shiro.hasPermission name="system:user:grant"><button class="btn btn-info btn-xs" type="button" onclick="grant(\''+row.id+'\')"><i class="fa fa-arrows"></i>&nbsp;关联角色</button></@shiro.hasPermission>';
                         return operateHtml;
                     }
@@ -187,13 +208,13 @@
 			});
         });
         
-        function edit(id){
+        function editUser(id){
         	layer.open({
         	      type: 2,
         	      title: '用户修改',
         	      shadeClose: true,
         	      shade: false,
-				  area: ['993px', '800px'],
+				  area: ['80%', '80%'],
         	      content: '${ctx!}/admin/user/edit/' + id,
         	      end: function(index){
         	    	  $('#table_list').bootstrapTable("refresh");
@@ -206,20 +227,22 @@
         	      title: '用户修改',
         	      shadeClose: true,
         	      shade: false,
-				  area: ['993px', '800px'],
+				  area: ['80%', '80%'],
         	      content: '${ctx!}/admin/user/changePassword/' + id,
         	      end: function(index){
         	    	  $('#table_list').bootstrapTable("refresh");
        	    	  }
         	    });
         }
-        function add(){
+        function addUser(){
         	layer.open({
         	      type: 2,
         	      title: '用户添加',
         	      shadeClose: true,
+        	      maxmin: true,
         	      shade: false,
-                  area: ['993px', '800px'],
+        	      scrollbar:false,
+                  area: ['80%', '80%'],
         	      content: '${ctx!}/admin/user/add',
         	      end: function(index){
         	    	  $('#table_list').bootstrapTable("refresh");
@@ -232,14 +255,14 @@
         	      title: '关联角色',
         	      shadeClose: true,
         	      shade: false,
-        	      area: ['893px', '600px'],
+        	      area: ['80%', '80%'],
         	      content: '${ctx!}/admin/user/grant/'  + id,
         	      end: function(index){
         	    	  $('#table_list').bootstrapTable("refresh");
        	    	  }
         	    });
         }
-        function del(id){
+        function delUser(id){
         	layer.confirm('确定删除吗?', {icon: 3, title:'提示'}, function(index){
         		$.ajax({
     	    		   type: "POST",

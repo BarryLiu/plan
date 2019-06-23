@@ -25,20 +25,6 @@
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>功能简介</h5>
-                    </div>
-                    <div class="ibox-content">
-                    <#--<p>系统登录用户是由员工登录系统后自动添加,这里不需要添加,这里添加后默认登录密码是“111111”</p>
-                        因为是用的员工系统ldap登录系统,不需要通过此密码登录-->
-                        用户可以登录系统
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
                         <h5>完整验证表单</h5>
                     </div>
                     <div class="ibox-content">

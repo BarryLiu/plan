@@ -119,25 +119,38 @@
 			        };
 			    },
 			    //数据列
-			    columns: [{
+			    columns: [<#-- {
 			        title: "选中",
 			        field: "id",
 			        sortable: false, 
                     formatter: function (value, row, index) {
                        return '<input type="checkbox" name="ids" value="'+value+'" />' ;
                     }
-			    },{
+			    },-->
+			    {
                     title: "产品",
-                    field: "productName"
+                    field: "productName",
+                    formatter: function (value, row, index) {
+                      return '<nobr>'+value+'</nobr>';
+                    }
                 },{
 			        title: "姓名",
-			        field: "userName"
+			        field: "userName",
+                    formatter: function (value, row, index) {
+                      return '<nobr>'+value+'</nobr>';
+                    }
 			    },{
                     title: "手机",
-                    field: "phone"
+                    field: "phone",
+                    formatter: function (value, row, index) {
+                      return '<nobr>'+value+'</nobr>';
+                    }
                 },{
                     title: "收货人地址",
-                    field: "address"
+                    field: "address",
+                    formatter: function (value, row, index) {
+                      return '<nobr>'+value+'</nobr>';
+                    }
                 },{
                     title: "订单状态",
                     sortable: true,
@@ -151,7 +164,10 @@
                 },{
                     title: "启动时间",
                     field: "createTime",
-                    sortable: true
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                      return '<nobr>'+value+'</nobr>';
+                    }
                 },{
 			        title: "操作",
 			        field: "empty",
@@ -173,6 +189,7 @@
         	      title: '订单处理',
         	      shadeClose: true,
         	      shade: false,
+        	      maxmin:true,
 				  area: ['80%', '90%'],
         	      content: '${ctx!}/order/edit/' + id,
         	      end: function(index){
@@ -186,6 +203,7 @@
         	      title: '订单添加',
         	      shadeClose: true,
         	      shade: false,
+        	      maxmin:true,
 				  area: ['80%', '90%'],
         	      content: '${ctx!}/order/add',
         	      end: function(index){

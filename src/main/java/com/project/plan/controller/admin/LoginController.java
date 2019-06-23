@@ -56,7 +56,8 @@ public class LoginController extends BaseController {
 			 Subject subject = SecurityUtils.getSubject();
 			 UsernamePasswordToken token = new UsernamePasswordToken(username, password);
 			subject.login(token);
-			return redirect("/admin/index");
+//			return redirect("/admin/index");
+			return redirect("/admin/welcome");
 		} catch (AuthenticationException e) {
 			model.put("message", e.getMessage());
 		}
