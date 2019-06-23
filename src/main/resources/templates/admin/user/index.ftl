@@ -217,7 +217,7 @@
 				  area: ['80%', '80%'],
         	      content: '${ctx!}/admin/user/edit/' + id,
         	      end: function(index){
-        	    	  $('#table_list').bootstrapTable("refresh");
+        	    	  $('#table_list_user').bootstrapTable("refresh");
        	    	  }
         	    });
         }
@@ -230,7 +230,7 @@
 				  area: ['80%', '80%'],
         	      content: '${ctx!}/admin/user/changePassword/' + id,
         	      end: function(index){
-        	    	  $('#table_list').bootstrapTable("refresh");
+        	    	  $('#table_list_user').bootstrapTable("refresh");
        	    	  }
         	    });
         }
@@ -245,7 +245,7 @@
                   area: ['80%', '80%'],
         	      content: '${ctx!}/admin/user/add',
         	      end: function(index){
-        	    	  $('#table_list').bootstrapTable("refresh");
+        	    	  $('#table_list_user').bootstrapTable("refresh");
        	    	  }
         	    });
         }
@@ -258,7 +258,7 @@
         	      area: ['80%', '80%'],
         	      content: '${ctx!}/admin/user/grant/'  + id,
         	      end: function(index){
-        	    	  $('#table_list').bootstrapTable("refresh");
+        	    	  $('#table_list_user').bootstrapTable("refresh");
        	    	  }
         	    });
         }
@@ -270,7 +270,7 @@
     	    		   url: "${ctx!}/admin/user/delete/" + id,
     	    		   success: function(msg){
 	 	   	    			layer.msg(msg.message, {time: 2000},function(){
-	 	   	    				$('#table_list').bootstrapTable("refresh");
+	 	   	    				$('#table_list_user').bootstrapTable("refresh");
 	 	   	    				layer.close(index);
 	 	   					});
     	    		   }

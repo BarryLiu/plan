@@ -193,7 +193,7 @@
 				  area: ['80%', '90%'],
         	      content: '${ctx!}/order/edit/' + id,
         	      end: function(index){
-        	    	  $('#table_list').bootstrapTable("refresh");
+        	    	  $('#table_list_order').bootstrapTable("refresh");
        	    	  }
         	    });
         }
@@ -207,7 +207,7 @@
 				  area: ['80%', '90%'],
         	      content: '${ctx!}/order/add',
         	      end: function(index){
-        	    	  $('#table_list').bootstrapTable("refresh");
+        	    	  $('#table_list_order').bootstrapTable("refresh");
        	    	  }
         	    });
         }
@@ -219,7 +219,7 @@
     	    		   url: "${ctx!}/order/delete/" + id,
     	    		   success: function(msg){
 	 	   	    			layer.msg(msg.message, {time: 2000},function(){
-	 	   	    				$('#table_list').bootstrapTable("refresh");
+	 	   	    				$('#table_list_order').bootstrapTable("refresh");
 	 	   	    				layer.close(index);
 	 	   					});
     	    		   }
